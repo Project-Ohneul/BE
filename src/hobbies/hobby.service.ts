@@ -15,4 +15,8 @@ export class HobbyService {
       hobby,
     });
   }
+
+  async getAllHobbies(): Promise<Hobbies[]> {
+    return await this.hobbyRepository.find();
+  }
 }

@@ -15,4 +15,8 @@ export class ThemeService {
       theme,
     });
   }
+
+  async getAllThemes(): Promise<Themes[]> {
+    return await this.themeRepository.find();
+  }
 }

@@ -15,4 +15,7 @@ export class MoodService {
       mood,
     });
   }
+  async getAllMoods(): Promise<Moods[]> {
+    return await this.moodRepository.find();
+  }
 }

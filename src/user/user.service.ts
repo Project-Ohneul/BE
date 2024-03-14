@@ -23,6 +23,9 @@ export class UserService {
       theme_id,
     });
   }
+  async getAllUsers(): Promise<User[]> {
+    return await this.userRepository.find();
+  }
   //   async findByUsername(username: string): Promise<User> | undefined {
   //     return this.userRepository.findOne({username});
   //   }
