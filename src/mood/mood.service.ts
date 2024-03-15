@@ -1,4 +1,4 @@
-import {Injectable} from "@nestjs/common";
+import {Injectable, NotFoundException} from "@nestjs/common";
 import {InjectRepository} from "@nestjs/typeorm";
 import {Repository} from "typeorm";
 import {Moods} from "./mood.entity";
@@ -17,5 +17,12 @@ export class MoodService {
   }
   async getAllMoods(): Promise<Moods[]> {
     return await this.moodRepository.find();
+  }
+  async deleteOneMood(mood_id: number): Promise<void> {
+    const result = await this.moodRepository.delete(mood_id);
+
+    if (result.affected === 0) {
+      throw new NotFoundException(`해당 감정을 찾을 수 없습니다. -> id: {mood_id}`);
+    }
   }
 }

@@ -1,4 +1,4 @@
-import {Body, Controller, Post, Get} from "@nestjs/common";
+import {Body, Controller, Post, Get, Delete, ParseIntPipe, Param} from "@nestjs/common";
 import {ThemeService} from "./theme.service";
 import {Themes} from "./theme.entity";
 
@@ -14,5 +14,11 @@ export class ThemeController {
   @Get()
   async getAllThemes(): Promise<Themes[]> {
     return await this.themeService.getAllThemes();
+  }
+
+  @Delete("/:theme_id")
+  async deleteOneTheme(@Param("theme_id", ParseIntPipe) theme_id): Promise<string> {
+    await this.themeService.deleteOneTheme(theme_id);
+    return `해당 주제를 삭제하였습니다. -> id: ${theme_id}`;
   }
 }

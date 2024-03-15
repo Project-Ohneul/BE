@@ -9,6 +9,7 @@ import {UserModule} from "./user/user.module";
 import {HobbyModule} from "./hobbies/hobby.module";
 import { MoodModule } from './mood/mood.module';
 import { ThemeModule } from './theme/theme.module';
+import { UserHobbyModule } from './user-hobby/user-hobby.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { ThemeModule } from './theme/theme.module';
     HobbyModule,
     MoodModule,
     ThemeModule,
+    UserHobbyModule,
   ],
   controllers: [AppController],
   providers: [AppService],
