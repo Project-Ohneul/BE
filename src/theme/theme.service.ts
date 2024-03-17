@@ -28,4 +28,16 @@ export class ThemeService {
       throw new NotFoundException(`해당 주제를 찾을 수 없습니다. -> id: ${theme_id}`);
     }
   }
+
+  async updateTheme(theme_id: number, updateTheme: string): Promise<void> {
+    const theme = await this.themeRepository.findOne({where: {theme_id}});
+
+    if (!theme) {
+      throw new NotFoundException(`해당 주제를 찾을 수 없습니다. -> id: ${theme_id}`);
+    }
+
+    theme.theme = updateTheme;
+
+    await this.themeRepository.save(theme);
+  }
 }

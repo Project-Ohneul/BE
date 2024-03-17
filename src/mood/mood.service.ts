@@ -15,14 +15,28 @@ export class MoodService {
       mood,
     });
   }
+
   async getAllMoods(): Promise<Moods[]> {
     return await this.moodRepository.find();
   }
+
   async deleteOneMood(mood_id: number): Promise<void> {
     const result = await this.moodRepository.delete(mood_id);
 
     if (result.affected === 0) {
       throw new NotFoundException(`해당 감정을 찾을 수 없습니다. -> id: {mood_id}`);
     }
+  }
+
+  async updateMood(mood_id: number, updateMood: string): Promise<void> {
+    const mood = await this.moodRepository.findOne({where: {mood_id}});
+
+    if (!mood) {
+      throw new NotFoundException(`해당 감정을 찾을 수 없습니다. -> id:${mood_id}`);
+    }
+
+    mood.mood = updateMood;
+
+    await this.moodRepository.save(mood);
   }
 }

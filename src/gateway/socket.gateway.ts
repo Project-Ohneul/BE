@@ -13,7 +13,6 @@ export class MyGateway implements OnModuleInit, OnGatewayDisconnect {
 
   onModuleInit() {
     this.server.on("connection", (socket) => {
-      console.log(socket.id);
       console.log(`${socket.id}님이 연결되었습니다.`);
     });
   }
@@ -22,7 +21,7 @@ export class MyGateway implements OnModuleInit, OnGatewayDisconnect {
   onSendMessage(@MessageBody() body: any) {
     console.log(body);
     this.server.emit("receiveMessage", {
-      message: "새로운 메시지가 도착했습니다.",
+      message: "상대방으로부터 새로운 메시지가 도착했습니다.",
       content: body,
     });
   }
