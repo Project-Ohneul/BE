@@ -39,6 +39,7 @@ export class UserController {
 
   @Patch("/:user_id")
   async updateUserInfo(@Param("user_id") user_id: number, @Body() updateUserData: any) {
-    return await this.userService.updateUserInfo(user_id, updateUserData);
+    await this.userService.updateUserInfo(user_id, updateUserData);
+    return `${user_id}의 정보가 변경되었습니다.`;
   }
 }
