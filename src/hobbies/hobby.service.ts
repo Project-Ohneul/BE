@@ -24,7 +24,7 @@ export class HobbyService {
     const result = await this.hobbyRepository.delete(hobby_id);
 
     if (result.affected === 0) {
-      throw new NotFoundException(`해당 취미를 찾을 수 없습니다. -> id: {hobby_id}`);
+      throw new NotFoundException(`해당 취미를 찾을 수 없습니다.`);
     }
   }
 
@@ -32,7 +32,7 @@ export class HobbyService {
     const hobby = await this.hobbyRepository.findOne({where: {hobby_id}});
 
     if (!hobby) {
-      throw new NotFoundException(`해당 취미를 찾을 수 없습니다. -> id: ${hobby_id}`);
+      throw new NotFoundException(`해당 취미를 찾을 수 없습니다.`);
     }
 
     hobby.hobby = updateHobby;

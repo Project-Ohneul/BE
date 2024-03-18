@@ -24,7 +24,7 @@ export class MoodService {
     const result = await this.moodRepository.delete(mood_id);
 
     if (result.affected === 0) {
-      throw new NotFoundException(`해당 감정을 찾을 수 없습니다. -> id: {mood_id}`);
+      throw new NotFoundException(`해당 감정을 찾을 수 없습니다.`);
     }
   }
 
@@ -32,7 +32,7 @@ export class MoodService {
     const mood = await this.moodRepository.findOne({where: {mood_id}});
 
     if (!mood) {
-      throw new NotFoundException(`해당 감정을 찾을 수 없습니다. -> id:${mood_id}`);
+      throw new NotFoundException(`해당 감정을 찾을 수 없습니다.`);
     }
 
     mood.mood = updateMood;

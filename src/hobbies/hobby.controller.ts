@@ -8,8 +8,9 @@ export class HobbyController {
   constructor(private hobbyService: HobbyService) {}
 
   @Post("join")
-  async createHobby(@Body("hobby") hobby: string) {
-    return await this.hobbyService.createHobby({hobby});
+  async createHobby(@Body("hobby") hobby: string): Promise<{status: number; message: string}> {
+    await this.hobbyService.createHobby({hobby});
+    return {status: 200, message: "취미가 생성되었습니다."};
   }
 
   @Get()
@@ -18,16 +19,16 @@ export class HobbyController {
   }
 
   @Delete("/:hobby_id")
-  async deleteOneMood(@Param("hobby_id", ParseIntPipe) hobby_id): Promise<string> {
+  async deleteOneMood(@Param("hobby_id", ParseIntPipe) hobby_id): Promise<{status: number; message: string}> {
     await this.hobbyService.deleteHobboy(hobby_id);
-    return `해당 감정을 삭제하였습니다. -> id: ${hobby_id}`;
+    return {status: 200, message: "해당 취미가 삭제되었습니다."};
   }
 
   @Put("/:hobby_id")
-  async updateHobby(@Param("hobby_id") hobby_id: number, @Body("hobby") updateHobby: string): Promise<string> {
+  async updateHobby(@Param("hobby_id") hobby_id: number, @Body("hobby") updateHobby: string): Promise<{status: number; message: string}> {
     try {
       await this.hobbyService.updateHobby(hobby_id, updateHobby);
-      return `해당 취미가 수정되었습니다. -> hobby: ${updateHobby}`;
+      return {status: 200, message: "해당 취미가 수정되었습니다."};
     } catch (error) {
       throw new NotFoundException(error.message);
     }

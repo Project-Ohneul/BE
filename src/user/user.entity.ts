@@ -1,4 +1,6 @@
-import {Entity, PrimaryGeneratedColumn, Column} from "typeorm";
+import {Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable} from "typeorm";
+import {UserHobby} from "src/user-hobby/user-hobby.entity";
+import {Hobbies} from "src/hobbies/hobby.entity";
 
 @Entity({name: "Users"})
 export class User {
@@ -24,11 +26,22 @@ export class User {
   coin: number;
 
   @Column()
-  hobby_id: number;
-
-  @Column()
   mood_id: number;
 
   @Column()
   theme_id: number;
+
+  @ManyToMany(() => Hobbies)
+  @JoinTable({
+    name: "user_hobby",
+    joinColumn: {
+      name: "user_id",
+      referencedColumnName: "user_id",
+    },
+    inverseJoinColumn: {
+      name: "hobby_id",
+      referencedColumnName: "hobby_id",
+    },
+  })
+  hobbies: Hobbies[];
 }

@@ -2,43 +2,66 @@ import {Injectable, NotFoundException} from "@nestjs/common";
 import {InjectRepository} from "@nestjs/typeorm";
 import {Repository} from "typeorm";
 import {UserHobby} from "./user-hobby.entity";
+import {User} from "../user/user.entity";
 
 @Injectable()
 export class UserHobbyService {
   constructor(
     @InjectRepository(UserHobby)
-    private readonly userHobbyRepository: Repository<UserHobby>
+    private readonly userHobbyRepository: Repository<UserHobby>,
+
+    @InjectRepository(User)
+    private readonly userRepository: Repository<User>
   ) {}
 
   async getOneUserHobby(user_id: number): Promise<UserHobby[]> {
-    return await this.userHobbyRepository.find({where: {user_id: user_id}});
+    const user = await this.userRepository.findOne({where: {user_id}});
+    if (!user) {
+      throw new NotFoundException(`해당 사용자를 찾을 수 없습니다.`);
+    }
+    return await this.userHobbyRepository.find({where: {user}});
   }
 
-  async postUserHobby({user_id, hobby_id, username}) {
-    return await this.userHobbyRepository.save({
-      user_id,
-      hobby_id,
-      username,
-    });
+  async postUserHobby({user_id, hobby_id}): Promise<{status: number; body: {user_id: number; hobby_id: number}[]}> {
+    const user = await this.userRepository.findOne({where: {user_id}});
+
+    if (!user) {
+      throw new NotFoundException(`해당 유저가 없습니다.`);
+    }
+
+    const savedUserHobbies = [];
+    for (const hobbyId of hobby_id) {
+      const savedUserHobby = await this.userHobbyRepository.save({
+        user: user,
+        hobby_id: hobbyId,
+      });
+      savedUserHobbies.push({hobby_id: savedUserHobby.hobby_id});
+    }
+    return {status: 200, body: savedUserHobbies};
   }
-  // 얘는 뭘로 삭제해야하냐..?user_hobby_id?
-  async deleteUserHobby(user_hobby_id: number): Promise<void> {
-    const result = await this.userHobbyRepository.delete(user_hobby_id);
+
+  async deleteUserHobby(user_id: number, hobby_id: number): Promise<void> {
+    const user = await this.userRepository.findOne({where: {user_id}});
+    if (!user) {
+      throw new NotFoundException(`해당 사용자의 취미를 찾을 수 없습니다.`);
+    }
+
+    const result = await this.userHobbyRepository.delete({user: user, hobby_id});
 
     if (result.affected === 0) {
-      throw new NotFoundException(`사용자의 취미 아이디를 찾을 수 없습니다. -> id: ${user_hobby_id}`);
+      throw new NotFoundException(`해당 사용자의 취미를 찾을 수 없습니다.`);
     }
   }
 
-  async updateUserHobby(user_hobby_id: number, updateUserHobby: number): Promise<void> {
-    const userHobby = await this.userHobbyRepository.findOne({where: {user_hobby_id}});
+  // async updateUserHobby(user_hobby_id: number, updateUserHobby: number): Promise<void> {
+  //   const userHobby = await this.userHobbyRepository.findOne({where: {user_hobby_id}});
 
-    if (!userHobby) {
-      throw new NotFoundException(`사용자의 취미 아이디를 찾을 수 없습니다. -> id: ${user_hobby_id}`);
-    }
+  //   if (!userHobby) {
+  //     throw new NotFoundException(`사용자의 취미 아이디를 찾을 수 없습니다. -> id: ${user_hobby_id}`);
+  //   }
 
-    userHobby.hobby_id = updateUserHobby;
+  //   userHobby.hobby_id = updateUserHobby;
 
-    await this.userHobbyRepository.save(userHobby);
-  }
+  //   await this.userHobbyRepository.save(userHobby);
+  // }
 }

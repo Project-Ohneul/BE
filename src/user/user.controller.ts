@@ -14,11 +14,11 @@ export class UserController {
     @Body("gender") gender: string,
     @Body("coin") coin: number,
     @Body("score") score: number,
-    @Body("hobby_id") hobby_id: number,
+    @Body("hobby_ids") hobby_ids: number[],
     @Body("mood_id") mood_id: number,
     @Body("theme_id") theme_id: number
   ) {
-    return await this.userService.createUser({username, phone, birth, gender, coin, score, hobby_id, mood_id, theme_id});
+    return await this.userService.createUser({username, phone, birth, gender, coin, score, hobby_ids, mood_id, theme_id});
   }
 
   @Get()
@@ -32,9 +32,9 @@ export class UserController {
   }
 
   @Delete("/:user_id")
-  async deleteOneUser(@Param("user_id", ParseIntPipe) user_id): Promise<string> {
+  async deleteOneUser(@Param("user_id", ParseIntPipe) user_id): Promise<{status: number; message: string}> {
     await this.userService.deleteOneUser(user_id);
-    return `해당 유저를 삭제하였습니다. -> id: ${user_id}`;
+    return {status: 200, message: "해당 유저를 삭제하였습니다."};
   }
 
   @Patch("/:user_id")
