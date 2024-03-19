@@ -42,18 +42,18 @@ export class UserHobbyService {
     return {status: 200, body: savedUserHobbies};
   }
 
-  async deleteUserHobby(user_id: number, hobby_id: number): Promise<void> {
-    const user = await this.userRepository.findOne({where: {user_id}});
-    if (!user) {
-      throw new NotFoundException(`해당 사용자의 취미를 찾을 수 없습니다.`);
-    }
+  // async deleteUserHobby(user_id: number, hobby_id: number): Promise<void> {
+  //   const user = await this.userRepository.findOne({where: {user_id}});
+  //   if (!user) {
+  //     throw new NotFoundException(`해당 사용자의 취미를 찾을 수 없습니다.`);
+  //   }
 
-    const result = await this.userHobbyRepository.delete({user: user, hobby_id});
+  //   const result = await this.userHobbyRepository.delete({user: user, hobby_id});
 
-    if (result.affected === 0) {
-      throw new NotFoundException(`해당 사용자의 취미를 찾을 수 없습니다.`);
-    }
-  }
+  //   if (result.affected === 0) {
+  //     throw new NotFoundException(`해당 사용자의 취미를 찾을 수 없습니다.`);
+  //   }
+  // }
 
   // async updateUserHobby(user_hobby_id: number, updateUserHobby: number): Promise<void> {
   //   const userHobby = await this.userHobbyRepository.findOne({where: {user_hobby_id}});
