@@ -22,8 +22,8 @@ async function bootstrap() {
   );
   const server = createServer(httpsOptions, app.getHttpAdapter().getInstance());
   await app.init();
-  server.listen(3001, () => {
-    console.log("포트 3001번에서 귀를 기울이고 있당");
+  server.listen(3000, () => {
+    console.log("포트 3000번에서 귀를 기울이고 있당");
   });
 }
 bootstrap();
