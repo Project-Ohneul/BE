@@ -65,7 +65,7 @@ export class UserService {
     const user = await this.userRepository.findOne({where: {user_id}});
 
     if (!user) {
-      throw new NotFoundException(`해당 사용자를 찾을 수 없습니다. -> id: ${user_id}`);
+      throw new NotFoundException(`해당 사용자를 찾을 수 없습니다.`);
     }
 
     await this.userRepository.update(user_id, updateUserInfo);

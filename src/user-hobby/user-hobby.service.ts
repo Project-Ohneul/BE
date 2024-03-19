@@ -29,6 +29,8 @@ export class UserHobbyService {
       throw new NotFoundException(`해당 유저가 없습니다.`);
     }
 
+    await this.userHobbyRepository.delete({user});
+
     const savedUserHobbies = [];
     for (const hobbyId of hobby_id) {
       const savedUserHobby = await this.userHobbyRepository.save({
