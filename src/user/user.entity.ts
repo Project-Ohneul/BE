@@ -1,6 +1,6 @@
-import {Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable} from "typeorm";
-import {UserHobby} from "src/user-hobby/user-hobby.entity";
+import {Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable, OneToMany} from "typeorm";
 import {Hobbies} from "src/hobbies/hobby.entity";
+import {Payment} from "src/payment/payment.entity";
 
 @Entity({name: "Users"})
 export class User {
@@ -44,4 +44,7 @@ export class User {
     },
   })
   hobbies: Hobbies[];
+
+  @OneToMany(() => Payment, (payment) => payment.user)
+  payments: Payment[];
 }

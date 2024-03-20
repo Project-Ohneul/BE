@@ -10,6 +10,7 @@ import {HobbyModule} from "./hobbies/hobby.module";
 import {MoodModule} from "./mood/mood.module";
 import {ThemeModule} from "./theme/theme.module";
 import {UserHobbyModule} from "./user-hobby/user-hobby.module";
+import { PaymentModule } from './payment/payment.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import {UserHobbyModule} from "./user-hobby/user-hobby.module";
     MoodModule,
     ThemeModule,
     UserHobbyModule,
+    PaymentModule,
   ],
   controllers: [AppController],
   providers: [AppService],

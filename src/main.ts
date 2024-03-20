@@ -2,7 +2,8 @@ import {NestFactory} from "@nestjs/core";
 import {AppModule} from "./app.module";
 // import {createServer} from "https";
 import {ValidationPipe} from "@nestjs/common";
-import * as fs from "fs";
+// import * as fs from "fs";
+import * as dotenv from "dotenv";
 
 async function bootstrap() {
   // const httpsOptions = {
@@ -10,6 +11,7 @@ async function bootstrap() {
   //   cert: fs.readFileSync("./tls/ohneul-chat.crt"),
   //   ca: fs.readFileSync("./tls/ohneulCA.pem"),
   // };
+  dotenv.config();
 
   const app = await NestFactory.create(AppModule);
 
