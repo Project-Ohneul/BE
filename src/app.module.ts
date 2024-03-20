@@ -10,7 +10,9 @@ import {HobbyModule} from "./hobbies/hobby.module";
 import {MoodModule} from "./mood/mood.module";
 import {ThemeModule} from "./theme/theme.module";
 import {UserHobbyModule} from "./user-hobby/user-hobby.module";
-import { PaymentModule } from './payment/payment.module';
+import {PaymentModule} from "./payment/payment.module";
+import {OrderController} from "./order/order.controller";
+import {OrderModule} from "./order/order.module";
 
 @Module({
   imports: [
@@ -26,8 +28,9 @@ import { PaymentModule } from './payment/payment.module';
     ThemeModule,
     UserHobbyModule,
     PaymentModule,
+    OrderModule,
   ],
-  controllers: [AppController],
+  controllers: [AppController, OrderController],
   providers: [AppService],
 })
 export class AppModule {}

@@ -1,6 +1,7 @@
 import {Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable, OneToMany} from "typeorm";
 import {Hobbies} from "src/hobbies/hobby.entity";
-import {Payment} from "src/payment/payment.entity";
+import {Payment} from "../payment/payment.entity";
+import {Order} from "src/order/order.entity";
 
 @Entity({name: "Users"})
 export class User {
@@ -47,4 +48,7 @@ export class User {
 
   @OneToMany(() => Payment, (payment) => payment.user)
   payments: Payment[];
+
+  @OneToMany(() => Order, (order) => order.user)
+  orders: Order[];
 }

@@ -1,16 +1,26 @@
 import {Injectable} from "@nestjs/common";
-import {InjectRepository} from "@nestjs/typeorm";
-import {Repository} from "typeorm";
-import {User} from "src/user/user.entity";
-import {Payment} from "./payment.entity";
+import fetch from "node-fetch";
 
 @Injectable()
 export class PaymentService {
-  constructor(
-    @InjectRepository(User)
-    private readonly userRepository: Repository<User>,
+  private readonly secretKey = process.env.TOSS_SECRET_KEY;
 
-    @InjectRepository(Payment)
-    private readonly paymentRepository: Repository<Payment>
-  ) {}
+  async confirmPayment(paymentInfo: {paymentKey: string; orderId: string; amount: number}) {
+    const {paymentKey, orderId, amount} = paymentInfo;
+
+    const encryptedSecretKey = "Basic " + Buffer.from(this.secretKey + ":").toString("base64");
+
+    const response = await fetch("https://api.tosspayments.com/v1/payments/confirm", {
+      method: "POST",
+      body: JSON.stringify({orderId, amount, paymentKey}),
+      headers: {
+        Authorization: encryptedSecretKey,
+        "Content-Type": "application/json",
+      },
+    });
+    const data = await response.json();
+    console.log(data);
+
+    return data;
+  }
 }
