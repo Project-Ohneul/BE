@@ -11,14 +11,18 @@ export class UsersService {
   ) {}
 
   async create(body) {
-    console.log(body);
     await this.usersRepository.save(body);
   }
+
   async createBySocialLogin(body) {
-    console.log(body);
+    console.log("service body:", body);
+    const { provider_id, gender, username, birth, accessToken, refreshToken } =
+      body;
     await this.usersRepository.save({
-      username: body.name,
-      provider_id: body.passward,
+      provider_id,
+      username,
+      gender,
+      birth,
     });
   }
 

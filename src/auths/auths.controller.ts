@@ -1,6 +1,7 @@
 import { Controller, Get, Req, Res, UseGuards } from "@nestjs/common";
 import { AuthsService } from "./auths.service";
 import { AuthGuard } from "@nestjs/passport";
+import { Request, Response } from "express";
 
 interface User {
   user: {
@@ -8,6 +9,8 @@ interface User {
     phone: string;
     birth: string;
     gender: string;
+    accessToken: string;
+    refreshToken: string;
   };
 }
 
@@ -17,8 +20,11 @@ export class AuthsController {
 
   @Get("/naver")
   @UseGuards(AuthGuard("naver"))
-  async loginNaver(@Req() req: Request & User, @Res() res: Response) {
-    console.log("controller: ", req.user);
+  async loginNaver() {}
+
+  @Get("/naver/callback")
+  @UseGuards(AuthGuard("naver"))
+  async loginNaverCallback(@Req() req: Request & User, @Res() res: Response) {
     this.authsService.OAuthLogin({ req, res });
   }
 }

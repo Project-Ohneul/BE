@@ -25,7 +25,4 @@ export class Users {
 
   @Column({ name: "mood_id" })
   mood_id: number | null;
-
-  @Column({ name: "theme_id" })
-  theme_id: number | null;
 }
