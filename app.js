@@ -8,7 +8,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 // 루트 URL에 접속하면 index.html 파일을 제공합니다.
 app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "index.html"));
+  res.sendFile(path.join(__dirname, "public", "payment.html"));
 });
 
 app.get("/payments/success", (req, res) => {

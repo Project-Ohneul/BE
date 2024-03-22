@@ -1,43 +1,174 @@
-<head>
-  <meta charset="utf-8" />
-  <!-- 결제위젯 SDK 추가 -->
-  <script src="https://js.tosspayments.com/v1/payment-widget"></script>
-</head>
-<body>
-  <!-- 결제위젯, 이용약관 영역 -->
-  <div id="payment-method"></div>
-  <div id="agreement"></div>
-  <!-- 결제하기 버튼 -->
-  <button id="payment-button">결제하기</button>
-  <script>
-    const clientKey = "test_ck_vZnjEJeQVxK4P0RDgevd3PmOoBN0";
-    const customerKey = "G2MD0ghzwL7EwQH01EOfK"; // 내 상점에서 고객을 구분하기 위해 발급한 고객의 고유 ID
-    const button = document.getElementById("payment-button");
-    // ------  결제위젯 초기화 ------
-    // 비회원 결제에는 customerKey 대신 ANONYMOUS를 사용하세요.
-    const paymentWidget = PaymentWidget(clientKey, customerKey); // 회원 결제
-    // const paymentWidget = PaymentWidget(clientKey, PaymentWidget.ANONYMOUS) // 비회원 결제
-    // ------  결제위젯 렌더링 ------
-    // 결제수단 UI를 렌더링할 위치를 지정합니다. `#payment-method`와 같은 CSS 선택자와 결제 금액 객체를 추가하세요.
-    // DOM이 생성된 이후에 렌더링 메서드를 호출하세요.
-    // https://docs.tosspayments.com/reference/widget-sdk#renderpaymentmethods선택자-결제-금액-옵션
-    paymentWidget.renderPaymentMethods("#payment-method", {value: 300});
-    // ------  이용약관 렌더링 ------
-    // 이용약관 UI를 렌더링할 위치를 지정합니다. `#agreement`와 같은 CSS 선택자를 추가하세요.
-    // https://docs.tosspayments.com/reference/widget-sdk#renderagreement선택자
-    paymentWidget.renderAgreement("#agreement");
-    // ------ '결제하기' 버튼 누르면 결제창 띄우기 ------
-    // 더 많은 결제 정보 파라미터는 결제위젯 SDK에서 확인하세요.
-    // https://docs.tosspayments.com/reference/widget-sdk#requestpayment결제-정보
-    button.addEventListener("click", function () {
-      paymentWidget.requestPayment({
-        orderId: "4TITFDV0Qqs0xzmtqqtjD", // 주문 ID(직접 만들어주세요)
-        orderName: "토스 티셔츠 외 2건", // 주문명
-        successUrl: "http://localhost:3000/payments/success", // 결제에 성공하면 이동하는 페이지(간단하게 직접 만들었다)
-        failUrl: "http://localhost:3000/fail", // 결제에 실패하면 이동하는 페이지(어차피 에러니까 안 만들었다)
-        customerEmail: "customer123@gmail.com",
-        customerName: "김토스",
+<!doctype html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>Socket.IO chat</title>
+    <style>
+      body {
+        margin: 0;
+        padding-bottom: 3rem;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      }
+
+      #form {
+        background: rgba(0, 0, 0, 0.15);
+        padding: 0.25rem;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        display: flex;
+        height: 3rem;
+        box-sizing: border-box;
+        backdrop-filter: blur(10px);
+      }
+      #input {
+        border: none;
+        padding: 0 1rem;
+        flex-grow: 1;
+        border-radius: 2rem;
+        margin: 0.25rem;
+      }
+      #input:focus {
+        outline: none;
+      }
+      #form > button {
+        background: #333;
+        border: none;
+        padding: 0 1rem;
+        margin: 0.25rem;
+        border-radius: 3px;
+        outline: none;
+        color: #fff;
+      }
+
+      #messages {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+      }
+      #messages > li {
+        padding: 0.5rem 1rem;
+      }
+      #messages > li:nth-child(odd) {
+        background: #efefef;
+      }
+
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 500px;
+      }
+
+      #modal {
+        width: 400px;
+        height: 400px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: black;
+      }
+      #form {
+        display: none;
+      }
+
+      #waiting-modal {
+        display: none;
+      }
+
+      #box {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+      }
+    </style>
+  </head>
+  <body>
+    <ul id="messages"></ul>
+    <p id="waiting-modal">닥치고 기다려주세요 찾는중입니다.</p>
+    <div id="modal">
+      <form id="roomForm">
+        <input type="text" name="" id="roomInput" />
+        <button>Join Room</button>
+      </form>
+    </div>
+    <form id="form" action="">
+      <input id="input" autocomplete="off" />
+      <button id="sendButton">Send</button>
+      <button id="exitButton">나가기</button>
+    </form>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      const socket = io();
+
+      const form = document.getElementById("form");
+      const input = document.getElementById("input");
+      const messages = document.getElementById("messages");
+
+      const roomForm = document.getElementById("roomForm");
+      const roomInput = document.getElementById("roomInput");
+      const modal = document.getElementById("modal");
+
+      const waitingModal = document.getElementById("waiting-modal");
+
+      roomForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        if (roomInput.value) {
+          socket.emit("selectTheme", roomInput.value);
+          roomInput.value = "";
+        }
       });
-    });
-  </script>
-</body>
+
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        if (input.value) {
+          socket.emit("sendMessage", input.value);
+          input.value = "";
+          modal.style.display = "none";
+          form.style.display = "block";
+        }
+      });
+
+      const exitButton = document.getElementById("exitButton");
+      exitButton.addEventListener("click", () => {
+        console.log("채팅방을 나갑니다.");
+        // 채팅방을 나가는 로직을 여기에 작성
+        socket.emit("userExit");
+      });
+
+      socket.on("receiveMessage", (msg) => {
+        const item = document.createElement("li");
+        item.textContent = msg.content;
+        messages.appendChild(item);
+        // window.scrollTo(0, document.body.scrollHeight);
+      });
+
+      socket.on("selectThemeSuccess", () => {
+        modal.style.display = "none";
+        form.style.display = "flex";
+      });
+
+      socket.on("finish", () => {
+        const finishModal = document.createElement("div");
+        finishModal.innerHTML = "대화가 종료되었습니다. 10초 후에 메인으로 이동합니다";
+        const body = document.querySelector("body");
+        body.appendChild(finishModal);
+        console.log("hi");
+        setTimeout(() => {
+          window.location.href = "http://localhost:3000";
+        }, 10000);
+      });
+
+      socket.on("wait", () => {
+        console.log("check wait client modal", waitingModal.style.display);
+        waitingModal.style.display = "block";
+      });
+
+      socket.on("start", () => {
+        waitingModal.style.display = "none";
+      });
+    </script>
+  </body>
+</html>
