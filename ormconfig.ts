@@ -5,7 +5,7 @@ import { Users } from "src/users/entities/user.entity";
 dotenv.config();
 const ormconfig: TypeOrmModuleOptions = {
   type: "mariadb",
-  host: "localhost",
+  host: "ohneul-db",
   port: 3306,
   username: process.env.USERNAME,
   password: process.env.PASSWORD,
