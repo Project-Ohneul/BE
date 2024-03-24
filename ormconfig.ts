@@ -7,7 +7,7 @@ const ormconfig: TypeOrmModuleOptions = {
   type: "mariadb",
   host: "10.124.3.210",
   port: 3306,
-  username: "",
+  username: process.env.USERNAME,
   password: process.env.PASSWORD,
   database: process.env.DATABASE,
   entities: [Users],
