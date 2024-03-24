@@ -17,6 +17,6 @@ export class AuthsService {
     }
     res.cookie("user_id", user.user_id);
     res.cookie("refreshToken", req.user.refreshToken);
-    res.redirect("/");
+    res.redirect("http://localhost:3000/login/naver/callback");
   }
 }

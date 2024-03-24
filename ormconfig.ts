@@ -4,7 +4,7 @@ import { Users } from "src/users/entities/user.entity";
 
 dotenv.config();
 const ormconfig: TypeOrmModuleOptions = {
-  type: "mysql",
+  type: "mariadb",
   host: "localhost",
   port: 3306,
   username: process.env.USERNAME,
