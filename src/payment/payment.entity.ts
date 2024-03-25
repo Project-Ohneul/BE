@@ -1,10 +1,32 @@
-import {Entity, PrimaryGeneratedColumn, Column, ManyToOne} from "typeorm";
+// import {Entity, PrimaryGeneratedColumn, Column, ManyToOne} from "typeorm";
+// import {User} from "../user/user.entity";
+// import {Order} from "src/order/order.entity";
+// @Entity({name: "Payments"})
+// export class Payment {
+//   @PrimaryGeneratedColumn()
+//   paymentKey: string;
+
+//   @Column()
+//   amount: number;
+
+//   @Column()
+//   coin_reward: number;
+
+//   @ManyToOne(() => User, (user) => user.payments)
+//   user: User;
+
+//   @ManyToOne(() => Order, (order) => order.payments)
+//   order: Order;
+// }
+
+import {Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn} from "typeorm";
 import {User} from "../user/user.entity";
 import {Order} from "src/order/order.entity";
+
 @Entity({name: "Payments"})
 export class Payment {
   @PrimaryGeneratedColumn()
-  paymentKey: string;
+  payment_id: string;
 
   @Column()
   amount: number;
@@ -13,8 +35,10 @@ export class Payment {
   coin_reward: number;
 
   @ManyToOne(() => User, (user) => user.payments)
-  user: User;
+  @JoinColumn({name: "user_id"})
+  user_id: User;
 
   @ManyToOne(() => Order, (order) => order.payments)
-  order: Order;
+  @JoinColumn({name: "order_id"})
+  order_id: Order;
 }

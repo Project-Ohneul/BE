@@ -27,8 +27,8 @@ async function bootstrap() {
     })
   );
 
-  await app.listen(3000, () => {
-    console.log("포트 3000번에서 귀를 기울이고 있당");
+  await app.listen(4000, () => {
+    console.log("포트 4000번에서 귀를 기울이고 있당");
   });
 }
 bootstrap();

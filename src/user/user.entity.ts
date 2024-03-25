@@ -3,38 +3,41 @@ import {Hobbies} from "src/hobbies/hobby.entity";
 import {Payment} from "../payment/payment.entity";
 import {Order} from "src/order/order.entity";
 
-@Entity({name: "Users"})
+@Entity({schema: "ohneul", name: "Users"})
 export class User {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn({type: "int", name: "user_id"})
   user_id: number;
 
-  @Column()
+  @Column("varchar", {name: "username", length: 10})
   username: string;
 
-  @Column()
-  phone: string;
+  @Column("varchar", {name: "provider_id", length: 45})
+  provider_id: string;
 
-  @Column()
-  birth: Date;
+  // @Column()
+  // phone: string;
 
-  @Column()
+  @Column("date", {name: "birth"})
+  birth: string;
+
+  @Column("varchar", {name: "gender", length: 1})
   gender: string;
 
-  @Column()
-  score: number;
+  @Column("int", {name: "score"})
+  score: number | 0;
 
-  @Column()
-  coin: number;
+  @Column("int", {name: "coin"})
+  coin: number | 0;
 
-  @Column()
-  mood_id: number;
+  @Column({name: "mood_id"})
+  mood_id: number | null;
 
-  @Column()
-  theme_id: number;
+  // @Column()
+  // theme_id: number;
 
   @ManyToMany(() => Hobbies)
   @JoinTable({
-    name: "user_hobby",
+    name: "User_hobby",
     joinColumn: {
       name: "user_id",
       referencedColumnName: "user_id",
@@ -46,9 +49,9 @@ export class User {
   })
   hobbies: Hobbies[];
 
-  @OneToMany(() => Payment, (payment) => payment.user)
+  @OneToMany(() => Payment, (payment) => payment.user_id)
   payments: Payment[];
 
-  @OneToMany(() => Order, (order) => order.user)
+  @OneToMany(() => Order, (order) => order.user_id)
   orders: Order[];
 }

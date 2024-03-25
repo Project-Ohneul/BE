@@ -9,16 +9,14 @@ export class UserController {
   @Post("join")
   async createUser(
     @Body("username") username: string,
-    @Body("phone") phone: string,
     @Body("birth") birth: Date,
     @Body("gender") gender: string,
     @Body("coin") coin: number,
     @Body("score") score: number,
     @Body("hobby_ids") hobby_ids: number[],
-    @Body("mood_id") mood_id: number,
-    @Body("theme_id") theme_id: number
+    @Body("mood_id") mood_id: number
   ) {
-    return await this.userService.createUser({username, phone, birth, gender, coin, score, hobby_ids, mood_id, theme_id});
+    return await this.userService.createUser({username, birth, gender, coin, score, hobby_ids, mood_id});
   }
 
   @Get()

@@ -2,12 +2,17 @@ import {Injectable, NotFoundException} from "@nestjs/common";
 import {InjectRepository} from "@nestjs/typeorm";
 import {Repository} from "typeorm";
 import {Hobbies} from "./hobby.entity";
+import {UserHobby} from "src/user-hobby/user-hobby.entity";
+import {UserHobbyService} from "src/user-hobby/user-hobby.service";
 
 @Injectable()
 export class HobbyService {
   constructor(
     @InjectRepository(Hobbies)
-    private readonly hobbyRepository: Repository<Hobbies>
+    private readonly hobbyRepository: Repository<Hobbies>,
+
+    @InjectRepository(UserHobby)
+    private readonly userHobbyRepository: Repository<UserHobby>
   ) {}
 
   async createHobby({hobby}) {
@@ -21,7 +26,9 @@ export class HobbyService {
   }
 
   async deleteHobboy(hobby_id: number): Promise<void> {
-    const result = await this.hobbyRepository.delete(hobby_id);
+    await this.userHobbyRepository.delete({hobby_id});
+
+    const result = await this.hobbyRepository.delete({hobby_id});
 
     if (result.affected === 0) {
       throw new NotFoundException(`해당 취미를 찾을 수 없습니다.`);

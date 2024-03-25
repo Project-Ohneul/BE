@@ -14,7 +14,7 @@ export class UserService {
     private readonly hobbyRepository: Repository<Hobbies>
   ) {}
 
-  async createUser({username, phone, birth, gender, coin, score, hobby_ids, mood_id, theme_id}): Promise<{status: number; message: string}> {
+  async createUser({username, birth, gender, coin, score, hobby_ids, mood_id}): Promise<{status: number; message: string}> {
     let hobbies = [];
 
     if (hobby_ids && Array.isArray(hobby_ids)) {
@@ -30,14 +30,12 @@ export class UserService {
 
     const user = await this.userRepository.save({
       username,
-      phone,
       birth,
       gender,
       coin,
       score,
       mood_id,
-      theme_id,
-      hobbies,
+      hobbies: [],
     });
 
     return {status: 200, message: "사용자가 생성되었습니다."};
