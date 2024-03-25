@@ -5,8 +5,8 @@ import { Users } from "src/users/entities/user.entity";
 dotenv.config();
 const ormconfig: TypeOrmModuleOptions = {
   type: "mariadb",
-  host: "10.124.3.210",
-  port: 3306,
+  host: "svc.sel5.cloudtype.app",
+  port: 30276,
   username: process.env.USERNAME,
   password: process.env.PASSWORD,
   database: process.env.DATABASE,
