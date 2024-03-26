@@ -1,0 +1,289 @@
+<!doctype html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>Socket.IO chat</title>
+    <style>
+      body {
+        margin: 0;
+        padding-bottom: 3rem;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        display: flex;
+        flex-direction: column;
+      }
+      button:hover {
+        cursor: pointer;
+      }
+      #form {
+        background: rgba(0, 0, 0, 0.15);
+        padding: 0.25rem;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        display: flex;
+        height: 3rem;
+        box-sizing: border-box;
+        backdrop-filter: blur(10px);
+      }
+      #input {
+        border: none;
+        padding: 0 1rem;
+        flex-grow: 1;
+        border-radius: 2rem;
+        margin: 0.25rem;
+      }
+      #input:focus {
+        outline: none;
+      }
+      #form > button {
+        background: #333;
+        border: none;
+        padding: 0 1rem;
+        margin: 0.25rem;
+        border-radius: 3px;
+        outline: none;
+        color: #fff;
+      }
+
+      #messages {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+      }
+      #messages > li {
+        padding: 0.5rem 1rem;
+      }
+      #messages > li:nth-child(odd) {
+        background: #efefef;
+      }
+
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 500px;
+      }
+
+      #modal {
+        width: 400px;
+        height: 400px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: black;
+      }
+      #form {
+        display: none;
+      }
+
+      #wait-user-modal {
+        display: none;
+      }
+
+      #box {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+      }
+
+      #check-out-modal {
+        display: none;
+      }
+
+      #consent-modal {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #fff;
+        padding: 2rem;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        z-index: 999;
+      }
+
+      #consent-modal h2 {
+        margin-bottom: 1rem;
+      }
+
+      #consent-modal button {
+        margin-right: 1rem;
+      }
+
+      #wait-user-response-modal {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>가가라이브</h2>
+    <div id="timer"></div>
+    <ul id="messages"></ul>
+    <p id="wait-user-modal">닥치고 기다려주세요 찾는중입니다.</p>
+    <div id="modal">
+      <form id="roomForm">
+        <input type="text" name="" id="roomInput" />
+        <button>Join Room</button>
+      </form>
+    </div>
+    <div id="check-out-modal">
+      <div>
+        <h2>진짜 나가시겠습니까</h2>
+        <button id="finish-btn">네</button>
+        <button id="keep-going-btn">아니오</button>
+      </div>
+    </div>
+    <div id="consent-modal">
+      <h2>상대방과 계속 대화하고싶으면 돈 주세요 입금하시겠습니까? (또 놓칠거야?)</h2>
+      <button id="agreeButton">네...</button>
+      <button id="disagreeButton">지랄</button>
+    </div>
+    <div id="wait-user-response-modal">
+      <h2>상대방의 응답을 기다리는중입니다. 상대방도 동의시 대화가 바로 시작됩니다.</h2>
+    </div>
+    <form id="form" action="">
+      <input id="input" type="text" autocomplete="off" />
+      <button id="sendButton">Send</button>
+      <button id="exitButton">나가기</button>
+    </form>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      const socket = io();
+
+      const form = document.getElementById("form");
+      const input = document.getElementById("input");
+      const messages = document.getElementById("messages");
+      const roomForm = document.getElementById("roomForm");
+      const roomInput = document.getElementById("roomInput");
+      const modal = document.getElementById("modal");
+      const userWaitModal = document.getElementById("wait-user-modal");
+      const checkOutModal = document.getElementById("check-out-modal");
+      const consentModal = document.getElementById("consent-modal");
+      const agreeButton = document.getElementById("agreeButton");
+      const disagreeButton = document.getElementById("disagreeButton");
+      const exitButton = document.getElementById("exitButton");
+      const finishBtn = document.getElementById("finish-btn");
+      const keepGoingBtn = document.getElementById("keep-going-btn");
+      const timerDisplay = document.getElementById("timer");
+      const userResponseWaitModal = document.getElementById("wait-user-response-modal");
+
+      roomForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        if (roomInput.value) {
+          socket.emit("selectTheme", roomInput.value);
+          roomInput.value = "";
+        }
+      });
+
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        if (input.value) {
+          socket.emit("sendMessage", input.value);
+          input.value = "";
+          modal.style.display = "none";
+          form.style.display = "block";
+        }
+      });
+
+      exitButton.addEventListener("click", (e) => {
+        e.preventDefault();
+        checkOutModal.style.display = "block";
+      });
+
+      finishBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        console.log("채팅방을 나갑니다.");
+        // 채팅방을 나가는 로직을 여기에 작성
+        socket.emit("userExit");
+      });
+
+      keepGoingBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        checkOutModal.style.display = "none";
+      });
+
+      agreeButton.addEventListener("click", (e) => {
+        e.preventDefault();
+        consentModal.style.display = "none";
+        userResponseWaitModal.style.display = "block";
+        socket.emit("consent", "agree");
+      });
+
+      disagreeButton.addEventListener("click", (e) => {
+        e.preventDefault();
+        socket.emit("consent", "no");
+        socket.emit("userExit");
+      });
+
+      socket.on("connect", () => {
+        // Access the socket ID after connection is established
+        const socketId = socket.id;
+        console.log("Socket ID:", socketId);
+      });
+
+      socket.on("receiveMessage", (msg) => {
+        const item = document.createElement("li");
+        item.textContent = msg.content;
+        messages.appendChild(item);
+        // window.scrollTo(0, document.body.scrollHeight);
+      });
+
+      socket.on("selectThemeSuccess", () => {
+        modal.style.display = "none";
+        form.style.display = "flex";
+      });
+
+      socket.on("finish", () => {
+        consentModal.style.display = "none";
+        const finishModal = document.createElement("div");
+        finishModal.innerHTML = "대화가 종료되었습니다. 10초 후에 메인으로 이동합니다";
+        const body = document.querySelector("body");
+        body.appendChild(finishModal);
+        setTimeout(() => {
+          window.location.href = "http://localhost:3000";
+        }, 10000);
+        checkOutModal.style.display = "none";
+      });
+
+      socket.on("wait", () => {
+        userWaitModal.style.display = "block";
+        input.readOnly = true;
+        userResponseWaitModal.style.display = "block";
+      });
+
+      socket.on("start", () => {
+        consentModal.style.display = "none";
+        userWaitModal.style.display = "none";
+        userResponseWaitModal.style.display = "none";
+        input.readOnly = false;
+        let remainingTime = 10;
+        let consentModalDisplayed = false;
+
+        function updateTimer() {
+          const minutes = Math.floor(remainingTime / 60);
+          const seconds = remainingTime % 60;
+          timerDisplay.textContent = `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+          remainingTime--;
+
+          if (remainingTime < 0 && !consentModalDisplayed) {
+            input.readOnly = true;
+            clearInterval(timerInterval);
+            consentModal.style.display = "block";
+            consentModalDisplayed = true;
+          }
+        }
+
+        updateTimer();
+
+        const timerInterval = setInterval(updateTimer, 1000);
+      });
+
+      socket.on("refuseConversation", () => {
+        console.log("사용자가 도망쳤습니다.");
+      });
+    </script>
+  </body>
+</html>
