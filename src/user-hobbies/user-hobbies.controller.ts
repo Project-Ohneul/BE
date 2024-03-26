@@ -1,6 +1,6 @@
 import {Body, Controller, Delete, Get, NotFoundException, Param, ParseIntPipe, Post, Put, Query} from "@nestjs/common";
-import {UserHobbyService} from "./user-hobby.service";
-import {UserHobby} from "./user-hobby.entity";
+import {UserHobbyService} from "./user-hobbies.service";
+import {UserHobby} from "./user-hobbies.entity";
 
 @Controller("user-hobby")
 export class UserHobbyController {

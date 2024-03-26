@@ -1,7 +1,7 @@
 import {Injectable, NotFoundException} from "@nestjs/common";
 import {InjectRepository} from "@nestjs/typeorm";
 import {Repository} from "typeorm";
-import {Moods} from "./mood.entity";
+import {Moods} from "./moods.entity";
 
 @Injectable()
 export class MoodService {

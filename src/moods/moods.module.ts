@@ -1,8 +1,8 @@
 import {Module} from "@nestjs/common";
-import {MoodService} from "./mood.service";
-import {MoodController} from "./mood.controller";
+import {MoodService} from "./moods.service";
+import {MoodController} from "./moods.controller";
 import {TypeOrmModule} from "@nestjs/typeorm";
-import {Moods} from "./mood.entity";
+import {Moods} from "./moods.entity";
 
 @Module({
   imports: [TypeOrmModule.forFeature([Moods])],

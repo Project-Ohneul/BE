@@ -1,8 +1,8 @@
 import {Module} from "@nestjs/common";
 import {TypeOrmModule} from "@nestjs/typeorm";
-import {Themes} from "./theme.entity";
-import {ThemeService} from "./theme.service";
-import {ThemeController} from "./theme.controller";
+import {Themes} from "./themes.entity";
+import {ThemeService} from "./themes.service";
+import {ThemeController} from "./themes.controller";
 
 @Module({
   imports: [TypeOrmModule.forFeature([Themes])],

@@ -1,7 +1,7 @@
 import {Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable, OneToMany} from "typeorm";
-import {Hobbies} from "src/hobbies/hobby.entity";
-import {Payment} from "../payment/payment.entity";
-import {Order} from "src/order/order.entity";
+import {Hobbies} from "src/hobbies/hobbies.entity";
+import {Payment} from "../payments/payments.entity";
+import {Order} from "src/orders/orders.entity";
 
 @Entity({schema: "ohneul", name: "Users"})
 export class User {

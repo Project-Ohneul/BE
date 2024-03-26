@@ -17,8 +17,8 @@
 //   user: User;
 // }
 import {Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToOne, JoinColumn} from "typeorm";
-import {Payment} from "../payment/payment.entity";
-import {User} from "../user/user.entity";
+import {Payment} from "../payments/payments.entity";
+import {User} from "../users/user.entity";
 
 @Entity({name: "Orders"})
 export class Order {

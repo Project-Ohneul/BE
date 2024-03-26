@@ -1,5 +1,5 @@
 import {Body, Controller, Get, NotFoundException, Param, Post} from "@nestjs/common";
-import {OrderService} from "./order.service";
+import {OrderService} from "./orders.service";
 
 @Controller("order")
 export class OrderController {

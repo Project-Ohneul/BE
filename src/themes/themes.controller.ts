@@ -1,6 +1,6 @@
 import {Body, Controller, Post, Get, Delete, Put, ParseIntPipe, Param, NotFoundException} from "@nestjs/common";
-import {ThemeService} from "./theme.service";
-import {Themes} from "./theme.entity";
+import {ThemeService} from "./themes.service";
+import {Themes} from "./themes.entity";
 
 @Controller("themes")
 export class ThemeController {

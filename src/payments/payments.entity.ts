@@ -20,8 +20,8 @@
 // }
 
 import {Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn} from "typeorm";
-import {User} from "../user/user.entity";
-import {Order} from "src/order/order.entity";
+import {User} from "../users/user.entity";
+import {Order} from "src/orders/orders.entity";
 
 @Entity({name: "Payments"})
 export class Payment {

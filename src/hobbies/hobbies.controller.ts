@@ -1,6 +1,6 @@
 import {Controller, Post, Body, Get, Param, ParseIntPipe, Delete, Put, NotFoundException} from "@nestjs/common";
-import {HobbyService} from "./hobby.service";
-import {Hobbies} from "./hobby.entity";
+import {HobbyService} from "./hobbies.service";
+import {Hobbies} from "./hobbies.entity";
 import {NotFoundError} from "rxjs";
 
 @Controller("hobbies")

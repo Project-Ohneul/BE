@@ -1,6 +1,6 @@
 // payments.controller.ts
 import {Body, Controller, Get, Post, Query} from "@nestjs/common";
-import {PaymentService} from "./payment.service";
+import {PaymentService} from "./payments.service";
 
 @Controller("payments")
 export class PaymentController {

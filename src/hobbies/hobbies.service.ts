@@ -1,9 +1,9 @@
 import {Injectable, NotFoundException} from "@nestjs/common";
 import {InjectRepository} from "@nestjs/typeorm";
 import {Repository} from "typeorm";
-import {Hobbies} from "./hobby.entity";
-import {UserHobby} from "src/user-hobby/user-hobby.entity";
-import {UserHobbyService} from "src/user-hobby/user-hobby.service";
+import {Hobbies} from "./hobbies.entity";
+import {UserHobby} from "src/user-hobbies/user-hobbies.entity";
+import {UserHobbyService} from "src/user-hobbies/user-hobbies.service";
 
 @Injectable()
 export class HobbyService {

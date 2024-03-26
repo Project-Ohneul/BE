@@ -1,6 +1,6 @@
 import {Body, Controller, Post, Get, ParseIntPipe, Delete, Param, Put, NotFoundException} from "@nestjs/common";
-import {MoodService} from "./mood.service";
-import {Moods} from "./mood.entity";
+import {MoodService} from "./moods.service";
+import {Moods} from "./moods.entity";
 
 @Controller("moods")
 export class MoodController {
