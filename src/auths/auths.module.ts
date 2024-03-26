@@ -5,11 +5,12 @@ import { Users } from "src/users/entities/user.entity";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { UsersService } from "src/users/users.service";
 import { JwtModule } from "@nestjs/jwt";
-import { jwtNaverStrategy } from "./jwt-social-naver.strategy";
+import { JwtNaverStrategy } from "./strategies/jwt-social-naver.strategy";
+import { JwtKakaoStrategy } from "./strategies/jwt-social-kakao.strategy";
 
 @Module({
   imports: [JwtModule.register({}), TypeOrmModule.forFeature([Users])],
   controllers: [AuthsController],
-  providers: [AuthsService, UsersService, jwtNaverStrategy],
+  providers: [AuthsService, UsersService, JwtNaverStrategy, JwtKakaoStrategy],
 })
 export class AuthsModule {}

@@ -6,7 +6,7 @@ dotenv.config();
 const ormconfig: TypeOrmModuleOptions = {
   type: "mariadb",
   host: "svc.sel5.cloudtype.app",
-  port: 30276,
+  port: 30500,
   username: process.env.USERNAME,
   password: process.env.PASSWORD,
   database: process.env.DATABASE,

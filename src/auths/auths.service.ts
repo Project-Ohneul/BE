@@ -17,6 +17,11 @@ export class AuthsService {
     }
     res.cookie("user_id", user.user_id);
     res.cookie("refreshToken", req.user.refreshToken);
-    res.redirect("http://localhost:3000/login/naver/callback");
+    res.cookie("provider", req.user.provider);
+    if (req.user.provider === "naver") {
+      res.redirect("http://localhost:3000/login/naver/callback");
+    } else if (req.user.provider === "kakao") {
+      res.redirect("http://localhost:3000/login/kakao/callback");
+    }
   }
 }

@@ -6,7 +6,6 @@ import { Request, Response } from "express";
 interface User {
   user: {
     username: string;
-    phone: string;
     birth: string;
     gender: string;
     accessToken: string;
@@ -25,6 +24,16 @@ export class AuthsController {
   @Get("/naver/callback")
   @UseGuards(AuthGuard("naver"))
   async loginNaverCallback(@Req() req: Request & User, @Res() res: Response) {
+    this.authsService.OAuthLogin({ req, res });
+  }
+
+  @Get("/kakao")
+  @UseGuards(AuthGuard("kakao"))
+  async loginKakao() {}
+
+  @Get("/kakao/callback")
+  @UseGuards(AuthGuard("kakao"))
+  async loginKakaoCallback(@Req() req: Request, @Res() res: Response) {
     this.authsService.OAuthLogin({ req, res });
   }
 }

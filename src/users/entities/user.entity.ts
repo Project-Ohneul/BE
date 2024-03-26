@@ -3,13 +3,16 @@ import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
 @Entity({ schema: "ohneul", name: "Users" })
 export class Users {
   @PrimaryGeneratedColumn({ type: "int", name: "user_id" })
-  user_id: string;
+  user_id: number;
 
   @Column("varchar", { name: "username", length: 10 })
   username: string;
 
   @Column("varchar", { name: "provider_id", length: 45 })
   provider_id: string;
+
+  // @Column()
+  // phone: string;
 
   @Column("date", { name: "birth" })
   birth: string;

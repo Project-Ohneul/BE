@@ -17,7 +17,7 @@ import { Response } from "express";
 export class UsersController {
   constructor(private usersService: UsersService) {}
 
-  @Post()
+  @Post("join")
   async create(@Body() body) {
     console.log(body);
     await this.usersService.create(body);

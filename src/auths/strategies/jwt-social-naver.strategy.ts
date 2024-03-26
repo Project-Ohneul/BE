@@ -6,12 +6,12 @@ import axios from "axios";
 
 dotenv.config();
 
-export class jwtNaverStrategy extends PassportStrategy(Strategy, "naver") {
+export class JwtNaverStrategy extends PassportStrategy(Strategy, "naver") {
   constructor() {
     super({
       clientID: process.env.NAVER_ID,
       clientSecret: process.env.NAVER_SECRET,
-      callbackURL: process.env.CALLBACK_URL,
+      callbackURL: process.env.NAVER_CALLBACK_URL,
       passReqToCallback: true,
     });
   }
@@ -29,6 +29,7 @@ export class jwtNaverStrategy extends PassportStrategy(Strategy, "naver") {
     const { id, gender, name, birthday, birthyear } = result.data.response;
     console.log("서버로 정보 받아오기 성공!!", result.data.response);
     return {
+      provider: "naver",
       provider_id: id,
       gender: gender,
       username: name,
