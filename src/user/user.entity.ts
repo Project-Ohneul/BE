@@ -47,7 +47,7 @@ export class User {
       referencedColumnName: "hobby_id",
     },
   })
-  hobbies: Hobbies[];
+  hobbies: Hobbies;
 
   @OneToMany(() => Payment, (payment) => payment.user_id)
   payments: Payment[];

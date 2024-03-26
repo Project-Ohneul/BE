@@ -13,10 +13,9 @@ export class UserController {
     @Body("gender") gender: string,
     @Body("coin") coin: number,
     @Body("score") score: number,
-    @Body("hobby_ids") hobby_ids: number[],
     @Body("mood_id") mood_id: number
   ) {
-    return await this.userService.createUser({username, birth, gender, coin, score, hobby_ids, mood_id});
+    return await this.userService.createUser({username, birth, gender, coin, score, mood_id});
   }
 
   @Get()
