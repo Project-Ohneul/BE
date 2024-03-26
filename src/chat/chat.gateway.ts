@@ -1,20 +1,15 @@
-import {
-  SubscribeMessage,
-  WebSocketGateway,
-  WebSocketServer,
-  MessageBody,
-  OnGatewayDisconnect,
-  ConnectedSocket,
-} from "@nestjs/websockets";
-import { Server, Socket } from "socket.io";
-import { Body, OnModuleInit } from "@nestjs/common";
-import { ChatService } from "./chat.service";
+import {SubscribeMessage, WebSocketGateway, WebSocketServer, MessageBody, OnGatewayDisconnect, ConnectedSocket, WsResponse} from "@nestjs/websockets";
+import {Server, Socket} from "socket.io";
+import {Body, OnModuleInit} from "@nestjs/common";
+import {ChatService} from "./chat.service";
+import {Observable} from "rxjs";
 
 // WebSocketGateway 데코레이터를 이용하여 WebSocketGateway 클래스를 정의합니다.
 @WebSocketGateway({
   cors: {
     origin: ["http://localhost:3000"], // CORS 설정: 클라이언트 주소
   },
+  // secure: true,
 })
 export class MyGateway implements OnModuleInit, OnGatewayDisconnect {
   @WebSocketServer()
@@ -32,7 +27,7 @@ export class MyGateway implements OnModuleInit, OnGatewayDisconnect {
     });
   }
 
-  // 클라이언트로부터 'sendMessage' 메시지를 받았을 때의 핸들러
+  // 클라이언트로부터 'sendMessage' 메시지를 받았을 때의 핸들러 (https로 할 경우 return값 타입 -> Observable<WsResponse<any>> | void)
   @SubscribeMessage("sendMessage")
   onSendMessage(@MessageBody() body: any, @ConnectedSocket() socket: Socket) {
     const rooms = this.server.sockets.adapter.sids.get(socket.id); // 소켓이 속한 방의 목록 가져오기
@@ -139,6 +134,10 @@ export class MyGateway implements OnModuleInit, OnGatewayDisconnect {
         this.server.in(room).emit("finish"); // 대화 종료 알림
         this.server.in(room).disconnectSockets(true); // 소켓 연결 끊기
       }
+    });
+
+    return new Observable((observer) => {
+      observer.next({event: "userExit", data: data});
     });
   }
 
