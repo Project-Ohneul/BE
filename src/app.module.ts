@@ -5,7 +5,6 @@ import {TypeOrmModule} from "@nestjs/typeorm";
 import * as ormconfig from "../ormconfig";
 import {AppService} from "./app.service";
 import {GatewayModule} from "./chat/chat.module";
-import {UserModule} from "./users/user.module";
 import {HobbyModule} from "./hobbies/hobbies.module";
 import {MoodModule} from "./moods/moods.module";
 import {ThemeModule} from "./themes/themes.module";
@@ -22,7 +21,6 @@ import {OrderModule} from "./orders/orders.module";
     }),
     TypeOrmModule.forRoot(ormconfig),
     GatewayModule,
-    UserModule,
     HobbyModule,
     MoodModule,
     ThemeModule,
