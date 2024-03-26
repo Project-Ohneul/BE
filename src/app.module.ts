@@ -3,6 +3,9 @@ import {AppController} from "./app.controller";
 import {ConfigModule} from "@nestjs/config";
 import {TypeOrmModule} from "@nestjs/typeorm";
 import * as ormconfig from "../ormconfig";
+import { AuthsModule } from "./auths/auths.module";
+import { UsersModule } from "./users/users.module";
+import { Users } from "./users/entities/user.entity";
 import {AppService} from "./app.service";
 import {GatewayModule} from "./chat/chat.module";
 import {HobbyModule} from "./hobbies/hobbies.module";
@@ -13,6 +16,7 @@ import {PaymentModule} from "./payments/payments.module";
 import {OrderController} from "./orders/orders.controller";
 import {OrderModule} from "./orders/orders.module";
 
+
 @Module({
   imports: [
     GatewayModule,
@@ -20,6 +24,9 @@ import {OrderModule} from "./orders/orders.module";
       isGlobal: true,
     }),
     TypeOrmModule.forRoot(ormconfig),
+    TypeOrmModule.forFeature([Users]),
+    AuthsModule,
+    UsersModule,
     GatewayModule,
     HobbyModule,
     MoodModule,
