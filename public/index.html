@@ -7,13 +7,42 @@
       body {
         margin: 0;
         padding-bottom: 3rem;
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          Helvetica, Arial, sans-serif;
         display: flex;
         flex-direction: column;
       }
       button:hover {
         cursor: pointer;
       }
+
+      #messages {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 90%;
+      }
+
+      .message {
+        padding: 5px 10px;
+        margin: 5px;
+        max-width: 70%;
+        border-radius: 10px;
+        clear: both;
+      }
+
+      .my {
+        background-color: white;
+        float: right;
+      }
+
+      .someone {
+        background-color: #007bff;
+        color: white;
+        float: left;
+      }
+
       #form {
         background: rgba(0, 0, 0, 0.15);
         padding: 0.25rem;
@@ -46,17 +75,12 @@
         color: #fff;
       }
 
-      #messages {
-        list-style-type: none;
-        margin: 0;
-        padding: 0;
-      }
-      #messages > li {
-        padding: 0.5rem 1rem;
-      }
-      #messages > li:nth-child(odd) {
-        background: #efefef;
-      }
+      /* #messages > li {
+                padding: 0.5rem 1rem;
+            }
+            #messages > li:nth-child(odd) {
+                background: #efefef;
+            } */
 
       body {
         display: flex;
@@ -137,12 +161,17 @@
       </div>
     </div>
     <div id="consent-modal">
-      <h2>상대방과 계속 대화하고싶으면 돈 주세요 입금하시겠습니까? (또 놓칠거야?)</h2>
+      <h2>
+        상대방과 계속 대화하고싶으면 돈 주세요 입금하시겠습니까? (또 놓칠거야?)
+      </h2>
       <button id="agreeButton">네...</button>
       <button id="disagreeButton">지랄</button>
     </div>
     <div id="wait-user-response-modal">
-      <h2>상대방의 응답을 기다리는중입니다. 상대방도 동의시 대화가 바로 시작됩니다.</h2>
+      <h2>
+        상대방의 응답을 기다리는중입니다. 상대방도 동의시 대화가 바로
+        시작됩니다.
+      </h2>
     </div>
     <form id="form" action="">
       <input id="input" type="text" autocomplete="off" />
@@ -168,7 +197,9 @@
       const finishBtn = document.getElementById("finish-btn");
       const keepGoingBtn = document.getElementById("keep-going-btn");
       const timerDisplay = document.getElementById("timer");
-      const userResponseWaitModal = document.getElementById("wait-user-response-modal");
+      const userResponseWaitModal = document.getElementById(
+        "wait-user-response-modal"
+      );
 
       roomForm.addEventListener("submit", (e) => {
         e.preventDefault();
@@ -225,9 +256,21 @@
       });
 
       socket.on("receiveMessage", (msg) => {
-        const item = document.createElement("li");
-        item.textContent = msg.content;
-        messages.appendChild(item);
+        const { userId, content } = msg;
+        console.log("서버에서 받아온 유저 아이디", userId, socket.id, content);
+        // const item = document.createElement('li');
+        // item.textContent = msg.content;
+        const message = document.createElement("li");
+        message.classList.add("message");
+        if (userId === socket.id) {
+          message.textContent = content;
+          message.classList.add("my");
+        } else {
+          message.textContent = content;
+          message.classList.add("someone");
+        }
+        messages.appendChild(message);
+
         // window.scrollTo(0, document.body.scrollHeight);
       });
 
@@ -237,13 +280,15 @@
       });
 
       socket.on("finish", () => {
+        timer.style.display = "none";
         consentModal.style.display = "none";
         const finishModal = document.createElement("div");
-        finishModal.innerHTML = "대화가 종료되었습니다. 10초 후에 메인으로 이동합니다";
+        finishModal.innerHTML =
+          "대화가 종료되었습니다. 10초 후에 메인으로 이동합니다";
         const body = document.querySelector("body");
         body.appendChild(finishModal);
         setTimeout(() => {
-          window.location.href = "http://localhost:4000";
+          window.location.href = "http://localhost:3000";
         }, 10000);
         checkOutModal.style.display = "none";
       });
@@ -259,7 +304,7 @@
         userWaitModal.style.display = "none";
         userResponseWaitModal.style.display = "none";
         input.readOnly = false;
-        let remainingTime = 10;
+        let remainingTime = 100;
         let consentModalDisplayed = false;
 
         function updateTimer() {

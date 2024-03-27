@@ -6,19 +6,21 @@ import {
   JoinColumn,
 } from "typeorm";
 import { Users } from "../users/entities/user.entity";
+import { Hobbies } from "src/hobbies/hobbies.entity";
 
 @Entity({ name: "User_hobby" })
 export class UserHobby {
   @PrimaryGeneratedColumn()
   user_hobby_id: number;
 
-  @Column()
-  user_id: number;
+  // @Column()
+  // user_id: number;
 
   @ManyToOne(() => Users)
   @JoinColumn({ name: "user_id" })
-  user: Users;
+  user_id: number;
 
-  @Column()
+  @ManyToOne(() => Hobbies)
+  @JoinColumn({ name: "hobby_id" })
   hobby_id: number;
 }

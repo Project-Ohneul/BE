@@ -1,16 +1,23 @@
-import {Body, Controller, Get, NotFoundException, Param, Post} from "@nestjs/common";
-import {OrderService} from "./orders.service";
+import {
+  Body,
+  Controller,
+  Get,
+  NotFoundException,
+  Param,
+  Post,
+} from "@nestjs/common";
+import { OrderService } from "./orders.service";
 
 @Controller("order")
 export class OrderController {
   constructor(private readonly orderService: OrderService) {}
 
   @Post()
-  async createOrder(@Body() body: {amount: number}) {
+  async createOrder(@Body() body: { amount: number }) {
     try {
-      const {amount} = body;
+      const { amount } = body;
       const order = await this.orderService.createOrder(amount);
-      return {order};
+      return { order };
     } catch (error) {
       throw new NotFoundException(`주문 생성에 실패하였습니다.`);
     }

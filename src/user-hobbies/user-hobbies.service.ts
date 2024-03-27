@@ -25,10 +25,7 @@ export class UserHobbyService {
     return userHobbies;
   }
 
-  async postUserHobby({
-    user_id,
-    hobby_id,
-  }): Promise<{
+  async postUserHobby({ user_id, hobby_id }): Promise<{
     status: number;
     body: { user_id: number; hobby_id: number }[];
   }> {
@@ -38,7 +35,7 @@ export class UserHobbyService {
       throw new NotFoundException(`해당 유저가 없습니다.`);
     }
 
-    await this.userHobbyRepository.delete({ user });
+    await this.userHobbyRepository.delete({ user_id });
 
     const savedUserHobbies = [];
     for (const hobbyId of hobby_id) {

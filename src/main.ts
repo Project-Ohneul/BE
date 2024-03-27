@@ -1,12 +1,12 @@
-import {NestFactory} from "@nestjs/core";
-import {AppModule} from "./app.module";
-import {createServer} from "https";
-import {ValidationPipe} from "@nestjs/common";
-import * as fs from "fs";
-import {NestExpressApplication} from "@nestjs/platform-express";
+import { NestFactory } from "@nestjs/core";
+import { AppModule } from "./app.module";
+import { createServer } from "https";
+import { ValidationPipe } from "@nestjs/common";
+// import * as fs from "fs";
+import { NestExpressApplication } from "@nestjs/platform-express";
 import * as express from "express";
 import * as path from "path";
-import {WsAdapter} from "@nestjs/platform-ws";
+// import { WsAdapter } from "@nestjs/platform-ws";
 
 async function bootstrap() {
   // const httpsOptions = {

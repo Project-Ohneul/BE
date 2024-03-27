@@ -1,6 +1,7 @@
 import { Hobbies } from "src/hobbies/hobbies.entity";
 import { Order } from "src/orders/orders.entity";
 import { Payment } from "src/payments/payments.entity";
+import { UserHobby } from "src/user-hobbies/user-hobbies.entity";
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -39,19 +40,20 @@ export class Users {
   @Column({ name: "mood_id" })
   mood_id: number | null;
 
-  @ManyToMany(() => Hobbies)
-  @JoinTable({
-    name: "User_hobby",
-    joinColumn: {
-      name: "user_id",
-      referencedColumnName: "user_id",
-    },
-    inverseJoinColumn: {
-      name: "hobby_id",
-      referencedColumnName: "hobby_id",
-    },
-  })
-  hobbies: Hobbies;
+  // @OneToMany(() => UserHobby, (userHobby)=>userHobby.user_id)
+
+  // @JoinTable({
+  //   name: "User_hobby",
+  //   joinColumn: {
+  //     name: "user_id",
+  //     referencedColumnName: "user_id",
+  //   },
+  //   inverseJoinColumn: {
+  //     name: "hobby_id",
+  //     referencedColumnName: "hobby_id",
+  //   },
+  // })
+  // hobbies: Hobbies;
 
   @OneToMany(() => Payment, (payment) => payment.user_id)
   payments: Payment[];
