@@ -41,20 +41,25 @@ export class ChatService {
     }
   }
 
-  deleteChatRoom(socketId: string): string[] {
-    let getRoomName = [];
+  deleteChatRoom(socketId: string, server: Server) {
+    console.log("delete chatroom entries", this.chatRooms.entries());
     for (const [roomName, room] of this.chatRooms.entries()) {
+      console.log("user order delete", socketId, "rcheck geonoroom", roomName);
       const index = room.findIndex((socket) => socket.id === socketId);
       if (index !== -1) {
         room.splice(index, 1);
-        if (room.length === 0) {
+        if (room.length === 1) {
           this.chatRooms.delete(roomName);
+          server.in(roomName).emit("finish"); // 대화 종료 알림
+          server.in(roomName).disconnectSockets(true);
+
           console.log(`Chat room ${roomName} has been deleted.`);
         }
         break;
       }
     }
-    return getRoomName;
+    // console.log('check roomname',getRoomName)
+    // return getRoomName
   }
 
   private generateUniqueRoomName(theme: string): string {

@@ -36,7 +36,7 @@ export class MyGateway implements OnModuleInit, OnGatewayDisconnect {
   @SubscribeMessage("sendMessage")
   onSendMessage(@MessageBody() body: any, @ConnectedSocket() socket: Socket) {
     const rooms = this.server.sockets.adapter.sids.get(socket.id); // 소켓이 속한 방의 목록 가져오기
-
+    // console.log('check rooms',rooms)
     if (!rooms) {
       console.log("No socket rooms."); // 소켓이 어떤 방에도 속해있지 않을 경우
       return;
@@ -49,7 +49,7 @@ export class MyGateway implements OnModuleInit, OnGatewayDisconnect {
           userId: socket.id, // 수신자에게 표시될 메시지
           content: body, // 메시지 내용
         });
-        console.log("check room information"); // 방 정보 확인 로그
+        // console.log('check room information'); // 방 정보 확인 로그
       }
     });
   }
@@ -129,6 +129,7 @@ export class MyGateway implements OnModuleInit, OnGatewayDisconnect {
   @SubscribeMessage("userExit")
   disconnectRoom(@MessageBody() data: any, @ConnectedSocket() socket: Socket) {
     const rooms = this.server.sockets.adapter.sids.get(socket.id);
+    console.log("check rooms userexist", rooms);
 
     if (!rooms) {
       console.log("No socket rooms found."); // 소켓이 어떤 방에도 속해있지 않을 경우
@@ -139,6 +140,7 @@ export class MyGateway implements OnModuleInit, OnGatewayDisconnect {
       console.log("find room", _, room); // 방 정보 확인 로그
       if (room !== socket.id) {
         this.server.in(room).emit("finish"); // 대화 종료 알림
+        console.log("방삭제가 되는지 확인", room);
         this.server.in(room).disconnectSockets(true); // 소켓 연결 끊기
       }
     });
@@ -146,15 +148,16 @@ export class MyGateway implements OnModuleInit, OnGatewayDisconnect {
 
   // 소켓 연결이 끊겼을 때의 핸들러
   handleDisconnect(socket: Socket) {
-    // Check if the disconnected socket was in any rooms
     const rooms = this.server.sockets.adapter.rooms;
     console.log("socket id 연결 끊어졌을떄 disconnect", socket.id, "--", rooms);
+    this.chatService.deleteChatRoom(socket.id, this.server);
 
-    const userParticipatedRoomList = this.chatService.deleteChatRoom(socket.id);
-    userParticipatedRoomList.map((room) => {
-      this.server.in(room).emit("finish"); // 대화 종료 알림
-      this.server.in(room).disconnectSockets(true);
-    });
+    // const userParticipatedRoomList = this.chatService.deleteChatRoom(socket.id)
+    // userParticipatedRoomList.map(room => {
+    //     console.log('방삭제가 되는지 확인 소켓 연결 끊길때',room)
+    //     this.server.in(room).emit('finish'); // 대화 종료 알림
+    //     this.server.in(room).disconnectSockets(true)
+    // })
   }
 }
 
