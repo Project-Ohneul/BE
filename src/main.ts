@@ -20,6 +20,7 @@ async function bootstrap() {
 
   const app = await NestFactory.create(AppModule, {
     httpsOptions,
+    cors: true,
   });
   // 정적 파일 제공을 위한 경로 설정
   app.use(express.static(path.join(__dirname, "..", "..", "public")));
