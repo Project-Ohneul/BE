@@ -14,7 +14,7 @@ import { Response } from "express";
 // WebSocketGateway 데코레이터를 이용하여 WebSocketGateway 클래스를 정의합니다.
 @WebSocketGateway({
   cors: {
-    origin: ["http://localhost:3000"], // CORS 설정: 클라이언트 주소
+    origin: ["http://localhost:4000"], // CORS 설정: 클라이언트 주소
   },
 })
 export class MyGateway implements OnModuleInit, OnGatewayDisconnect {
@@ -35,11 +35,7 @@ export class MyGateway implements OnModuleInit, OnGatewayDisconnect {
 
   // 클라이언트로부터 'sendMessage' 메시지를 받았을 때의 핸들러
   @SubscribeMessage("sendMessage")
-  onSendMessage(
-    @MessageBody() body: any,
-    @ConnectedSocket() socket: Socket,
-    @Res() res: Response
-  ) {
+  onSendMessage(@MessageBody() body: any, @ConnectedSocket() socket: Socket) {
     const rooms = this.server.sockets.adapter.sids.get(socket.id); // 소켓이 속한 방의 목록 가져오기
     // console.log('check rooms',rooms)
     if (!rooms) {

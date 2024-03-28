@@ -20,6 +20,11 @@ async function bootstrap() {
     cors: true,
   });
 
+  app.enableCors({
+    origin: true,
+    credentials: true,
+    exposedHeaders: ["Authorization"], // * 사용할 헤더 추가.
+  });
   // const app = await NestFactory.create(AppModule, {
   //   httpsOptions,
   //   cors: true,
