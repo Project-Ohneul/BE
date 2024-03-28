@@ -37,12 +37,9 @@
     "express": "^4.19.1",
     "got": "^14.2.1",
     "mysql": "^2.18.1",
-    "mysql2": "^3.9.2",
     "passport-kakao": "^1.0.1",
     "passport-naver": "^1.0.6",
     "path": "^0.12.7",
-    "reflect-metadata": "^0.2.0",
-    "rxjs": "^7.8.1",
     "socket.io-client": "^4.7.5",
     "typeorm": "^0.3.20"
   },

@@ -7,8 +7,9 @@ import {
   ConnectedSocket,
 } from "@nestjs/websockets";
 import { Server, Socket } from "socket.io";
-import { Body, OnModuleInit } from "@nestjs/common";
+import { Body, OnModuleInit, Res } from "@nestjs/common";
 import { ChatService } from "./chat.service";
+import { Response } from "express";
 
 // WebSocketGateway 데코레이터를 이용하여 WebSocketGateway 클래스를 정의합니다.
 @WebSocketGateway({
@@ -34,7 +35,11 @@ export class MyGateway implements OnModuleInit, OnGatewayDisconnect {
 
   // 클라이언트로부터 'sendMessage' 메시지를 받았을 때의 핸들러
   @SubscribeMessage("sendMessage")
-  onSendMessage(@MessageBody() body: any, @ConnectedSocket() socket: Socket) {
+  onSendMessage(
+    @MessageBody() body: any,
+    @ConnectedSocket() socket: Socket,
+    @Res() res: Response
+  ) {
     const rooms = this.server.sockets.adapter.sids.get(socket.id); // 소켓이 속한 방의 목록 가져오기
     // console.log('check rooms',rooms)
     if (!rooms) {
