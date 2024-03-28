@@ -21,7 +21,11 @@ async function bootstrap() {
   });
 
   app.enableCors({
-    origin: true,
+    origin: [
+      "https://port-0-ohneul-44rk2blu3topxi.sel5.cloudtype.app",
+      "http://localhost:4000",
+      "http://localhost:3000",
+    ],
     credentials: true,
     exposedHeaders: ["Authorization"], // * 사용할 헤더 추가.
   });
