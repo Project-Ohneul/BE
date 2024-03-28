@@ -10,18 +10,20 @@ import { WsAdapter } from "@nestjs/platform-ws";
 import * as fs from "fs";
 
 async function bootstrap() {
-  const httpsOptions = {
-    key: fs.readFileSync("./tls/ohneul-chat.com.key"),
-    cert: fs.readFileSync("./tls/ohneul-chat.crt"),
-    ca: fs.readFileSync("./tls/ohneulCA.pem"),
-  };
+  // const httpsOptions = {
+  //   key: fs.readFileSync("./tls/ohneul-chat.com.key"),
+  //   cert: fs.readFileSync("./tls/ohneul-chat.crt"),
+  //   ca: fs.readFileSync("./tls/ohneulCA.pem"),
+  // };
 
-  // const app = await NestFactory.create<NestExpressApplication>(AppModule);
-
-  const app = await NestFactory.create(AppModule, {
-    httpsOptions,
+  const app = await NestFactory.create<NestExpressApplication>(AppModule, {
     cors: true,
   });
+
+  // const app = await NestFactory.create(AppModule, {
+  //   httpsOptions,
+  //   cors: true,
+  // });
   // 정적 파일 제공을 위한 경로 설정
   app.use(express.static(path.join(__dirname, "..", "..", "public")));
 
@@ -33,15 +35,15 @@ async function bootstrap() {
     })
   );
 
-  app.useWebSocketAdapter(new WsAdapter(app));
+  // app.useWebSocketAdapter(new WsAdapter(app));
 
-  const server = createServer(httpsOptions, app.getHttpAdapter().getInstance());
+  // const server = createServer(httpsOptions, app.getHttpAdapter().getInstance());
   await app.init();
-  server.listen(4000, () => {
+  // server.listen(4000, () => {
+  //   console.log("포트 4000번에서 귀를 기울이고 있당");
+  // });
+  await app.listen(4000, () => {
     console.log("포트 4000번에서 귀를 기울이고 있당");
   });
-  //   await app.listen(4000, () => {
-  //     console.log("포트 4000번에서 귀를 기울이고 있당");
-  //   });
 }
 bootstrap();
