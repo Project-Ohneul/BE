@@ -18,51 +18,23 @@ export class AuthsService {
     res.setHeader("Access-Control-Allow-origin", "*");
     res.setHeader("Access-Control-Allow-Credentials", "true");
 
+    const setting = {
+      domain: "127.0.0.1",
+      path: "/",
+      sameSite: "lax",
+      secure: true,
+      httpOnly: true,
+    };
+
     if (req.user.provider === "naver") {
-      res.cookie("user_id", user.user_id, {
-        domain: "localhost",
-        path: "/",
-        sameSite: "lax",
-        secure: true,
-        // httpOnly: true,
-      });
-      res.cookie("refreshToken", req.user.refreshToken, {
-        domain: "localhost",
-        path: "/",
-        sameSite: "lax",
-        secure: true,
-        // httpOnly: true,
-      });
-      res.cookie("provider", req.user.provider, {
-        domain: "localhost",
-        path: "/",
-        sameSite: "lax",
-        secure: true,
-        // httpOnly: true,
-      });
+      res.cookie("user_id", user.user_id, setting);
+      res.cookie("refreshToken", req.user.refreshToken, setting);
+      res.cookie("provider", req.user.provider, setting);
       res.redirect("http://localhost:3000/login/naver/callback");
     } else if (req.user.provider === "kakao") {
-      res.cookie("user_id", user.user_id, {
-        domain: "localhost",
-        path: "/",
-        sameSite: "lax",
-        secure: true,
-        // httpOnly: true,
-      });
-      res.cookie("refreshToken", req.user.refreshToken, {
-        domain: "localhost",
-        path: "/",
-        sameSite: "lax",
-        secure: true,
-        // httpOnly: true,
-      });
-      res.cookie("provider", req.user.provider, {
-        domain: "localhost",
-        path: "/",
-        sameSite: "lax",
-        secure: true,
-        // httpOnly: true,
-      });
+      res.cookie("user_id", user.user_id, setting);
+      res.cookie("refreshToken", req.user.refreshToken, setting);
+      res.cookie("provider", req.user.provider, setting);
       res.redirect("http://localhost:3000/login/kakao/callback");
     }
   }
