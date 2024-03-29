@@ -22,21 +22,21 @@ export class AuthsService {
         path: "/login/naver/callback",
         sameSite: "none",
         secure: true,
-        httpOnly: true,
+        // httpOnly: true,
       });
       res.cookie("refreshToken", req.user.refreshToken, {
         domain: "localhost",
         path: "/login/naver/callback",
         sameSite: "none",
         secure: true,
-        httpOnly: true,
+        // httpOnly: true,
       });
       res.cookie("provider", req.user.provider, {
         domain: "localhost",
         path: "/login/naver/callback",
         sameSite: "none",
         secure: true,
-        httpOnly: true,
+        // httpOnly: true,
       });
       res.redirect("http://localhost:3000/login/naver/callback");
     } else if (req.user.provider === "kakao") {
@@ -45,21 +45,21 @@ export class AuthsService {
         path: "/login/naver/callback",
         sameSite: "none",
         secure: true,
-        httpOnly: true,
+        // httpOnly: true,
       });
       res.cookie("refreshToken", req.user.refreshToken, {
         domain: "localhost",
         path: "/login/naver/callback",
         sameSite: "none",
         secure: true,
-        httpOnly: true,
+        // httpOnly: true,
       });
       res.cookie("provider", req.user.provider, {
         domain: "localhost",
         path: "/login/naver/callback",
         sameSite: "none",
         secure: true,
-        httpOnly: true,
+        // httpOnly: true,
       });
       res.redirect("http://localhost:3000/login/kakao/callback");
     }
