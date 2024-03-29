@@ -20,21 +20,21 @@ export class AuthsService {
       res.cookie("user_id", user.user_id, {
         domain: "localhost",
         path: "/",
-        sameSite: "none",
+        sameSite: "lax",
         secure: true,
         // httpOnly: true,
       });
       res.cookie("refreshToken", req.user.refreshToken, {
         domain: "localhost",
         path: "/",
-        sameSite: "none",
+        sameSite: "lax",
         secure: true,
         // httpOnly: true,
       });
       res.cookie("provider", req.user.provider, {
         domain: "localhost",
         path: "/",
-        sameSite: "none",
+        sameSite: "lax",
         secure: true,
         // httpOnly: true,
       });
@@ -43,21 +43,21 @@ export class AuthsService {
       res.cookie("user_id", user.user_id, {
         domain: "localhost",
         path: "/",
-        sameSite: "none",
+        sameSite: "lax",
         secure: true,
         // httpOnly: true,
       });
       res.cookie("refreshToken", req.user.refreshToken, {
         domain: "localhost",
         path: "/",
-        sameSite: "none",
+        sameSite: "lax",
         secure: true,
         // httpOnly: true,
       });
       res.cookie("provider", req.user.provider, {
         domain: "localhost",
         path: "/",
-        sameSite: "none",
+        sameSite: "lax",
         secure: true,
         // httpOnly: true,
       });
