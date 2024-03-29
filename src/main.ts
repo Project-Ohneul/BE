@@ -17,7 +17,9 @@ async function bootstrap() {
   //   ca: fs.readFileSync("./tls/ohneulCA.pem"),
   // };
 
-  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule, {
+    cors: true,
+  });
 
   app.enableCors({
     origin: "http://localhost:3000",
