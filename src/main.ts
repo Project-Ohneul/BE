@@ -1,13 +1,14 @@
 import { NestFactory } from "@nestjs/core";
 import { AppModule } from "./app.module";
-import { createServer } from "https";
+// import { createServer } from "https";
 import { ValidationPipe } from "@nestjs/common";
 // import * as fs from "fs";
 import { NestExpressApplication } from "@nestjs/platform-express";
 import * as express from "express";
 import * as path from "path";
-import { WsAdapter } from "@nestjs/platform-ws";
-import * as fs from "fs";
+// import { WsAdapter } from "@nestjs/platform-ws";
+// import * as fs from "fs";
+import * as cookieParser from "cookie-parser";
 
 async function bootstrap() {
   // const httpsOptions = {
@@ -16,9 +17,7 @@ async function bootstrap() {
   //   ca: fs.readFileSync("./tls/ohneulCA.pem"),
   // };
 
-  const app = await NestFactory.create<NestExpressApplication>(AppModule, {
-    cors: true,
-  });
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
   app.enableCors({
     origin: [
@@ -26,9 +25,12 @@ async function bootstrap() {
       "http://localhost:4000",
       "http://localhost:3000",
     ],
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
     credentials: true,
     exposedHeaders: ["Authorization"], // * 사용할 헤더 추가.
   });
+
+  app.use(cookieParser());
   // const app = await NestFactory.create(AppModule, {
   //   httpsOptions,
   //   cors: true,
