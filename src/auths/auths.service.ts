@@ -15,8 +15,6 @@ export class AuthsService {
       await this.usersService.createBySocialLogin(req.user);
       user = await this.usersService.findUserToProviderId(req.user.provider_id);
     }
-    res.setHeader("Access-Control-Allow-origin", "*");
-    res.setHeader("Access-Control-Allow-Credentials", "true");
 
     const setting = {
       domain: "127.0.0.1",
