@@ -14,7 +14,7 @@ import { Response } from "express";
 // WebSocketGateway 데코레이터를 이용하여 WebSocketGateway 클래스를 정의합니다.
 @WebSocketGateway({
   cors: {
-    origin: ["http://localhost:4000"], // CORS 설정: 클라이언트 주소
+    origin: ["https://port-0-ohneul-front-754g42alucwss46.sel5.cloudtype.app"], // CORS 설정: 클라이언트 주소
   },
 })
 export class MyGateway implements OnModuleInit, OnGatewayDisconnect {
