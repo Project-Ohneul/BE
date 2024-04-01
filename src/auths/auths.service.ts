@@ -20,8 +20,6 @@ export class AuthsService {
     }
 
     const setting = {
-      domain: "127.0.0.1",
-      path: "/",
       sameSite: "none",
       secure: true,
       httpOnly: true,
