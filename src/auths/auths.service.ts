@@ -1,5 +1,8 @@
 import { Injectable } from "@nestjs/common";
 import { UsersService } from "src/users/users.service";
+import * as dotenv from "dotenv";
+
+dotenv.config();
 
 @Injectable()
 export class AuthsService {
@@ -28,12 +31,12 @@ export class AuthsService {
       res.cookie("user_id", user.user_id, setting);
       res.cookie("refreshToken", req.user.refreshToken, setting);
       res.cookie("provider", req.user.provider, setting);
-      res.redirect("http://localhost:3000/login/naver/callback");
+      res.redirect(process.env.NAVER_LOGIN_REDIRECT);
     } else if (req.user.provider === "kakao") {
       res.cookie("user_id", user.user_id, setting);
       res.cookie("refreshToken", req.user.refreshToken, setting);
       res.cookie("provider", req.user.provider, setting);
-      res.redirect("http://localhost:3000/login/kakao/callback");
+      res.redirect(process.env.KAKAO_LOGIN_REDIRECT);
     }
   }
 }
