@@ -20,6 +20,7 @@ export class AuthsService {
     }
 
     const setting = {
+      domain: "port-0-ohneul-front-754g42alucwss46.sel5.cloudtype.app",
       sameSite: "none",
       secure: true,
       httpOnly: true,
