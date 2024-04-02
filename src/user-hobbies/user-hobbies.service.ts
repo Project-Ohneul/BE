@@ -14,7 +14,7 @@ export class UserHobbyService {
     private readonly userRepository: Repository<Users>
   ) {}
 
-  async getOneUserHobby(user_id: number): Promise<UserHobby[]> {
+  async getOneUserHobby(user_id: string): Promise<UserHobby[]> {
     const userHobbies = await this.userHobbyRepository.find({
       where: { user_id },
       relations: ["user"],
@@ -27,7 +27,7 @@ export class UserHobbyService {
 
   async postUserHobby({ user_id, hobby_id }): Promise<{
     status: number;
-    body: { user_id: number; hobby_id: number }[];
+    body: { user_id: string; hobby_id: number }[];
   }> {
     const user = await this.userRepository.findOne({ where: { user_id } });
 

@@ -2,6 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { Users } from "./entities/user.entity";
+import { v4 as uuidv4 } from "uuid";
 
 @Injectable()
 export class UsersService {
@@ -16,9 +17,11 @@ export class UsersService {
 
   async createBySocialLogin(body) {
     console.log("service body:", body);
+    const user_id = uuidv4();
     const { provider_id, gender, username, birth, accessToken, refreshToken } =
       body;
     await this.usersRepository.save({
+      user_id,
       provider_id,
       username,
       gender,

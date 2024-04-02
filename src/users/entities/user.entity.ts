@@ -13,8 +13,8 @@ import {
 
 @Entity({ schema: "ohneul", name: "Users" })
 export class Users {
-  @PrimaryGeneratedColumn({ type: "int", name: "user_id" })
-  user_id: number;
+  @PrimaryGeneratedColumn({ name: "user_id" })
+  user_id: string;
 
   @Column("varchar", { name: "username", length: 10 })
   username: string;

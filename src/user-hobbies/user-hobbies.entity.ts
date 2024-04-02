@@ -18,7 +18,7 @@ export class UserHobby {
 
   @ManyToOne(() => Users)
   @JoinColumn({ name: "user_id" })
-  user_id: number;
+  user_id: string;
 
   @ManyToOne(() => Hobbies)
   @JoinColumn({ name: "hobby_id" })
