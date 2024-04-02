@@ -20,10 +20,10 @@ export class AuthsService {
     }
 
     const setting = {
-      domain: "localhost",
-      sameSite: "none",
-      secure: true,
-      httpOnly: true,
+      // domain: "localhost",
+      // sameSite: "none",
+      // secure: true,
+      // httpOnly: true,
     };
 
     if (req.user.provider === "naver") {
