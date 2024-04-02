@@ -22,7 +22,7 @@ async function bootstrap() {
   });
 
   app.enableCors({
-    origin: "https://port-0-ohneul-front-754g42alucwss46.sel5.cloudtype.app/",
+    origin: "http://localhost:3000",
     methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE", "OPTIONS"],
     credentials: true,
     allowedHeaders: "*",
