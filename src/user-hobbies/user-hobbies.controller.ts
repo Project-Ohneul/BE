@@ -19,7 +19,7 @@ export class UserHobbyController {
 
   @Get("/:user_id")
   async getOneUserHobby(
-    @Param("user_id", ParseIntPipe) user_id: string
+    @Param("user_id") user_id: string
   ): Promise<UserHobby[]> {
     return this.userHobbyService.getOneUserHobby(user_id);
   }

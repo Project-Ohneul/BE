@@ -17,7 +17,6 @@ export class UserHobbyService {
   async getOneUserHobby(user_id: string): Promise<UserHobby[]> {
     const userHobbies = await this.userHobbyRepository.find({
       where: { user_id },
-      relations: ["user"],
     });
     if (!userHobbies || userHobbies.length === 0) {
       throw new NotFoundException(`해당 사용자의 취미를 찾을 수 없습니다.`);
@@ -40,7 +39,7 @@ export class UserHobbyService {
     const savedUserHobbies = [];
     for (const hobbyId of hobby_id) {
       const savedUserHobby = await this.userHobbyRepository.save({
-        user: user,
+        user_id,
         hobby_id: hobbyId,
       });
       savedUserHobbies.push({ hobby_id: savedUserHobby.hobby_id });
