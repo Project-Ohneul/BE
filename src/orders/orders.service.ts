@@ -16,7 +16,7 @@ export class OrderService {
     return this.orderRepository.save(order);
   }
 
-  async getOneOrder(order_id: number): Promise<Order> {
+  async getOneOrder(order_id: string): Promise<Order> {
     return this.orderRepository.findOne({where: {order_id}});
   }
 }
