@@ -5,6 +5,7 @@ import { Server } from "socket.io";
 @Injectable()
 export class ChatService {
   private chatRooms: Map<string, Socket[]> = new Map<string, Socket[]>();
+  private extendedTimes: Map<string, number> = new Map<string, number>();
 
   constructor() {}
 
@@ -49,17 +50,37 @@ export class ChatService {
       if (index !== -1) {
         room.splice(index, 1);
         if (room.length === 1) {
-          this.chatRooms.delete(roomName);
+          const remainingSocket = room[0]; // 마지막으로 남은 소켓
           server.in(roomName).emit("finish"); // 대화 종료 알림
-          server.in(roomName).disconnectSockets(true);
-
-          console.log(`Chat room ${roomName} has been deleted.`);
+          remainingSocket.leave(roomName); // 방에서 소켓 제거
+          this.chatRooms.delete(roomName); // 방 삭제
+          console.log(
+            `Chat room ${roomName} has been deleted. ${this.chatRooms.entries()}`
+          );
         }
         break;
       }
     }
     // console.log('check roomname',getRoomName)
     // return getRoomName
+  }
+
+  handleAgreement(roomName: string, server: Server) {
+    const initialExtendedTime = 30;
+
+    if (!this.extendedTimes.has(roomName)) {
+      this.extendedTimes.set(roomName, initialExtendedTime);
+    } else {
+      let remainingTime =
+        this.extendedTimes.get(roomName) || initialExtendedTime;
+
+      // remainingTime= 30;
+      this.extendedTimes.set(roomName, remainingTime);
+    }
+
+    const remainingTime =
+      this.extendedTimes.get(roomName) || initialExtendedTime;
+    server.in(roomName).emit("extendTime", remainingTime);
   }
 
   private generateUniqueRoomName(theme: string): string {

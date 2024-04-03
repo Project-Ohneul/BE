@@ -39,7 +39,7 @@ async function bootstrap() {
   //   cors: true,
   // });
   // 정적 파일 제공을 위한 경로 설정
-  app.use(express.static(path.join(__dirname, "..", "..", "public")));
+  // app.use(express.static(path.join(__dirname, "..", "..", "public")));
 
   app.useGlobalPipes(
     new ValidationPipe({

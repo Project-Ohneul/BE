@@ -20,7 +20,7 @@ export class Order {
   @OneToMany(() => Payment, (payment) => payment.order_id)
   payments: Payment[];
 
-  @ManyToOne(() => Users, (user) => user.orders)
+  @ManyToOne(() => Users, (user) => user)
   @JoinColumn({ name: "user_id" })
   user_id: Users;
 }

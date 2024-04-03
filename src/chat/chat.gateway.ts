@@ -1,9 +1,15 @@
-import {SubscribeMessage, WebSocketGateway, WebSocketServer, MessageBody, OnGatewayDisconnect, ConnectedSocket} from "@nestjs/websockets";
-import {Server, Socket} from "socket.io";
-import {Body, OnModuleInit, Res} from "@nestjs/common";
-import {ChatService} from "./chat.service";
-import {Response} from "express";
-import {UsersService} from "src/users/users.service";
+import {
+  SubscribeMessage,
+  WebSocketGateway,
+  WebSocketServer,
+  MessageBody,
+  OnGatewayDisconnect,
+  ConnectedSocket,
+} from "@nestjs/websockets";
+import { Server, Socket } from "socket.io";
+import { Body, OnModuleInit } from "@nestjs/common";
+import { ChatService } from "./chat.service";
+import { UsersService } from "src/users/users.service";
 
 // WebSocketGateway 데코레이터를 이용하여 WebSocketGateway 클래스를 정의합니다.
 @WebSocketGateway({
@@ -22,6 +28,11 @@ export class MyGateway implements OnModuleInit, OnGatewayDisconnect {
     private usersService: UsersService
   ) {}
 
+  handleConnection(socket: Socket) {
+    console.log(`Client connected: ${socket.id}`);
+    socket.emit("connected", { message: "Connected to server" });
+  }
+
   // NestJS 모듈 초기화 시 호출되는 메서드
   onModuleInit() {
     // WebSocket 서버에 'connection' 이벤트 핸들러 등록
@@ -30,10 +41,23 @@ export class MyGateway implements OnModuleInit, OnGatewayDisconnect {
     });
   }
 
+  // @SubscribeMessage('login')
+  // onlogin(@MessageBody() data: any, @ConnectedSocket() socket: Socket) {
+  //     console.log('클라이언트에서 로그인 됬습니다.')
+  //     this.server.emit('slogin',data)
+  // }
+  // 클라이언트로부터 'sendMessage' 메시지를 받았을 때의 핸들러
+  @SubscribeMessage("message")
+  oexdMessage(@MessageBody() body: any, @ConnectedSocket() socket: Socket) {
+    console.log(body);
+    // socket.broadcast.emit('sMessage',body)
+  }
+
   // 클라이언트로부터 'sendMessage' 메시지를 받았을 때의 핸들러
   @SubscribeMessage("sendMessage")
   onSendMessage(@MessageBody() body: any, @ConnectedSocket() socket: Socket) {
     const rooms = this.server.sockets.adapter.sids.get(socket.id); // 소켓이 속한 방의 목록 가져오기
+    // console.log("보낸 메세지",body)
     // console.log('check rooms',rooms)
     if (!rooms) {
       console.log("No socket rooms."); // 소켓이 어떤 방에도 속해있지 않을 경우
@@ -43,10 +67,8 @@ export class MyGateway implements OnModuleInit, OnGatewayDisconnect {
     // 방에 속한 모든 소켓에 메시지 전송
     rooms.forEach((_, room) => {
       if (room !== socket.id) {
-        this.server.to(room).emit("receiveMessage", {
-          userId: socket.id, // 수신자에게 표시될 메시지
-          content: body, // 메시지 내용
-        });
+        this.server.to(room).emit("receiveMessage", body);
+        // console.log('상대방에게 보낼',body)
         // console.log('check room information'); // 방 정보 확인 로그
       }
     });
@@ -55,7 +77,7 @@ export class MyGateway implements OnModuleInit, OnGatewayDisconnect {
   // 클라이언트로부터 'selectTheme' 메시지를 받았을 때의 핸들러
   @SubscribeMessage("selectTheme")
   onSelectTheme(@MessageBody() data: any, @ConnectedSocket() socket: Socket) {
-    console.log("Client selected theme:", data); // 클라이언트가 선택한 주제 로그 출력
+    console.log("Client selected theme:", data.split("")); // 클라이언트가 선택한 주제 로그 출력
     const theme = data;
     // In your ChatGateway class
     this.chatService.createChatRoom(socket, theme, this.server); // Pass the server instance
@@ -71,6 +93,7 @@ export class MyGateway implements OnModuleInit, OnGatewayDisconnect {
           this.server.in(room).emit("wait"); // 대기 중인 상태로 설정
         } else {
           this.server.in(room).emit("start"); // 대화 시작
+          console.log("대화 시작");
         }
       }
     });
@@ -109,6 +132,7 @@ export class MyGateway implements OnModuleInit, OnGatewayDisconnect {
             console.log("love");
             this.server.in(room).emit("start"); // 대화 시작
             this.userAgreementInfo.delete(room); // 동의 정보 삭제
+            this.chatService.handleAgreement(room, this.server);
           } else {
             // 하나라도 동의하지 않은 경우
             console.log("fuck");
@@ -127,14 +151,17 @@ export class MyGateway implements OnModuleInit, OnGatewayDisconnect {
   @SubscribeMessage("reportUser")
   async onReportUser(@MessageBody() data: any) {
     // 클라이언트에서 주는 다른 유저(상대)의 user_id
-    const {getReportedUserId} = data;
+    const { getReportedUserId } = data;
     console.log(getReportedUserId);
     // user_id 확인
     const getReportedUser = await this.usersService.findUser(getReportedUserId);
     // 신고당하는 유저의 user_id가 있으면 report를 +1 하고, 저장
+
     if (getReportedUser) {
       getReportedUserId.report += 1;
-      await this.usersService.updateUser(getReportedUser.user_id, {report: getReportedUser.report});
+      await this.usersService.updateUser(getReportedUser.user_id, {
+        report: getReportedUser.report,
+      });
     }
   }
 
@@ -142,7 +169,7 @@ export class MyGateway implements OnModuleInit, OnGatewayDisconnect {
   @SubscribeMessage("userExit")
   disconnectRoom(@MessageBody() data: any, @ConnectedSocket() socket: Socket) {
     const rooms = this.server.sockets.adapter.sids.get(socket.id);
-    console.log("check rooms userexist", rooms);
+    console.log("사용자의 나가기 누름 방 삭제전t", rooms);
 
     if (!rooms) {
       console.log("No socket rooms found."); // 소켓이 어떤 방에도 속해있지 않을 경우
@@ -154,9 +181,19 @@ export class MyGateway implements OnModuleInit, OnGatewayDisconnect {
       if (room !== socket.id) {
         this.server.in(room).emit("finish"); // 대화 종료 알림
         console.log("방삭제가 되는지 확인", room);
-        this.server.in(room).disconnectSockets(true); // 소켓 연결 끊기
+        // this.server.in(room).disconnectSockets(true); // 소켓 연결 끊기
+        socket.leave(room);
+        this.chatService.deleteChatRoom(socket.id, this.server);
+        console.log(
+          "상대방 탈주 알림 이벤트",
+          room,
+          rooms,
+          "현재 남아있는 방 리스트",
+          this.server.sockets.adapter.rooms
+        );
       }
     });
+    console.log("삭제 후 rooms userexist", rooms);
   }
 
   // 소켓 연결이 끊겼을 때의 핸들러
