@@ -1,15 +1,9 @@
-import {
-  SubscribeMessage,
-  WebSocketGateway,
-  WebSocketServer,
-  MessageBody,
-  OnGatewayDisconnect,
-  ConnectedSocket,
-} from "@nestjs/websockets";
-import { Server, Socket } from "socket.io";
-import { Body, OnModuleInit, Res } from "@nestjs/common";
-import { ChatService } from "./chat.service";
-import { Response } from "express";
+import {SubscribeMessage, WebSocketGateway, WebSocketServer, MessageBody, OnGatewayDisconnect, ConnectedSocket} from "@nestjs/websockets";
+import {Server, Socket} from "socket.io";
+import {Body, OnModuleInit, Res} from "@nestjs/common";
+import {ChatService} from "./chat.service";
+import {Response} from "express";
+import {UsersService} from "src/users/users.service";
 
 // WebSocketGateway 데코레이터를 이용하여 WebSocketGateway 클래스를 정의합니다.
 @WebSocketGateway({
@@ -23,7 +17,10 @@ export class MyGateway implements OnModuleInit, OnGatewayDisconnect {
 
   private userAgreementInfo = new Map<string, any>(); // 사용자 동의 정보를 저장할 Map
 
-  constructor(private chatService: ChatService) {}
+  constructor(
+    private chatService: ChatService,
+    private usersService: UsersService
+  ) {}
 
   // NestJS 모듈 초기화 시 호출되는 메서드
   onModuleInit() {
@@ -124,6 +121,21 @@ export class MyGateway implements OnModuleInit, OnGatewayDisconnect {
         console.log("check user agreement info", this.userAgreementInfo); // 동의 정보 확인 로그
       }
     });
+  }
+
+  // 상대 유저 신고
+  @SubscribeMessage("reportUser")
+  async onReportUser(@MessageBody() data: any) {
+    // 클라이언트에서 주는 다른 유저(상대)의 user_id
+    const {getReportedUserId} = data;
+    console.log(getReportedUserId);
+    // user_id 확인
+    const getReportedUser = await this.usersService.findUser(getReportedUserId);
+    // 신고당하는 유저의 user_id가 있으면 report를 +1 하고, 저장
+    if (getReportedUser) {
+      getReportedUserId.report += 1;
+      await this.usersService.updateUser(getReportedUser.user_id, {report: getReportedUser.report});
+    }
   }
 
   // 클라이언트로부터 'userExit' 메시지를 받았을 때의 핸들러
