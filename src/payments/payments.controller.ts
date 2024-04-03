@@ -6,9 +6,8 @@ import {PaymentService} from "./payments.service";
 export class PaymentController {
   constructor(private readonly paymentService: PaymentService) {}
 
-  @Post("confirm")
-  async confirmPayment(@Body() body: any) {
-    const confirmResponse = await this.paymentService.confirmPayment(body);
-    return {data: confirmResponse};
+  @Post("/confirm")
+  async confirmPayment(@Body() paymentInfo: {paymentKey: string; orderId: string; amount: number; user_id: string}) {
+    return this.paymentService.confirmPayment(paymentInfo);
   }
 }
