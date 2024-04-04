@@ -33,7 +33,7 @@ export class PaymentService {
     console.log(data, userId);
 
     // 결제가 성공적으로 이루어졌다면 결제 정보를 저장하고 사용자 엔터티의 결제 내역에 추가
-    if (data.success) {
+    if (data.status === "DONE") {
       const payment = new Payment();
       payment.paymentKey = paymentKey;
 
