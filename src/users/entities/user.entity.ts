@@ -15,9 +15,6 @@ export class Users {
   @Column("varchar", {name: "provider_id", length: 45})
   provider_id: string;
 
-  @Column("varchar", {name: "phone"})
-  phone: string;
-
   // @Column()
   // phone: string;
 

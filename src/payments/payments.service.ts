@@ -32,6 +32,8 @@ export class PaymentService {
     const data = await response.json();
     console.log(data, userId);
 
+    // 결제가 성공적으로 이루어졌다면 결제 정보를 Payments엔티티에 저장. -> 수정
+
     // 결제가 성공적으로 이루어졌다면 결제 정보를 저장하고 사용자 엔터티의 결제 내역에 추가
     if (data.status === "DONE") {
       const payment = new Payment();
@@ -43,8 +45,13 @@ export class PaymentService {
         throw new NotFoundException("사용자를 찾을 수 없습니다.");
       }
 
-      // 사용자의 결제 내역에 추가
-      user.payments.push(payment);
+      // 사용자의 결제 내역을 먼저 확인하고, 없으면 배열을 생성하여 추가
+      if (!user.payments) {
+        user.payments = [payment];
+      } else {
+        user.payments.push(payment);
+      }
+
       await this.userRepository.save(user);
 
       console.log(payment);
