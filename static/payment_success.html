@@ -92,7 +92,8 @@
       const paymentKey = urlParams.get("paymentKey");
       const orderId = urlParams.get("orderId");
       const amount = urlParams.get("amount");
-      const userId = urlParams.get("userId");
+      // const userId = urlParams.get("userId");
+      const userId = "kangsooooozin";
 
       const paymentKeyElement = document.getElementById("paymentKey");
       const orderIdElement = document.getElementById("orderId");
@@ -120,8 +121,8 @@
             paymentKey,
             orderId,
             amount,
+            userId,
           }),
-          userId,
         });
 
         if (response.ok) {

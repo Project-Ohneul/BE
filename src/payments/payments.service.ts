@@ -16,22 +16,21 @@ export class PaymentService {
 
   private readonly secretKey = process.env.TOSS_SECRET_KEY;
 
-  async confirmPayment(paymentInfo: {paymentKey: string; orderId: string; amount: number}, userId: string) {
-    const {paymentKey, orderId, amount} = paymentInfo;
+  async confirmPayment(paymentInfo: {paymentKey: string; orderId: string; amount: number; userId: string}) {
+    const {paymentKey, orderId, amount, userId} = paymentInfo;
 
     const encryptedSecretKey = "Basic " + Buffer.from(this.secretKey + ":").toString("base64");
 
     const response = await fetch("https://api.tosspayments.com/v1/payments/confirm", {
       method: "POST",
-      body: JSON.stringify({orderId, amount, paymentKey}),
+      body: JSON.stringify({orderId, amount, paymentKey, userId}),
       headers: {
         Authorization: encryptedSecretKey,
         "Content-Type": "application/json",
       },
-      userId,
     });
     const data = await response.json();
-    console.log(data);
+    console.log(data, userId);
 
     // 결제가 성공적으로 이루어졌다면 결제 정보를 저장하고 사용자 엔터티의 결제 내역에 추가
     if (data.success) {
