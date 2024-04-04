@@ -17,10 +17,10 @@ export class Payment {
   paymentKey: string;
 
   @ManyToOne(() => Users, (user) => user.payments)
-  @JoinColumn({name: "user_id"})
-  user_id: Users;
+  @JoinColumn({name: "phone"})
+  phone: Users;
 
-  @ManyToOne(() => Order)
-  @JoinColumn({name: "order_id"})
-  order_id: Order;
+  // @ManyToOne(() => Order)
+  // @JoinColumn({name: "order_id"})
+  // order_id: Order;
 }

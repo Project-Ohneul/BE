@@ -29,15 +29,39 @@
     // ------ '결제하기' 버튼 누르면 결제창 띄우기 ------
     // 더 많은 결제 정보 파라미터는 결제위젯 SDK에서 확인하세요.
     // https://docs.tosspayments.com/reference/widget-sdk#requestpayment결제-정보
-    button.addEventListener("click", function () {
-      paymentWidget.requestPayment({
-        orderId: "6bd7ffd4-5c6f-4b24-8bb4-d2354705a45c", // 주문 ID(직접 만들어주세요)
-        orderName: "토스 티셔츠 외 2건", // 주문명
-        successUrl: "http://localhost:4000/payments/success", // 결제에 성공하면 이동하는 페이지(간단하게 직접 만들었다)
-        failUrl: "http://localhost:4000/fail", // 결제에 실패하면 이동하는 페이지(어차피 에러니까 안 만들었다)
-        customerEmail: "customer123@gmail.com",
-        customerName: "강똥꼬",
-      });
+    // button.addEventListener("click", function () {
+    //   paymentWidget.requestPayment({
+    //     orderId: "6bd7ffd4-5c6f-4b24-8bb4-d2354705a45c", // 주문 ID(직접 만들어주세요)
+    //     orderName: "토스 티셔츠 외 2건", // 주문명
+    //     successUrl: "http://localhost:4000/payments/success", // 결제에 성공하면 이동하는 페이지(간단하게 직접 만들었다)
+    //     failUrl: "http://localhost:4000/fail", // 결제에 실패하면 이동하는 페이지(어차피 에러니까 안 만들었다)
+    //     customerEmail: "customer123@gmail.com",
+    //     customerName: "강똥꼬",
+    //   });
+    // });
+
+    function generateRandomString() {
+      return Math.random().toString(36).substring(2, 15);
+    }
+
+    button.addEventListener("click", () => {
+      try {
+        /**
+         * 결제 요청
+         * @docs https://docs.tosspayments.com/reference/widget-sdk#requestpayment%EA%B2%B0%EC%A0%9C-%EC%A0%95%EB%B3%B4
+         */
+        const phoneNumber = "010-4762-1402";
+        paymentWidget.requestPayment({
+          orderId: generateRandomString(),
+          orderName: "토스 티셔츠 외 2건",
+          phoneNumber: phoneNumber,
+          successUrl: "http://localhost:4000/payments/success",
+          failUrl: "http://localhost:4000/fail",
+        });
+      } catch (err) {
+        // TODO: 에러 처리
+        throw new Error("결제 실패");
+      }
     });
   </script>
 </body>
