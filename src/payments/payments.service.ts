@@ -16,18 +16,19 @@ export class PaymentService {
 
   private readonly secretKey = process.env.TOSS_SECRET_KEY;
 
-  async confirmPayment(paymentInfo: {paymentKey: string; orderId: string; amount: number; phoneNumber: string}) {
-    const {paymentKey, orderId, amount, phoneNumber} = paymentInfo;
+  async confirmPayment(paymentInfo: {paymentKey: string; orderId: string; amount: number}, userId: string) {
+    const {paymentKey, orderId, amount} = paymentInfo;
 
     const encryptedSecretKey = "Basic " + Buffer.from(this.secretKey + ":").toString("base64");
 
     const response = await fetch("https://api.tosspayments.com/v1/payments/confirm", {
       method: "POST",
-      body: JSON.stringify({orderId, amount, paymentKey, phoneNumber}),
+      body: JSON.stringify({orderId, amount, paymentKey}),
       headers: {
         Authorization: encryptedSecretKey,
         "Content-Type": "application/json",
       },
+      userId,
     });
     const data = await response.json();
     console.log(data);
@@ -38,7 +39,7 @@ export class PaymentService {
       payment.paymentKey = paymentKey;
 
       // 사용자 ID를 통해 사용자 엔터티를 찾음
-      const user = await this.userRepository.findOne({where: {phone: phoneNumber}});
+      const user = await this.userRepository.findOne({where: {user_id: userId}});
       if (!user) {
         throw new NotFoundException("사용자를 찾을 수 없습니다.");
       }

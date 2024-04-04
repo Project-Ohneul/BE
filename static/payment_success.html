@@ -27,8 +27,8 @@
         <div class="p-grid-col text--right" id="paymentKey" style="white-space: initial; width: 250px"></div>
       </div>
       <div class="p-grid typography--p" style="margin-top: 10px">
-        <div class="p-grid-col text--left"><b>주문자 정보(전화번호)</b></div>
-        <div class="p-grid-col text--right" id="phoneNumber" style="white-space: initial; width: 250px"></div>
+        <div class="p-grid-col text--left"><b>주문자 정보</b></div>
+        <div class="p-grid-col text--right" id="userId" style="white-space: initial; width: 250px"></div>
       </div>
 
       <div class="p-grid">
@@ -92,17 +92,17 @@
       const paymentKey = urlParams.get("paymentKey");
       const orderId = urlParams.get("orderId");
       const amount = urlParams.get("amount");
-      const phoneNumber = urlParams.get("phoneNumber");
+      const userId = urlParams.get("userId");
 
       const paymentKeyElement = document.getElementById("paymentKey");
       const orderIdElement = document.getElementById("orderId");
       const amountElement = document.getElementById("amount");
-      const phoneNumberElement = document.getElementById("phoneNumber");
+      const userIdElement = document.getElementById("userId");
 
       paymentKeyElement.textContent = paymentKey;
       orderIdElement.textContent = orderId;
       amountElement.textContent = `${amount}원`;
-      phoneNumberElement.textContent = phoneNumber;
+      userIdElement.textContent = userId;
 
       const confirmLoadingSection = document.querySelector(".confirm-loading");
       const confirmSuccessSection = document.querySelector(".confirm-success");
@@ -120,8 +120,8 @@
             paymentKey,
             orderId,
             amount,
-            phoneNumber,
           }),
+          userId,
         });
 
         if (response.ok) {

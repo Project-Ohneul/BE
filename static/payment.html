@@ -50,11 +50,11 @@
          * 결제 요청
          * @docs https://docs.tosspayments.com/reference/widget-sdk#requestpayment%EA%B2%B0%EC%A0%9C-%EC%A0%95%EB%B3%B4
          */
-        const phoneNumber = "010-4762-1402";
+        const userId = "010-4762-1402";
         paymentWidget.requestPayment({
           orderId: generateRandomString(),
           orderName: "토스 티셔츠 외 2건",
-          phoneNumber: phoneNumber,
+          userId: userId,
           successUrl: "http://localhost:4000/payments/success",
           failUrl: "http://localhost:4000/fail",
         });

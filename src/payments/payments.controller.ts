@@ -7,10 +7,8 @@ export class PaymentController {
   constructor(private readonly paymentService: PaymentService) {}
 
   @Post("/confirm")
-  async confirmPayment(
-    @Body() paymentInfo: {paymentKey: string; orderId: string; amount: number; phoneNumber: string}
-  ): Promise<{status: number; message: string}> {
-    await this.paymentService.confirmPayment(paymentInfo);
+  async confirmPayment(@Body() paymentInfo: {paymentKey: string; orderId: string; amount: number}, userId: string): Promise<{status: number; message: string}> {
+    await this.paymentService.confirmPayment(paymentInfo, userId);
     return {status: 200, message: "결제가 완료되었습니다."};
   }
 }
