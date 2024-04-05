@@ -1,6 +1,5 @@
 import {Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn} from "typeorm";
 import {Users} from "../users/entities/user.entity";
-import {Order} from "src/orders/orders.entity";
 
 @Entity({name: "Payments"})
 export class Payment {

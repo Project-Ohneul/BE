@@ -18,6 +18,10 @@
         <div class="p-grid-col text--left"><b>결제금액</b></div>
         <div class="p-grid-col text--right" id="amount"></div>
       </div>
+      <div class="p-grid typography--p" style="margin-top: 50px">
+        <div class="p-grid-col text--left"><b>충전된 코인</b></div>
+        <div class="p-grid-col text--right" id="coin"></div>
+      </div>
       <div class="p-grid typography--p" style="margin-top: 10px">
         <div class="p-grid-col text--left"><b>주문번호</b></div>
         <div class="p-grid-col text--right" id="orderId"></div>
@@ -94,16 +98,19 @@
       const amount = urlParams.get("amount");
       // const userId = urlParams.get("userId");
       const userId = "01fdb196-b895-437e-aba1-0032e58a5652";
+      const coin = 200;
 
       const paymentKeyElement = document.getElementById("paymentKey");
       const orderIdElement = document.getElementById("orderId");
       const amountElement = document.getElementById("amount");
       const userIdElement = document.getElementById("userId");
+      const coinElement = document.getElementById("coin");
 
       paymentKeyElement.textContent = paymentKey;
       orderIdElement.textContent = orderId;
       amountElement.textContent = `${amount}원`;
       userIdElement.textContent = userId;
+      coinElement.textContent = coin;
 
       const confirmLoadingSection = document.querySelector(".confirm-loading");
       const confirmSuccessSection = document.querySelector(".confirm-success");
@@ -122,6 +129,7 @@
             paymentKey,
             orderId,
             amount,
+            coin,
             userId,
           }),
         });

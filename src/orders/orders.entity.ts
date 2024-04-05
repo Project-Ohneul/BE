@@ -1,10 +1,9 @@
-import {Entity, PrimaryColumn, Column, OneToMany} from "typeorm";
-import {Payment} from "../payments/payments.entity";
+import {Entity, PrimaryGeneratedColumn, Column, OneToMany} from "typeorm";
 
 @Entity({name: "Orders"})
 export class Order {
-  @PrimaryColumn()
-  order_id: string;
+  @PrimaryGeneratedColumn()
+  order_id: number;
 
   @Column()
   coin: number;

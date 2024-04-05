@@ -6,7 +6,7 @@ export class OrderController {
   constructor(private readonly orderService: OrderService) {}
 
   @Post()
-  async createOrder(@Body() body: {user_id: string; amount: number; coin: number}) {
+  async createOrder(@Body() body: {order_id: number; amount: number; coin: number}) {
     try {
       const {amount, coin} = body;
       const order = await this.orderService.createOrder(amount, coin);
@@ -17,7 +17,7 @@ export class OrderController {
   }
 
   @Get("/:order_id")
-  async getOneOrder(@Param("order_id") order_id: string) {
+  async getOneOrder(@Param("order_id") order_id: number) {
     try {
       const order = await this.orderService.getOneOrder(order_id);
       if (!order) {
@@ -35,7 +35,7 @@ export class OrderController {
   }
 
   @Delete("/:order_id")
-  async deleteOrder(@Param("order_id") order_id: string): Promise<{status: number; message: string}> {
+  async deleteOrder(@Param("order_id") order_id: number): Promise<{status: number; message: string}> {
     await this.orderService.deleteOrder(order_id);
     return {status: 200, message: "해당 주문 정보를 삭제하였습니다."};
   }
