@@ -42,7 +42,7 @@ export class ChatService {
     }
   }
 
-  deleteChatRoom(socketId: string, server: Server) {
+  deleteChatRoom(socketId: string, server: Server, userIndoList: any) {
     console.log("delete chatroom entries", this.chatRooms.entries());
     for (const [roomName, room] of this.chatRooms.entries()) {
       console.log("user order delete", socketId, "rcheck geonoroom", roomName);
@@ -53,7 +53,8 @@ export class ChatService {
           const remainingSocket = room[0]; // 마지막으로 남은 소켓
           server.in(roomName).emit("finish"); // 대화 종료 알림
           remainingSocket.leave(roomName); // 방에서 소켓 제거
-          this.chatRooms.delete(roomName); // 방 삭제
+          userIndoList.delete(roomName);
+          // this.chatRooms.delete(roomName); // 방 삭제
           console.log(
             `Chat room ${roomName} has been deleted. ${this.chatRooms.entries()}`
           );

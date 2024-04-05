@@ -34,6 +34,9 @@ export class Users {
   @Column("int", { name: "score" })
   score: number | 0;
 
+  @Column("int", { name: "score_amount" })
+  score_amount: number | 0;
+
   @Column("int", { name: "coin" })
   coin: number | 0;
 

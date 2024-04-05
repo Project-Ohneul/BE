@@ -35,6 +35,11 @@ export class UsersController {
     res.json(user);
   }
 
+  @Patch("/score")
+  async updateScore(@Body() body) {
+    await this.usersService.updateScore(body);
+  }
+
   @Patch(":id")
   async updateUser(@Param() param, @Body() updateData) {
     await this.usersService.updateUser(param.id, updateData);

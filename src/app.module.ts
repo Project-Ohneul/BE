@@ -15,6 +15,7 @@ import { UserHobbyModule } from "./user-hobbies/user-hobbies.module";
 import { PaymentModule } from "./payments/payments.module";
 import { OrderController } from "./orders/orders.controller";
 import { OrderModule } from "./orders/orders.module";
+import { ReportsModule } from './reports/reports.module';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { OrderModule } from "./orders/orders.module";
     UserHobbyModule,
     PaymentModule,
     OrderModule,
+    ReportsModule,
   ],
   controllers: [AppController, OrderController],
   providers: [AppService],
