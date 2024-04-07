@@ -174,7 +174,9 @@ export class MyGateway implements OnModuleInit, OnGatewayDisconnect {
 
   // 상대 유저 신고
   @SubscribeMessage("reportUser")
-  async onReportUser(@MessageBody() reportedUserId: any, reason: any) {
+  async onReportUser(@MessageBody() data: any) {
+    const { reportedUserId, reportReason } = data;
+    console.log("client data", data);
     // 클라이언트에서 주는 다른 유저(상대)의 user_id
     console.log(reportedUserId);
     // user_id 확인
@@ -182,7 +184,7 @@ export class MyGateway implements OnModuleInit, OnGatewayDisconnect {
     // 신고당하는 유저의 user_id가 있으면 report를 +1 하고, 저장
 
     if (getReportedUser) {
-      await this.reportsService.postReport(reportedUserId, reason);
+      await this.reportsService.postReport(reportedUserId, reportReason);
       await this.usersService.updateUser(reportedUserId, {
         report: getReportedUser.report + 1,
       });
@@ -190,7 +192,9 @@ export class MyGateway implements OnModuleInit, OnGatewayDisconnect {
   }
 
   @SubscribeMessage("score")
-  async updateScore(@MessageBody() userId: any, score: any) {
+  async updateScore(@MessageBody() data) {
+    console.log("리뷰 받은 데이터", data);
+    const { userId, score } = data;
     await this.usersService.updateScore({ user_id: userId, score });
   }
 

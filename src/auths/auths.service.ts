@@ -1,4 +1,5 @@
 import { Injectable } from "@nestjs/common";
+import { HttpModule, HttpService } from "@nestjs/axios";
 import { UsersService } from "src/users/users.service";
 import * as dotenv from "dotenv";
 
@@ -6,7 +7,12 @@ dotenv.config();
 
 @Injectable()
 export class AuthsService {
-  constructor(private readonly usersService: UsersService) {}
+  accessToken: string;
+  private http: HttpService;
+  constructor(private readonly usersService: UsersService) {
+    this.accessToken = "";
+    this.http = new HttpService();
+  }
 
   async OAuthLogin({ req, res }) {
     console.log("authsService: ", req.user);
@@ -18,6 +24,7 @@ export class AuthsService {
       await this.usersService.createBySocialLogin(req.user);
       user = await this.usersService.findUserToProviderId(req.user.provider_id);
     }
+    this.accessToken = req.user.accessToken;
 
     const setting = {
       // domain: "localhost",
@@ -37,5 +44,11 @@ export class AuthsService {
       res.cookie("provider", req.user.provider, setting);
       res.redirect(process.env.KAKAO_LOGIN_REDIRECT);
     }
+  }
+
+  async logout(req, res): Promise<any> {
+    const header = `Authentication=; HttpOnly; Path=/; Max-Age=0`;
+    res.setHeader("Set-Cookie", header);
+    return res.sendStatus(200);
   }
 }

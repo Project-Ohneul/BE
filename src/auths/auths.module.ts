@@ -7,9 +7,14 @@ import { UsersService } from "src/users/users.service";
 import { JwtModule } from "@nestjs/jwt";
 import { JwtNaverStrategy } from "./strategies/jwt-social-naver.strategy";
 import { JwtKakaoStrategy } from "./strategies/jwt-social-kakao.strategy";
+import { HttpModule } from "@nestjs/axios";
 
 @Module({
-  imports: [JwtModule.register({}), TypeOrmModule.forFeature([Users])],
+  imports: [
+    JwtModule.register({}),
+    TypeOrmModule.forFeature([Users]),
+    HttpModule,
+  ],
   controllers: [AuthsController],
   providers: [AuthsService, UsersService, JwtNaverStrategy, JwtKakaoStrategy],
 })

@@ -1,4 +1,4 @@
-import { Controller, Get, Req, Res, UseGuards } from "@nestjs/common";
+import { Controller, Get, Post, Req, Res, UseGuards } from "@nestjs/common";
 import { AuthsService } from "./auths.service";
 import { AuthGuard } from "@nestjs/passport";
 import { Request, Response } from "express";
@@ -35,5 +35,17 @@ export class AuthsController {
   @UseGuards(AuthGuard("kakao"))
   async loginKakaoCallback(@Req() req: Request, @Res() res: Response) {
     this.authsService.OAuthLogin({ req, res });
+  }
+
+  @Post("/logout/naver")
+  @UseGuards(AuthGuard("naver"))
+  async logoutNaver(@Req() req: Request, @Res() res: Response) {
+    this.authsService.logout(req, res);
+  }
+
+  @Post("logout/kakao")
+  @UseGuards(AuthGuard("kakao"))
+  async logoutKakao(@Req() req: Request, @Res() res: Response) {
+    this.authsService.logout(req, res);
   }
 }
