@@ -1,17 +1,17 @@
-import { Controller, Get, Req, Res, UseGuards } from "@nestjs/common";
+import { Controller, Get, Post, Req, Res, UseGuards } from "@nestjs/common";
 import { AuthsService } from "./auths.service";
 import { AuthGuard } from "@nestjs/passport";
 import { Request, Response } from "express";
 
-interface User {
-  user: {
-    username: string;
-    birth: string;
-    gender: string;
-    accessToken: string;
-    refreshToken: string;
-  };
-}
+// interface User {
+//   user: {
+//     username: string;
+//     birth: string;
+//     gender: string;
+//     accessToken: string;
+//     refreshToken: string;
+//   };
+// }
 
 @Controller("login")
 export class AuthsController {
@@ -23,7 +23,7 @@ export class AuthsController {
 
   @Get("/naver/callback")
   @UseGuards(AuthGuard("naver"))
-  async loginNaverCallback(@Req() req: Request & User, @Res() res: Response) {
+  async loginNaverCallback(@Req() req: Request, @Res() res: Response) {
     this.authsService.OAuthLogin({ req, res });
   }
 
@@ -35,5 +35,17 @@ export class AuthsController {
   @UseGuards(AuthGuard("kakao"))
   async loginKakaoCallback(@Req() req: Request, @Res() res: Response) {
     this.authsService.OAuthLogin({ req, res });
+  }
+
+  @Post("/logout/naver")
+  @UseGuards(AuthGuard("naver"))
+  async logoutNaver(@Req() req: Request, @Res() res: Response) {
+    this.authsService.logout(req, res);
+  }
+
+  @Post("logout/kakao")
+  @UseGuards(AuthGuard("kakao"))
+  async logoutKakao(@Req() req: Request, @Res() res: Response) {
+    this.authsService.logout(req, res);
   }
 }

@@ -17,11 +17,9 @@ export class UsersService {
 
   async createBySocialLogin(body) {
     console.log("service body:", body);
-    const user_id = uuidv4();
     const { provider_id, gender, username, birth, accessToken, refreshToken } =
       body;
     await this.usersRepository.save({
-      user_id,
       provider_id,
       username,
       gender,
@@ -56,5 +54,27 @@ export class UsersService {
 
   async deleteUser(id) {
     await this.usersRepository.delete({ user_id: id });
+  }
+
+  async updateScore({ user_id, score }) {
+    const user = await this.usersRepository.findOne({
+      where: { user_id },
+    });
+
+    console.log("user: ", user);
+    const currentScore = user.score;
+    const currentScoreAmount = user.score_amount;
+    if (currentScoreAmount === 0) {
+      await this.updateUser(user_id, { score, score_amount: 1 });
+    } else if (currentScoreAmount >= 1) {
+      const average =
+        (currentScore * currentScoreAmount + score) / (currentScoreAmount + 1);
+      console.log(average);
+
+      await this.usersRepository.update(user_id, {
+        score: average,
+        score_amount: currentScoreAmount + 1,
+      });
+    }
   }
 }
