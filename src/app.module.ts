@@ -1,7 +1,7 @@
-import { Module } from "@nestjs/common";
-import { AppController } from "./app.controller";
-import { ConfigModule } from "@nestjs/config";
-import { TypeOrmModule } from "@nestjs/typeorm";
+import {Module} from "@nestjs/common";
+import {AppController} from "./app.controller";
+import {ConfigModule} from "@nestjs/config";
+import {TypeOrmModule} from "@nestjs/typeorm";
 import * as ormconfig from "../ormconfig";
 import { AuthsModule } from "./auths/auths.module";
 import { UsersModule } from "./users/users.module";
@@ -16,6 +16,7 @@ import { PaymentModule } from "./payments/payments.module";
 import { OrderController } from "./orders/orders.controller";
 import { OrderModule } from "./orders/orders.module";
 import { ReportsModule } from './reports/reports.module';
+
 
 @Module({
   imports: [

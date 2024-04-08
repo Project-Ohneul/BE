@@ -61,8 +61,8 @@ export class Users {
   @OneToMany(() => Payment, (payment) => payment.user_id)
   payments: Payment[];
 
-  @OneToMany(() => Order, (order) => order.user_id)
-  orders: Order[];
+  // @OneToMany(() => Order, (order) => order.user_id)
+  // orders: Order[];
 
   // Users Table에 추가!
   @Column({ name: "report", default: 0 })

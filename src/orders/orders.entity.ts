@@ -1,26 +1,13 @@
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  OneToMany,
-  ManyToOne,
-  JoinColumn,
-} from "typeorm";
-import { Payment } from "../payments/payments.entity";
-import { Users } from "../users/entities/user.entity";
+import {Entity, PrimaryGeneratedColumn, Column, OneToMany} from "typeorm";
 
-@Entity({ name: "Orders" })
+@Entity({name: "Orders"})
 export class Order {
   @PrimaryGeneratedColumn()
   order_id: number;
 
   @Column()
+  coin: number;
+
+  @Column()
   amount: number;
-
-  @OneToMany(() => Payment, (payment) => payment.order_id)
-  payments: Payment[];
-
-  @ManyToOne(() => Users, (user) => user)
-  @JoinColumn({ name: "user_id" })
-  user_id: Users;
 }
