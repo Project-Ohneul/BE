@@ -52,18 +52,15 @@ export class PaymentService {
 
       try {
         const savedPayment = await this.paymentRepository.save(payment);
-        // 사용자의 코인 업데이트
         await queryRunner.manager.save(Users, user);
         await queryRunner.commitTransaction();
 
         console.log(savedPayment);
         return savedPayment;
       } catch (error) {
-        // 에러 발생 시 롤백
         await queryRunner.rollbackTransaction();
         throw error;
       } finally {
-        // queryRunner 해제
         await queryRunner.release();
       }
     } else {
