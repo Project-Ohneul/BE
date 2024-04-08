@@ -32,28 +32,40 @@ export class PaymentService {
     const data = await response.json();
     console.log(data, userId);
 
-    // 결제가 성공적으로 이루어졌다면 결제 정보를 저장하고 사용자 엔터티의 결제 내역에 추가
     if (data.status === "DONE") {
-      // 결제 정보 생성
       const payment = new Payment();
       payment.amount = amount;
       payment.coin = coin;
       payment.paymentKey = paymentKey;
 
-      // 사용자 ID를 통해 사용자 엔터티를 찾음
       const user = await this.userRepository.findOne({where: {user_id: userId}});
       if (!user) {
         throw new NotFoundException("사용자를 찾을 수 없습니다.");
       }
 
-      // 결제 정보에 사용자를 설정
+      user.coin += coin;
       payment.user_id = user;
 
-      // 결제 정보를 저장
-      const savedPayment = await this.paymentRepository.save(payment);
+      const queryRunner = this.userRepository.manager.connection.createQueryRunner();
+      await queryRunner.connect();
+      await queryRunner.startTransaction();
 
-      console.log(savedPayment);
-      return savedPayment;
+      try {
+        const savedPayment = await this.paymentRepository.save(payment);
+        // 사용자의 코인 업데이트
+        await queryRunner.manager.save(Users, user);
+        await queryRunner.commitTransaction();
+
+        console.log(savedPayment);
+        return savedPayment;
+      } catch (error) {
+        // 에러 발생 시 롤백
+        await queryRunner.rollbackTransaction();
+        throw error;
+      } finally {
+        // queryRunner 해제
+        await queryRunner.release();
+      }
     } else {
       throw new NotFoundException("결제에 실패하였습니다.");
     }
