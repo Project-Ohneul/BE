@@ -127,7 +127,11 @@ export class MyGateway implements OnModuleInit, OnGatewayDisconnect {
 
   // 클라이언트로부터 'consent' 메시지를 받았을 때의 핸들러
   @SubscribeMessage("consent")
-  onConsent(@MessageBody() data: any, @ConnectedSocket() socket: Socket) {
+  async onConsent(
+    @MessageBody() data: any,
+    @ConnectedSocket() socket: Socket,
+    res
+  ) {
     console.log("Consent received from:", socket.id, "Data:", data, "rooms"); // 동의 정보 수신 로그
     const rooms = this.server.sockets.adapter.sids.get(socket.id);
 
@@ -136,7 +140,7 @@ export class MyGateway implements OnModuleInit, OnGatewayDisconnect {
       return;
     }
     const userAgreeData = new User(socket.id, data);
-
+    const user = await this.usersService.findUser(data.user_id);
     // 방에 대한 처리
     rooms.forEach((_, room) => {
       if (room !== socket.id) {
@@ -158,6 +162,7 @@ export class MyGateway implements OnModuleInit, OnGatewayDisconnect {
             this.server.in(room).emit("start"); // 대화 시작
             this.userAgreementInfo.delete(room); // 동의 정보 삭제
             this.chatService.handleAgreement(room, this.server);
+            this.usersService.updateUser(data.user_id, { coin: user.coin - 5 });
           } else {
             // 하나라도 동의하지 않은 경우
             console.log("fuck");
