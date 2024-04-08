@@ -127,11 +127,7 @@ export class MyGateway implements OnModuleInit, OnGatewayDisconnect {
 
   // 클라이언트로부터 'consent' 메시지를 받았을 때의 핸들러
   @SubscribeMessage("consent")
-  async onConsent(
-    @MessageBody() data: any,
-    @ConnectedSocket() socket: Socket,
-    res
-  ) {
+  async onConsent(@MessageBody() data: any, @ConnectedSocket() socket: Socket) {
     console.log("Consent received from:", socket.id, "Data:", data, "rooms"); // 동의 정보 수신 로그
     const rooms = this.server.sockets.adapter.sids.get(socket.id);
 
