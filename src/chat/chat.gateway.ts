@@ -152,7 +152,7 @@ export class MyGateway implements OnModuleInit, OnGatewayDisconnect {
           const user2Re = this.userAgreementInfo.get(room)[1].getAgree();
 
           console.log("----------", user1Re, user2Re);
-          if (user1Re === "agree" && user2Re === "agree") {
+          if (user1Re.consent === "agree" && user2Re.consent === "agree") {
             // 두 사용자가 모두 동의한 경우
             console.log("love");
             this.server.in(room).emit("start"); // 대화 시작
