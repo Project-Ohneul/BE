@@ -11,6 +11,7 @@ import { Server, Socket } from "socket.io";
 import { Body, OnModuleInit } from "@nestjs/common";
 import { ChatService } from "./chat.service";
 import { UsersService } from "src/users/users.service";
+import { CoinHistoryService } from "src/coin-history/coin-history.service";
 
 // WebSocketGateway 데코레이터를 이용하여 WebSocketGateway 클래스를 정의합니다.
 @WebSocketGateway({
@@ -28,7 +29,8 @@ export class MyGateway implements OnModuleInit, OnGatewayDisconnect {
   constructor(
     private chatService: ChatService,
     private usersService: UsersService,
-    private reportsService: ReportsService
+    private reportsService: ReportsService,
+    private coinHistoryService: CoinHistoryService
   ) {}
 
   handleConnection(socket: Socket) {
@@ -159,6 +161,7 @@ export class MyGateway implements OnModuleInit, OnGatewayDisconnect {
             this.userAgreementInfo.delete(room); // 동의 정보 삭제
             this.chatService.handleAgreement(room, this.server);
             this.usersService.updateUser(data.user_id, { coin: user.coin - 5 });
+            this.coinHistoryService.postCoinHistory(data.user_id, 5);
           } else {
             // 하나라도 동의하지 않은 경우
             console.log("fuck");

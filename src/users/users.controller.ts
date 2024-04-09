@@ -31,7 +31,7 @@ export class UsersController {
 
   @Get(":id")
   async findUser(@Res() res: Response, @Param() param) {
-    const user = await this.usersService.findUser(param.id);
+    const user = await this.usersService.findUser(param);
     res.json(user);
   }
 

@@ -16,6 +16,7 @@ import { PaymentModule } from "./payments/payments.module";
 import { OrderController } from "./orders/orders.controller";
 import { OrderModule } from "./orders/orders.module";
 import { ReportsModule } from './reports/reports.module';
+import { CoinHistoryModule } from './coin-history/coin-history.module';
 
 
 @Module({
@@ -36,6 +37,7 @@ import { ReportsModule } from './reports/reports.module';
     PaymentModule,
     OrderModule,
     ReportsModule,
+    CoinHistoryModule,
   ],
   controllers: [AppController, OrderController],
   providers: [AppService],
