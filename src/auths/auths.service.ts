@@ -2,6 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { HttpModule, HttpService } from "@nestjs/axios";
 import { UsersService } from "src/users/users.service";
 import * as dotenv from "dotenv";
+import { VisitHistoryService } from "src/visit-history/visit-history.service";
 
 dotenv.config();
 
@@ -9,7 +10,10 @@ dotenv.config();
 export class AuthsService {
   accessToken: string;
   private http: HttpService;
-  constructor(private readonly usersService: UsersService) {
+  constructor(
+    private readonly usersService: UsersService,
+    private visitHistoryService: VisitHistoryService
+  ) {
     this.accessToken = "";
     this.http = new HttpService();
   }
@@ -23,9 +27,10 @@ export class AuthsService {
     if (!user) {
       await this.usersService.createBySocialLogin(req.user);
       user = await this.usersService.findUserToProviderId(req.user.provider_id);
+      await this.visitHistoryService.postVisitHistory(user.user_id);
     }
     this.accessToken = req.user.accessToken;
-
+    await this.visitHistoryService.updateVisitHistory(user.user_id);
     const setting = {
       // domain: "localhost",
       // sameSite: "none",

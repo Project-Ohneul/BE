@@ -2,6 +2,7 @@ import { Controller, Get, Post, Req, Res, UseGuards } from "@nestjs/common";
 import { AuthsService } from "./auths.service";
 import { AuthGuard } from "@nestjs/passport";
 import { Request, Response } from "express";
+import { VisitHistoryService } from "src/visit-history/visit-history.service";
 
 // interface User {
 //   user: {
@@ -13,25 +14,28 @@ import { Request, Response } from "express";
 //   };
 // }
 
-@Controller("login")
+@Controller()
 export class AuthsController {
-  constructor(private readonly authsService: AuthsService) {}
+  constructor(
+    private readonly authsService: AuthsService,
+    private visitHistoryService: VisitHistoryService
+  ) {}
 
-  @Get("/naver")
+  @Get("/login/naver")
   @UseGuards(AuthGuard("naver"))
   async loginNaver() {}
 
-  @Get("/naver/callback")
+  @Get("/login/naver/callback")
   @UseGuards(AuthGuard("naver"))
   async loginNaverCallback(@Req() req: Request, @Res() res: Response) {
     this.authsService.OAuthLogin({ req, res });
   }
 
-  @Get("/kakao")
+  @Get("/login/kakao")
   @UseGuards(AuthGuard("kakao"))
   async loginKakao() {}
 
-  @Get("/kakao/callback")
+  @Get("/login/kakao/callback")
   @UseGuards(AuthGuard("kakao"))
   async loginKakaoCallback(@Req() req: Request, @Res() res: Response) {
     this.authsService.OAuthLogin({ req, res });
