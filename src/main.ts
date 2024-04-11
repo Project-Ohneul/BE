@@ -1,9 +1,9 @@
-import { NestFactory } from "@nestjs/core";
-import { AppModule } from "./app.module";
+import {NestFactory} from "@nestjs/core";
+import {AppModule} from "./app.module";
 // import { createServer } from "https";
-import { ValidationPipe } from "@nestjs/common";
+import {ValidationPipe} from "@nestjs/common";
 // import * as fs from "fs";
-import { NestExpressApplication } from "@nestjs/platform-express";
+import {NestExpressApplication} from "@nestjs/platform-express";
 import * as express from "express";
 import * as path from "path";
 // import { WsAdapter } from "@nestjs/platform-ws";
@@ -22,7 +22,7 @@ async function bootstrap() {
   });
 
   app.enableCors({
-    origin: "http://localhost:3000",
+    origin: ["http://localhost:3000", "http://18.204.230.142"],
     methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE", "OPTIONS"],
     credentials: true,
     allowedHeaders: "*",
