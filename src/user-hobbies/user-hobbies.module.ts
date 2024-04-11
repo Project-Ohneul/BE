@@ -4,7 +4,6 @@ import { UserHobbyService } from "./user-hobbies.service";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { UserHobby } from "./user-hobbies.entity";
 import { UsersModule } from "../users/users.module";
-import { UsersService } from "src/users/users.service";
 import { Users } from "src/users/entities/user.entity";
 
 @Module({
