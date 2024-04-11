@@ -9,6 +9,9 @@ import {
   OneToMany,
   ManyToMany,
   JoinTable,
+  DeleteDateColumn,
+  UpdateDateColumn,
+  CreateDateColumn,
 } from "typeorm";
 
 @Entity({ schema: "ohneul", name: "Users" })
@@ -67,4 +70,13 @@ export class Users {
   // Users Table에 추가!
   @Column({ name: "report", default: 0 })
   report: number;
+
+  @DeleteDateColumn({ name: "deleted_at", type: "timestamp" })
+  deleted_at: Date | null;
+
+  @UpdateDateColumn({ name: "updated_at", type: "timestamp" })
+  updated_at: Date;
+
+  @CreateDateColumn({ name: "created_at", type: "timestamp" })
+  created_at: Date;
 }

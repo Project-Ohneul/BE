@@ -18,7 +18,7 @@ export class VisitHistoryService {
     await this.visitHistoryRepository.save({ user_id });
   }
 
-  async updateVisitHistory(user_id) {
+  async updateVisitHistory(user_id, res) {
     const visitHistory = await this.visitHistoryRepository.findOne({
       where: { user_id },
     });
@@ -46,6 +46,7 @@ export class VisitHistoryService {
     console.log("dateString: ", dateToNumber);
 
     if (updatedAtToNumber === dateToNumber) {
+      res.cookie("reward", "F");
       return;
     } else if (updatedAtToNumber < dateToNumber) {
       const user = await this.usersRepository.findOne({
@@ -59,6 +60,13 @@ export class VisitHistoryService {
         }
       );
       await this.usersRepository.update(user_id, { coin: user.coin + 5 });
+      res.cookie("reward", "T");
     }
+  }
+
+  async getOneVisitHistory(user_id) {
+    return this.visitHistoryRepository.findOne({
+      where: { user_id },
+    });
   }
 }

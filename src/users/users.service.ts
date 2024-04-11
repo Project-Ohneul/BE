@@ -44,6 +44,7 @@ export class UsersService {
   async findUserToProviderId(id) {
     const user = await this.usersRepository.findOne({
       where: { provider_id: id },
+      withDeleted: true,
     });
     return user;
   }
@@ -54,7 +55,7 @@ export class UsersService {
   }
 
   async deleteUser(id) {
-    await this.usersRepository.delete({ user_id: id });
+    await this.usersRepository.softDelete({ user_id: id });
   }
 
   async updateScore({ user_id, score }) {
