@@ -23,12 +23,13 @@ export class AuthsService {
     let user = await this.usersService.findUserToProviderId(
       req.user.provider_id
     );
-
+    console.log("1--------------------");
     if (!user) {
       await this.usersService.createBySocialLogin(req.user);
       user = await this.usersService.findUserToProviderId(req.user.provider_id);
       await this.visitHistoryService.postVisitHistory(user.user_id);
     }
+    console.log("2--------------------");
 
     if (user.deleted_at && user.report < 15) {
       await this.usersService.updateUser(user.user_id, {
@@ -41,6 +42,7 @@ export class AuthsService {
     } else if (user.deleted_at && user.report >= 15) {
       throw new Error("신고 횟수 누적으로 차단되었습니다.");
     }
+    console.log("3--------------------");
 
     this.accessToken = req.user.accessToken;
     await this.visitHistoryService.updateVisitHistory(user.user_id, res);
@@ -50,8 +52,9 @@ export class AuthsService {
       // secure: true,
       // httpOnly: true,
     };
+    console.log("4--------------------");
 
-    if (user.report < 15 && user.deleted_at === null) {
+    if (user.report < 15) {
       if (req.user.provider === "naver") {
         res.cookie("user_id", user.user_id, setting);
         res.cookie("refreshToken", req.user.refreshToken, setting);
