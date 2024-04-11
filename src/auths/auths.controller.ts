@@ -2,7 +2,6 @@ import { Controller, Get, Post, Req, Res, UseGuards } from "@nestjs/common";
 import { AuthsService } from "./auths.service";
 import { AuthGuard } from "@nestjs/passport";
 import { Request, Response } from "express";
-import { VisitHistoryService } from "src/visit-history/visit-history.service";
 
 // interface User {
 //   user: {
@@ -16,10 +15,7 @@ import { VisitHistoryService } from "src/visit-history/visit-history.service";
 
 @Controller()
 export class AuthsController {
-  constructor(
-    private readonly authsService: AuthsService,
-    private visitHistoryService: VisitHistoryService
-  ) {}
+  constructor(private readonly authsService: AuthsService) {}
 
   @Get("/login/naver")
   @UseGuards(AuthGuard("naver"))
