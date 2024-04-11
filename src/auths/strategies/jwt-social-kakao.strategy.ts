@@ -29,7 +29,6 @@ export class JwtKakaoStrategy extends PassportStrategy(Strategy, "kakao") {
       profile._json.kakao_account.birthday.slice(0, 2) +
       "-" +
       profile._json.kakao_account.birthday.slice(2);
-    console.log(profile._json.birthday);
 
     return {
       provider: profile.provider,

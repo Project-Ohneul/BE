@@ -1,7 +1,13 @@
-import {Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn} from "typeorm";
-import {Users} from "../users/entities/user.entity";
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  JoinColumn,
+} from "typeorm";
+import { Users } from "../users/entities/user.entity";
 
-@Entity({name: "Payments"})
+@Entity({ name: "Payments" })
 export class Payment {
   @PrimaryGeneratedColumn()
   payment_id: number;
@@ -16,10 +22,6 @@ export class Payment {
   paymentKey: string;
 
   @ManyToOne(() => Users, (user) => user.user_id)
-  @JoinColumn({name: "user_id"})
+  @JoinColumn({ name: "user_id" })
   user_id: Users;
-
-  // @ManyToOne(() => Order)
-  // @JoinColumn({name: "order_id"})
-  // order_id: Order;
 }

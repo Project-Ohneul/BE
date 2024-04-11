@@ -1,11 +1,10 @@
-import {Module} from "@nestjs/common";
-import {AppController} from "./app.controller";
-import {ConfigModule} from "@nestjs/config";
-import {TypeOrmModule} from "@nestjs/typeorm";
+import { Module } from "@nestjs/common";
+import { AppController } from "./app.controller";
+import { ConfigModule } from "@nestjs/config";
+import { TypeOrmModule } from "@nestjs/typeorm";
 import * as ormconfig from "../ormconfig";
 import { AuthsModule } from "./auths/auths.module";
 import { UsersModule } from "./users/users.module";
-import { Users } from "./users/entities/user.entity";
 import { AppService } from "./app.service";
 import { GatewayModule } from "./chat/chat.module";
 import { HobbyModule } from "./hobbies/hobbies.module";
@@ -15,9 +14,9 @@ import { UserHobbyModule } from "./user-hobbies/user-hobbies.module";
 import { PaymentModule } from "./payments/payments.module";
 import { OrderController } from "./orders/orders.controller";
 import { OrderModule } from "./orders/orders.module";
-import { ReportsModule } from './reports/reports.module';
-import { CoinHistoryModule } from './coin-history/coin-history.module';
-
+import { ReportsModule } from "./reports/reports.module";
+import { CoinHistoryModule } from "./coin-history/coin-history.module";
+import { VisitHistoryModule } from "./visit-history/visit-history.module";
 
 @Module({
   imports: [
@@ -26,7 +25,6 @@ import { CoinHistoryModule } from './coin-history/coin-history.module';
       isGlobal: true,
     }),
     TypeOrmModule.forRoot(ormconfig),
-    TypeOrmModule.forFeature([Users]),
     AuthsModule,
     UsersModule,
     GatewayModule,
@@ -38,6 +36,7 @@ import { CoinHistoryModule } from './coin-history/coin-history.module';
     OrderModule,
     ReportsModule,
     CoinHistoryModule,
+    VisitHistoryModule,
   ],
   controllers: [AppController, OrderController],
   providers: [AppService],

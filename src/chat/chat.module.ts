@@ -10,11 +10,7 @@ import { CoinHistory } from "src/coin-history/coin-history.entity";
 import { CoinHistoryService } from "src/coin-history/coin-history.service";
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([Users]),
-    TypeOrmModule.forFeature([Reports]),
-    TypeOrmModule.forFeature([CoinHistory]),
-  ],
+  imports: [TypeOrmModule.forFeature([Users, Reports, CoinHistory])],
   controllers: [],
   providers: [
     MyGateway,

@@ -36,22 +36,3 @@ export class UserHobbyController {
     };
   }
 }
-
-// @Delete(":user_id/:hobby_id")
-// async deleteUserHobby(
-//   @Param("user_id", ParseIntPipe) user_id: number,
-//   @Param("hobby_id", ParseIntPipe) hobby_id: number
-// ): Promise<{status: number; message: string}> {
-//   await this.userHobbyService.deleteUserHobby(user_id, hobby_id);
-//   return {status: 200, message: "사용자의 취미를 삭제하였습니다."};
-// }
-
-// @Put("/:user_hobby_id")
-// async updateUserHobby(@Param("user_hobby_id") user_hobby_id: number, @Body("hobby_id") updateUserHobby: number): Promise<string> {
-//   try {
-//     await this.userHobbyService.updateUserHobby(user_hobby_id, updateUserHobby);
-//     return `사용자의 취미 아이디가 수정되었습니다.`;
-//   } catch (error) {
-//     throw new NotFoundException(error.message);
-//   }
-// }

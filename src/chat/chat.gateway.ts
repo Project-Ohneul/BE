@@ -202,43 +202,6 @@ export class MyGateway implements OnModuleInit, OnGatewayDisconnect {
     await this.usersService.updateScore({ user_id: userId, score });
   }
 
-  // // 상대 유저 신고
-  // @SubscribeMessage("reportUser")
-  // async onReportUser(@MessageBody() reportedUserId: any) {
-  //   // 클라이언트에서 주는 다른 유저(상대)의 user_id
-  //   console.log("신고 당한 사람 아이디", reportedUserId);
-  //   const reportedUser = await this.usersService.findUser(reportedUserId);
-  //   console.log("finduser", reportedUser);
-
-  //   if (reportedUser) {
-  //     reportedUserId.report += 1;
-  //     await this.usersService.updateUser(reportedUser.user_id, {
-  //       report: reportedUser.report,
-  //     });
-  //     console.log("신고 후 누적 체크", reportedUserId);
-  //   }
-  //   // function getReportUser(userId) {
-  //   //     const user = await this.usersService.findUser(userId);
-  //   //     console.log('uuid를 이용해 신고당한 사람 아이디 찾아오기');
-  //   //     return user;
-  //   // }
-
-  //   // getReportUser(reportedUserId)
-
-  //   // console.log('cehckj getReportUser', getReportUser(reportedUserId));
-
-  //   // user_id 확인
-  //   // const getReportedUser = await this.usersService.findUser(reportedUserId);
-  //   // // 신고당하는 유저의 user_id가 있으면 report를 +1 하고, 저장
-
-  //   // if (getReportedUser) {
-  //   //     reportedUserId.report += 1;
-  //   //     await this.usersService.updateUser(getReportedUser.user_id, {
-  //   //         report: getReportedUser.report,
-  //   //     });
-  //   // }
-  // }
-
   // 클라이언트로부터 'userExit' 메시지를 받았을 때의 핸들러
   @SubscribeMessage("userExit")
   disconnectRoom(@MessageBody() data: any, @ConnectedSocket() socket: Socket) {
@@ -283,13 +246,6 @@ export class MyGateway implements OnModuleInit, OnGatewayDisconnect {
       this.server,
       this.otherPartyUUIDs
     );
-
-    // const userParticipatedRoomList = this.chatService.deleteChatRoom(socket.id)
-    // userParticipatedRoomList.map(room => {
-    //     console.log('방삭제가 되는지 확인 소켓 연결 끊길때',room)
-    //     this.server.in(room).emit('finish'); // 대화 종료 알림
-    //     this.server.in(room).disconnectSockets(true)
-    // })
   }
 }
 

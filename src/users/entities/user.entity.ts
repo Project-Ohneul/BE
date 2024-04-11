@@ -9,6 +9,9 @@ import {
   OneToMany,
   ManyToMany,
   JoinTable,
+  DeleteDateColumn,
+  UpdateDateColumn,
+  CreateDateColumn,
 } from "typeorm";
 
 @Entity({ schema: "ohneul", name: "Users" })
@@ -43,28 +46,18 @@ export class Users {
   @Column({ name: "mood_id" })
   mood_id: number | null;
 
-  // @OneToMany(() => UserHobby, (userHobby)=>userHobby.user_id)
-
-  // @JoinTable({
-  //   name: "User_hobby",
-  //   joinColumn: {
-  //     name: "user_id",
-  //     referencedColumnName: "user_id",
-  //   },
-  //   inverseJoinColumn: {
-  //     name: "hobby_id",
-  //     referencedColumnName: "hobby_id",
-  //   },
-  // })
-  // hobbies: Hobbies;
-
   @OneToMany(() => Payment, (payment) => payment.user_id)
   payments: Payment[];
 
-  // @OneToMany(() => Order, (order) => order.user_id)
-  // orders: Order[];
-
-  // Users Table에 추가!
   @Column({ name: "report", default: 0 })
   report: number;
+
+  @DeleteDateColumn({ name: "deleted_at", type: "timestamp" })
+  deleted_at: Date | null;
+
+  @UpdateDateColumn({ name: "updated_at", type: "timestamp" })
+  updated_at: Date;
+
+  @CreateDateColumn({ name: "created_at", type: "timestamp" })
+  created_at: Date;
 }

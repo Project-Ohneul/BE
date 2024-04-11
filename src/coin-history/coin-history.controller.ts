@@ -8,11 +8,7 @@ export class CoinHistoryController {
   constructor(private coinHistoryService: CoinHistoryService) {}
 
   @Get(":id")
-  async getUserCoinHistory(
-    @Param("id") param,
-    @Req() req: Request,
-    @Res() res: Response
-  ) {
+  async getUserCoinHistory(@Param("id") param, @Res() res: Response) {
     console.log(param);
     const history = await this.coinHistoryService.getUserCoinHistory(param);
     res.json(history);

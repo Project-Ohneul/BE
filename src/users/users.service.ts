@@ -17,8 +17,7 @@ export class UsersService {
 
   async createBySocialLogin(body) {
     console.log("service body:", body);
-    const { provider_id, gender, username, birth, accessToken, refreshToken } =
-      body;
+    const { provider_id, gender, username, birth } = body;
     await this.usersRepository.save({
       provider_id,
       username,
@@ -33,9 +32,10 @@ export class UsersService {
     return allUser;
   }
 
-  async findUser(id) {
+  async findUser(param) {
+    console.log(param.id);
     const user = await this.usersRepository.findOne({
-      where: { user_id: id },
+      where: { user_id: param.id },
     });
     return user;
   }
@@ -43,6 +43,7 @@ export class UsersService {
   async findUserToProviderId(id) {
     const user = await this.usersRepository.findOne({
       where: { provider_id: id },
+      withDeleted: true,
     });
     return user;
   }
@@ -53,7 +54,7 @@ export class UsersService {
   }
 
   async deleteUser(id) {
-    await this.usersRepository.delete({ user_id: id });
+    await this.usersRepository.softDelete({ user_id: id });
   }
 
   async updateScore({ user_id, score }) {
