@@ -10,10 +10,10 @@ export class VisitHistoryController {
     await this.visitHistoryService.postVisitHistory(param);
   }
 
-  //   @Patch(":id")
-  //   async updateVisitHistory(@Param("id") param) {
-  //     await this.visitHistoryService.updateVisitHistory(param);
-  //   }
+  // @Patch(":id")
+  // async updateVisitHistory(@Param("id") param) {
+  //   await this.visitHistoryService.updateVisitHistory(param);
+  // }
 
   @Get(":id")
   async getOneVisitHistory(@Param("id") param, @Res() res) {

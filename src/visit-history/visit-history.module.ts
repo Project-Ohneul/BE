@@ -6,10 +6,7 @@ import { VisitHistory } from "./visit-history.entity";
 import { Users } from "src/users/entities/user.entity";
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([VisitHistory]),
-    TypeOrmModule.forFeature([Users]),
-  ],
+  imports: [TypeOrmModule.forFeature([VisitHistory, Users])],
   providers: [VisitHistoryService],
   controllers: [VisitHistoryController],
 })

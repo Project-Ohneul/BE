@@ -23,15 +23,12 @@ export class AuthsService {
     let user = await this.usersService.findUserToProviderId(
       req.user.provider_id
     );
-    console.log("user: ", user);
 
     if (!user) {
       await this.usersService.createBySocialLogin(req.user);
       user = await this.usersService.findUserToProviderId(req.user.provider_id);
       await this.visitHistoryService.postVisitHistory(user.user_id);
     }
-    const currentVisitHistory =
-      await this.visitHistoryService.getOneVisitHistory(user.user_id);
 
     if (user.deleted_at && user.report < 15) {
       await this.usersService.updateUser(user.user_id, {
@@ -71,7 +68,7 @@ export class AuthsService {
     }
   }
 
-  async logout(req, res): Promise<any> {
+  async logout(res): Promise<any> {
     const header = `Authentication=; HttpOnly; Path=/; Max-Age=0`;
     res.setHeader("Set-Cookie", header);
     return res.sendStatus(200);

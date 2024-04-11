@@ -39,11 +39,7 @@ export class VisitHistoryService {
     const todayYear = today.getFullYear();
     const todayMonth = ("0" + (today.getMonth() + 1)).slice(-2);
     const todayDay = ("0" + today.getDate()).slice(-2);
-    const dateToString = todayYear + "-" + todayMonth + "-" + todayDay;
     const dateToNumber = Number(todayYear + todayMonth + todayDay);
-
-    console.log("updatedAt: ", updatedAtToNumber);
-    console.log("dateString: ", dateToNumber);
 
     if (updatedAtToNumber === dateToNumber) {
       res.cookie("reward", "F");
@@ -52,13 +48,14 @@ export class VisitHistoryService {
       const user = await this.usersRepository.findOne({
         where: { user_id },
       });
-      console.log(user);
+
       await this.visitHistoryRepository.update(
         { user_id },
         {
           count: visitHistory.count + 1,
         }
       );
+
       await this.usersRepository.update(user_id, { coin: user.coin + 5 });
       res.cookie("reward", "T");
     }
