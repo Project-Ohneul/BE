@@ -51,7 +51,7 @@ export class AuthsService {
       // httpOnly: true,
     };
 
-    if (user.report < 15 && user.deleted_at === null) {
+    if (user.report < 15) {
       if (req.user.provider === "naver") {
         res.cookie("user_id", user.user_id, setting);
         res.cookie("refreshToken", req.user.refreshToken, setting);
