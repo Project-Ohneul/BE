@@ -138,7 +138,8 @@ export class MyGateway implements OnModuleInit, OnGatewayDisconnect {
       return;
     }
     const userAgreeData = new User(socket.id, data);
-    const user = await this.usersService.findUser(data.user_id);
+    // const user1 = await this.usersService.findUser({id: data.user_id});
+    // const user2 = await this.usersService.findUser()
     // 방에 대한 처리
     rooms.forEach((_, room) => {
       if (room !== socket.id) {
@@ -160,8 +161,14 @@ export class MyGateway implements OnModuleInit, OnGatewayDisconnect {
             this.server.in(room).emit("start"); // 대화 시작
             this.userAgreementInfo.delete(room); // 동의 정보 삭제
             this.chatService.handleAgreement(room, this.server);
-            this.usersService.updateUser(data.user_id, { coin: user.coin - 5 });
-            this.coinHistoryService.postCoinHistory(data.user_id, 5);
+            this.usersService.updateUser(user1Re.user_id, {
+              coin: () => "coin - 5",
+            });
+            this.coinHistoryService.postCoinHistory(user1Re.user_id, 5);
+            this.usersService.updateUser(user2Re.user_id, {
+              coin: () => "coin - 5",
+            });
+            this.coinHistoryService.postCoinHistory(user2Re.user_id, 5);
           } else {
             // 하나라도 동의하지 않은 경우
             console.log("fuck");
