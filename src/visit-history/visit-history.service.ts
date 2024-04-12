@@ -16,6 +16,22 @@ export class VisitHistoryService {
 
   async postVisitHistory(user_id) {
     await this.visitHistoryRepository.save({ user_id });
+    const visitHistory = await this.visitHistoryRepository.findOne({
+      where: { user_id },
+    });
+
+    await this.visitHistoryRepository.update(
+      { user_id },
+      {
+        count: visitHistory.count + 1,
+      }
+    );
+
+    const user = await this.usersRepository.findOne({
+      where: { user_id },
+    });
+
+    await this.usersRepository.update(user_id, { coin: user.coin + 5 });
   }
 
   async updateVisitHistory(user_id, res) {
