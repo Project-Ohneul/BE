@@ -21,8 +21,15 @@ async function bootstrap() {
     cors: true,
   });
 
+  // app.enableCors({
+  //   origin: ["http://localhost:3000", "http://18.204.230.142"],
+  //   methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE", "OPTIONS"],
+  //   credentials: true,
+  //   allowedHeaders: "*",
+  // });
+
   app.enableCors({
-    origin: ["http://localhost:3000", "http://18.204.230.142"],
+    origin: "*",
     methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE", "OPTIONS"],
     credentials: true,
     allowedHeaders: "*",
