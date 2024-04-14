@@ -38,13 +38,11 @@ export class AuthsController {
   }
 
   @Post("/logout/naver")
-  @UseGuards(AuthGuard("naver"))
   async logoutNaver(@Res() res: Response) {
     this.authsService.logout(res);
   }
 
   @Post("logout/kakao")
-  @UseGuards(AuthGuard("kakao"))
   async logoutKakao(@Res() res: Response) {
     this.authsService.logout(res);
   }

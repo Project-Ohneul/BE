@@ -56,7 +56,7 @@ export class PaymentService {
       }
 
       user.coin += coin;
-      payment.user_id = user;
+      payment.user_id = user.user_id;
 
       const queryRunner =
         this.userRepository.manager.connection.createQueryRunner();
@@ -86,8 +86,9 @@ export class PaymentService {
   }
 
   async getOneUserHistory(user_id: string): Promise<Payment[]> {
+    console.log(user_id);
     const userHistroy = await this.paymentRepository.find({
-      where: { user_id: { user_id: user_id } },
+      where: { user_id },
     });
 
     if (!userHistroy || userHistroy.length === 0) {

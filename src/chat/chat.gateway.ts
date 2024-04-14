@@ -1,10 +1,17 @@
-import {ReportsService} from "./../reports/reports.service";
-import {SubscribeMessage, WebSocketGateway, WebSocketServer, MessageBody, OnGatewayDisconnect, ConnectedSocket} from "@nestjs/websockets";
-import {Server, Socket} from "socket.io";
-import {Body, OnModuleInit} from "@nestjs/common";
-import {ChatService} from "./chat.service";
-import {UsersService} from "src/users/users.service";
-import {CoinHistoryService} from "src/coin-history/coin-history.service";
+import { ReportsService } from "./../reports/reports.service";
+import {
+  SubscribeMessage,
+  WebSocketGateway,
+  WebSocketServer,
+  MessageBody,
+  OnGatewayDisconnect,
+  ConnectedSocket,
+} from "@nestjs/websockets";
+import { Server, Socket } from "socket.io";
+import { Body, OnModuleInit } from "@nestjs/common";
+import { ChatService } from "./chat.service";
+import { UsersService } from "src/users/users.service";
+import { CoinHistoryService } from "src/coin-history/coin-history.service";
 
 // WebSocketGateway 데코레이터를 이용하여 WebSocketGateway 클래스를 정의합니다.
 @WebSocketGateway({
@@ -28,7 +35,7 @@ export class MyGateway implements OnModuleInit, OnGatewayDisconnect {
 
   handleConnection(socket: Socket) {
     console.log(`Client connected: ${socket.id}`);
-    socket.emit("connected", {message: "Connected to server"});
+    socket.emit("connected", { message: "Connected to server" });
   }
 
   // NestJS 모듈 초기화 시 호출되는 메서드
@@ -75,7 +82,7 @@ export class MyGateway implements OnModuleInit, OnGatewayDisconnect {
   // 클라이언트로부터 'selectTheme' 메시지를 받았을 때의 핸들러
   @SubscribeMessage("selectTheme")
   onSelectTheme(@MessageBody() data: any, @ConnectedSocket() socket: Socket) {
-    const {userSelectTheme, uuid} = data;
+    const { userSelectTheme, uuid } = data;
     // In your ChatGateway class
     this.chatService.createChatRoom(socket, userSelectTheme, this.server); // Pass the server instance
     // 주제에 따른 채팅방 생성
@@ -110,7 +117,7 @@ export class MyGateway implements OnModuleInit, OnGatewayDisconnect {
           this.server.in(room).emit("wait"); // 대기 중인 상태로 설정
         } else {
           // console.log('대화 시작 상대방 아이디는', socket.id, '--uuid--', this.otherPartyUUIDs.get(room));
-          const otherId = this.otherPartyUUIDs.get(room).filter((item) => item.socketId !== socket.id)[0].uuid;
+          const otherId = this.otherPartyUUIDs.get(room);
           this.server.in(room).emit("start", otherId); // 대화 시작
           console.log("대화 시작");
         }
@@ -177,7 +184,7 @@ export class MyGateway implements OnModuleInit, OnGatewayDisconnect {
   // 상대 유저 신고
   @SubscribeMessage("reportUser")
   async onReportUser(@MessageBody() data: any) {
-    const {reportedUserId, reportReason} = data;
+    const { reportedUserId, reportReason } = data;
     console.log("client data", data);
     // 클라이언트에서 주는 다른 유저(상대)의 user_id
     console.log(reportedUserId);
@@ -196,8 +203,8 @@ export class MyGateway implements OnModuleInit, OnGatewayDisconnect {
   @SubscribeMessage("score")
   async updateScore(@MessageBody() data) {
     console.log("리뷰 받은 데이터", data);
-    const {userId, score} = data;
-    await this.usersService.updateScore({user_id: userId, score});
+    const { userId, score } = data;
+    await this.usersService.updateScore({ user_id: userId, score });
   }
 
   // 클라이언트로부터 'userExit' 메시지를 받았을 때의 핸들러
@@ -218,8 +225,18 @@ export class MyGateway implements OnModuleInit, OnGatewayDisconnect {
         console.log("방삭제가 되는지 확인", room);
         // this.server.in(room).disconnectSockets(true); // 소켓 연결 끊기
         socket.leave(room);
-        this.chatService.deleteChatRoom(socket.id, this.server, this.otherPartyUUIDs);
-        console.log("상대방 탈주 알림 이벤트", room, rooms, "현재 남아있는 방 리스트", this.server.sockets.adapter.rooms);
+        this.chatService.deleteChatRoom(
+          socket.id,
+          this.server,
+          this.otherPartyUUIDs
+        );
+        console.log(
+          "상대방 탈주 알림 이벤트",
+          room,
+          rooms,
+          "현재 남아있는 방 리스트",
+          this.server.sockets.adapter.rooms
+        );
       }
     });
     console.log("삭제 후 rooms userexist", rooms);
@@ -229,7 +246,11 @@ export class MyGateway implements OnModuleInit, OnGatewayDisconnect {
   handleDisconnect(socket: Socket) {
     const rooms = this.server.sockets.adapter.rooms;
     console.log("socket id 연결 끊어졌을떄 disconnect", socket.id, "--", rooms);
-    this.chatService.deleteChatRoom(socket.id, this.server, this.otherPartyUUIDs);
+    this.chatService.deleteChatRoom(
+      socket.id,
+      this.server,
+      this.otherPartyUUIDs
+    );
   }
 }
 
