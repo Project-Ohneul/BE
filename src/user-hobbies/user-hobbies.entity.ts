@@ -16,11 +16,13 @@ export class UserHobby {
   // @Column()
   // user_id: number;
 
-  @ManyToOne(() => Users)
-  @JoinColumn({ name: "user_id" })
+  // @ManyToOne(() => Users, (user) => user.user_id)
+  // @JoinColumn({ name: "user_id" })
+  @Column({ name: "user_id" })
   user_id: string;
 
-  @ManyToOne(() => Hobbies)
-  @JoinColumn({ name: "hobby_id" })
+  // @ManyToOne(() => Hobbies, (hobby) => hobby.hobby_id)
+  // @JoinColumn({ name: "hobby_id" })
+  @Column({ name: "hobby_id" })
   hobby_id: number;
 }

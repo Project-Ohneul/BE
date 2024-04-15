@@ -17,7 +17,7 @@ import { UserHobby } from "./user-hobbies.entity";
 export class UserHobbyController {
   constructor(private userHobbyService: UserHobbyService) {}
 
-  @Get("/:user_id")
+  @Get(":user_id")
   async getOneUserHobby(
     @Param("user_id") user_id: string
   ): Promise<UserHobby[]> {

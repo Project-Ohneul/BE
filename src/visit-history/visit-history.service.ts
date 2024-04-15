@@ -19,7 +19,6 @@ export class VisitHistoryService {
     const visitHistory = await this.visitHistoryRepository.findOne({
       where: { user_id },
     });
-
     await this.visitHistoryRepository.update(
       { user_id },
       {
