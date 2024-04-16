@@ -15,7 +15,7 @@ export class ReportsService {
   }
 
   async getOneReport(user_id) {
-    return await this.reportsRepository.findOne({
+    return await this.reportsRepository.find({
       where: { user_id },
     });
   }

@@ -12,7 +12,7 @@ export class ReportsController {
   }
 
   @Get(":id")
-  async getOneReport(@Param() param, @Res() res) {
+  async getOneReport(@Param("id") param, @Res() res) {
     const report = await this.reportsService.getOneReport(param);
     return res.json(report);
   }

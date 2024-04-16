@@ -17,6 +17,7 @@ import { OrderModule } from "./orders/orders.module";
 import { ReportsModule } from "./reports/reports.module";
 import { CoinHistoryModule } from "./coin-history/coin-history.module";
 import { VisitHistoryModule } from "./visit-history/visit-history.module";
+import { NoticesModule } from './notices/notices.module';
 
 @Module({
   imports: [
@@ -37,6 +38,7 @@ import { VisitHistoryModule } from "./visit-history/visit-history.module";
     ReportsModule,
     CoinHistoryModule,
     VisitHistoryModule,
+    NoticesModule,
   ],
   controllers: [AppController, OrderController],
   providers: [AppService],
