@@ -56,11 +56,17 @@ export class AuthsService {
         res.cookie("user_id", user.user_id, setting);
         res.cookie("refreshToken", req.user.refreshToken, setting);
         res.cookie("provider", req.user.provider, setting);
+        if (user.admin === true) {
+          res.cookie("admin", true);
+        }
         res.redirect(process.env.NAVER_LOGIN_REDIRECT);
       } else if (req.user.provider === "kakao") {
         res.cookie("user_id", user.user_id, setting);
         res.cookie("refreshToken", req.user.refreshToken, setting);
         res.cookie("provider", req.user.provider, setting);
+        if (user.admin === true) {
+          res.cookie("admin", true);
+        }
         res.redirect(process.env.KAKAO_LOGIN_REDIRECT);
       }
     } else if (user.report >= 15) {

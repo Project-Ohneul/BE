@@ -60,4 +60,7 @@ export class Users {
 
   @CreateDateColumn({ name: "created_at", type: "timestamp" })
   created_at: Date;
+
+  @Column({ name: "admin" })
+  admin: boolean;
 }
