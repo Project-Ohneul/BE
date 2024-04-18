@@ -1,7 +1,13 @@
 import {Test, TestingModule} from "@nestjs/testing";
-import {INestApplication, ValidationPipe} from "@nestjs/common";
+import {INestApplication, NotFoundException, ValidationPipe} from "@nestjs/common";
 import * as request from "supertest";
 import {AppModule} from "./../src/app.module";
+import {PaymentService} from "../src/payments/payments.service";
+import {PaymentController} from "../src/payments/payments.controller";
+import {Payment} from "../src/payments/payments.entity";
+import {AuthsController} from "../src/auths/auths.controller";
+import {AuthsService} from "../src/auths/auths.service";
+import {Request, Response} from "express";
 
 describe("AppController (e2e)", () => {
   let app: INestApplication;
@@ -163,5 +169,145 @@ describe("AppController (e2e)", () => {
     // it("DELETE", () => {
     //   return request(app.getHttpServer()).delete("users/c8a8b3ad-30b7-46ac-9b94-b35c2098ac6b").expect(200);
     // });
+  });
+  describe("PaymentController", () => {
+    let controller: PaymentController;
+    let service: PaymentService;
+
+    beforeEach(async () => {
+      const module: TestingModule = await Test.createTestingModule({
+        controllers: [PaymentController],
+        providers: [
+          {
+            provide: PaymentService,
+            useValue: {
+              confirmPayment: jest.fn(),
+              getAllHistory: jest.fn(),
+              getOneUserHistory: jest.fn(),
+            },
+          },
+        ],
+      }).compile();
+
+      controller = module.get<PaymentController>(PaymentController);
+      service = module.get<PaymentService>(PaymentService);
+    });
+
+    afterEach(() => {
+      jest.clearAllMocks();
+    });
+
+    describe("confirmPayment", () => {
+      it("결제 승인", async () => {
+        // 상태 설정~
+        const paymentInfo = {
+          paymentKey: "payment_key",
+          orderId: "order_id",
+          amount: 100,
+          userId: "user_id",
+          coin: 10,
+        };
+        const expectedResult = {} as Payment;
+        (service.confirmPayment as jest.Mock).mockResolvedValue(expectedResult);
+
+        // 컨트롤러 일 한다~
+        await controller.confirmPayment(paymentInfo);
+
+        // 이런 값을 기대한다~
+        expect(service.confirmPayment).toHaveBeenCalledWith(paymentInfo);
+      });
+    });
+
+    describe("getAllHistory", () => {
+      it("결제 내역 가져오기", async () => {
+        // 상태 설정~
+        const expectedResult = [{}] as Payment[];
+        (service.getAllHistory as jest.Mock).mockResolvedValue(expectedResult);
+
+        // 컨트롤러 또 일 한다~
+        await controller.getAllHistory();
+
+        // 이런 값을 기대한다~
+        expect(service.getAllHistory).toHaveBeenCalled();
+      });
+    });
+
+    describe("getOneUserHistory", () => {
+      it("특정 유저의 결제 내역 가져오기", async () => {
+        // 상태 설정~
+        const userId = "user_id";
+        const expectedResult = [{}] as Payment[];
+        (service.getOneUserHistory as jest.Mock).mockResolvedValue(expectedResult);
+
+        // 컨트롤러 또 또 일 한다~
+        await controller.getOneUserHistory(userId);
+
+        // 이런 값을 기대한다~
+        expect(service.getOneUserHistory).toHaveBeenCalledWith(userId);
+      });
+
+      it("사용자의 결제 내역을 찾을 수 없습니당", async () => {
+        // 상태 설정~
+        const userId = "user_id";
+        (service.getOneUserHistory as jest.Mock).mockRejectedValue(new NotFoundException());
+
+        // 컨트롤러 또 또 또 일 하고~ 난 이런 값을 원한다~
+        await expect(controller.getOneUserHistory(userId)).rejects.toThrowError(NotFoundException);
+      });
+    });
+  });
+
+  describe("AuthsController", () => {
+    let controller: AuthsController;
+    let service: AuthsService;
+
+    beforeEach(async () => {
+      const module: TestingModule = await Test.createTestingModule({
+        controllers: [AuthsController],
+        providers: [
+          {
+            provide: AuthsService,
+            useValue: {
+              OAuthLogin: jest.fn(),
+              logout: jest.fn(),
+            },
+          },
+        ],
+      }).compile();
+
+      controller = module.get<AuthsController>(AuthsController);
+      service = module.get<AuthsService>(AuthsService);
+    });
+
+    afterEach(() => {
+      jest.clearAllMocks();
+    });
+
+    describe("OAuthLogin", () => {
+      it("소셜 로그인", async () => {
+        // 상태 설정~
+        const req: Partial<Request> = {};
+        const res: Partial<Response> = {};
+
+        // 컨트롤러 일 한다~
+        await controller.loginNaverCallback(req as Request, res as Response);
+
+        // 값 줘!
+        expect(service.OAuthLogin).toHaveBeenCalled();
+      });
+    });
+
+    describe("logout", () => {
+      it("로그아웃", async () => {
+        // 상태 설정~
+        const res: Partial<Response> = {};
+
+        // 컨트롤러 일 한다~
+        await controller.logoutNaver(res as Response);
+
+        // 값 줘!
+        expect(service.logout).toHaveBeenCalled();
+      });
+    });
   });
 });
