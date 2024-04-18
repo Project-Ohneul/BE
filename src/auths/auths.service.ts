@@ -1,8 +1,8 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
-import { HttpModule, HttpService } from "@nestjs/axios";
-import { UsersService } from "src/users/users.service";
+import {Injectable, NotFoundException} from "@nestjs/common";
+import {HttpModule, HttpService} from "@nestjs/axios";
+import {UsersService} from "../users/users.service";
 import * as dotenv from "dotenv";
-import { VisitHistoryService } from "src/visit-history/visit-history.service";
+import {VisitHistoryService} from "../visit-history/visit-history.service";
 
 dotenv.config();
 
@@ -18,11 +18,9 @@ export class AuthsService {
     this.http = new HttpService();
   }
 
-  async OAuthLogin({ req, res }) {
+  async OAuthLogin({req, res}) {
     console.log("authsService: ", req.user);
-    let user = await this.usersService.findUserToProviderId(
-      req.user.provider_id
-    );
+    let user = await this.usersService.findUserToProviderId(req.user.provider_id);
 
     if (!user) {
       await this.usersService.createBySocialLogin(req.user);

@@ -3,8 +3,8 @@ import {SubscribeMessage, WebSocketGateway, WebSocketServer, MessageBody, OnGate
 import {Server, Socket} from "socket.io";
 import {Body, OnModuleInit} from "@nestjs/common";
 import {ChatService} from "./chat.service";
-import {UsersService} from "src/users/users.service";
-import {CoinHistoryService} from "src/coin-history/coin-history.service";
+import {UsersService} from "../users/users.service";
+import {CoinHistoryService} from "../coin-history/coin-history.service";
 
 // WebSocketGateway 데코레이터를 이용하여 WebSocketGateway 클래스를 정의합니다.
 @WebSocketGateway({

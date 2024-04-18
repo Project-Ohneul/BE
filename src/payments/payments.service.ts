@@ -1,9 +1,9 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
+import {Injectable, NotFoundException} from "@nestjs/common";
 import fetch from "node-fetch";
-import { Payment } from "./payments.entity";
-import { Repository } from "typeorm";
-import { InjectRepository } from "@nestjs/typeorm";
-import { Users } from "src/users/entities/user.entity";
+import {Payment} from "./payments.entity";
+import {Repository} from "typeorm";
+import {InjectRepository} from "@nestjs/typeorm";
+import {Users} from "../users/entities/user.entity";
 
 @Injectable()
 export class PaymentService {
@@ -16,29 +16,19 @@ export class PaymentService {
 
   private readonly secretKey = process.env.TOSS_SECRET_KEY;
 
-  async confirmPayment(paymentInfo: {
-    paymentKey: string;
-    orderId: string;
-    amount: number;
-    userId: string;
-    coin: number;
-  }) {
-    const { paymentKey, orderId, amount, userId, coin } = paymentInfo;
+  async confirmPayment(paymentInfo: {paymentKey: string; orderId: string; amount: number; userId: string; coin: number}) {
+    const {paymentKey, orderId, amount, userId, coin} = paymentInfo;
 
-    const encryptedSecretKey =
-      "Basic " + Buffer.from(this.secretKey + ":").toString("base64");
+    const encryptedSecretKey = "Basic " + Buffer.from(this.secretKey + ":").toString("base64");
 
-    const response = await fetch(
-      "https://api.tosspayments.com/v1/payments/confirm",
-      {
-        method: "POST",
-        body: JSON.stringify({ orderId, amount, paymentKey, userId, coin }),
-        headers: {
-          Authorization: encryptedSecretKey,
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    const response = await fetch("https://api.tosspayments.com/v1/payments/confirm", {
+      method: "POST",
+      body: JSON.stringify({orderId, amount, paymentKey, userId, coin}),
+      headers: {
+        Authorization: encryptedSecretKey,
+        "Content-Type": "application/json",
+      },
+    });
     const data = await response.json();
     console.log(data, userId);
 
@@ -49,7 +39,7 @@ export class PaymentService {
       payment.paymentKey = paymentKey;
 
       const user = await this.userRepository.findOne({
-        where: { user_id: userId },
+        where: {user_id: userId},
       });
       if (!user) {
         throw new NotFoundException("사용자를 찾을 수 없습니다.");
@@ -58,8 +48,7 @@ export class PaymentService {
       user.coin += coin;
       payment.user_id = user.user_id;
 
-      const queryRunner =
-        this.userRepository.manager.connection.createQueryRunner();
+      const queryRunner = this.userRepository.manager.connection.createQueryRunner();
       await queryRunner.connect();
       await queryRunner.startTransaction();
 
@@ -82,19 +71,17 @@ export class PaymentService {
   }
 
   async getAllHistory(): Promise<Payment[]> {
-    return await this.paymentRepository.find({ relations: ["user_id"] });
+    return await this.paymentRepository.find({relations: ["user_id"]});
   }
 
   async getOneUserHistory(user_id: string): Promise<Payment[]> {
     console.log(user_id);
     const userHistroy = await this.paymentRepository.find({
-      where: { user_id },
+      where: {user_id},
     });
 
     if (!userHistroy || userHistroy.length === 0) {
-      throw new NotFoundException(
-        `해당 사용자의 주문 내역을 찾을 수 없습니다.`
-      );
+      throw new NotFoundException(`해당 사용자의 주문 내역을 찾을 수 없습니다.`);
     }
 
     return userHistroy;
