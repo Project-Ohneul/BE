@@ -21,10 +21,7 @@ export class UserHobbyService {
     return userHobbies || [];
   }
 
-  async postUserHobby({ user_id, hobby_id }): Promise<{
-    status: number;
-    body: { user_id: string; hobby_id: number }[];
-  }> {
+  async postUserHobby({ user_id, hobby_id }) {
     const user = await this.userRepository.findOne({ where: { user_id } });
 
     if (!user) {
@@ -41,7 +38,6 @@ export class UserHobbyService {
       });
       savedUserHobbies.push({ hobby_id: savedUserHobby.hobby_id });
     }
-    return { status: 200, body: savedUserHobbies };
   }
 }
 
