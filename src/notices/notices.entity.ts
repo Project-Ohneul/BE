@@ -11,6 +11,9 @@ export class Notices {
   @PrimaryGeneratedColumn({ type: "int", name: "notice_id" })
   notice_id: number;
 
+  @Column({ type: "varchar", name: "title" })
+  title: string;
+
   @Column({ type: "text", name: "notice" })
   notice: string;
 

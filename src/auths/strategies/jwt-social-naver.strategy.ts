@@ -21,6 +21,7 @@ export class JwtNaverStrategy extends PassportStrategy(Strategy, "naver") {
     refreshToken: string,
     profile
   ) {
+    console.log(profile);
     const result = await axios("https://openapi.naver.com/v1/nid/me", {
       headers: {
         Authorization: `Bearer ${accessToken}`,
