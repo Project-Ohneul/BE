@@ -69,7 +69,7 @@ export class ChatService {
   }
 
   handleAgreement(roomName: string, server: Server) {
-    const initialExtendedTime = 30;
+    const initialExtendedTime = 300;
 
     if (!this.extendedTimes.has(roomName)) {
       this.extendedTimes.set(roomName, initialExtendedTime);
@@ -83,7 +83,11 @@ export class ChatService {
 
     const remainingTime =
       this.extendedTimes.get(roomName) || initialExtendedTime;
-    server.in(roomName).emit("extendTime", remainingTime);
+    console.log("이비비비비");
+    setTimeout(() => {
+      console.log("10초뒤 연장");
+      server.in(roomName).emit("extendTime", remainingTime);
+    }, 2500);
   }
 
   private generateUniqueRoomName(theme: string): string {
