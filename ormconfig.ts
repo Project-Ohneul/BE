@@ -1,12 +1,12 @@
-import {TypeOrmModuleOptions} from "@nestjs/typeorm";
+import { TypeOrmModuleOptions } from "@nestjs/typeorm";
 import * as dotenv from "dotenv";
-import {Users} from "./src/users/entities/user.entity";
+import { Users } from "./src/users/entities/user.entity";
 
 dotenv.config();
 const ormconfig: TypeOrmModuleOptions = {
   type: "mariadb",
-  host: "svc.sel5.cloudtype.app",
-  port: 30500,
+  host: "44.217.141.204",
+  port: 3306,
   username: process.env.USERNAME,
   password: process.env.PASSWORD,
   database: process.env.DATABASE,
