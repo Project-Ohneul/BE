@@ -7,7 +7,7 @@
   "license": "UNLICENSED",
   "scripts": {
     "build": "nest build",
-    "start:pm2": "pm2 start dist/src/main.js —name=ohneul-server",
+    "start:pm2": "pm2 start /root/BE/dist/src/main.js —name=ohneul-server",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",

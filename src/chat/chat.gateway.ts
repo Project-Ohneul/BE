@@ -9,7 +9,9 @@ import {CoinHistoryService} from "../coin-history/coin-history.service";
 // WebSocketGateway 데코레이터를 이용하여 WebSocketGateway 클래스를 정의합니다.
 @WebSocketGateway({
   cors: {
-    origin: ["http://localhost:3000"], // CORS 설정: 클라이언트 주소
+    origin: ["http://44.217.141.204:3000"], // CORS 설정: 클라이언트 주소
+    methods: ['GET', 'POST'],
+    credentials: true,
   },
 })
 export class MyGateway implements OnModuleInit, OnGatewayDisconnect {

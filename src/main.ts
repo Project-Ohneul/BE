@@ -29,7 +29,7 @@ async function bootstrap() {
   // });
 
   app.enableCors({
-    origin: "*",
+    origin: ["*","http://44.217.141.204","http://localhost:3000","http://44.217.141.204:3000"],
     methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE", "OPTIONS"],
     credentials: true,
     allowedHeaders: "*",
