@@ -1,8 +1,8 @@
-import {Injectable} from "@nestjs/common";
-import {InjectRepository} from "@nestjs/typeorm";
-import {VisitHistory} from "./visit-history.entity";
-import {Repository} from "typeorm";
-import {Users} from "../users/entities/user.entity";
+import { Injectable } from "@nestjs/common";
+import { InjectRepository } from "@nestjs/typeorm";
+import { VisitHistory } from "./visit-history.entity";
+import { Repository } from "typeorm";
+import { Users } from "../users/entities/user.entity";
 
 @Injectable()
 export class VisitHistoryService {
@@ -15,27 +15,27 @@ export class VisitHistoryService {
   ) {}
 
   async postVisitHistory(user_id) {
-    await this.visitHistoryRepository.save({user_id});
+    await this.visitHistoryRepository.save({ user_id });
     const visitHistory = await this.visitHistoryRepository.findOne({
-      where: {user_id},
+      where: { user_id },
     });
     await this.visitHistoryRepository.update(
-      {user_id},
+      { user_id },
       {
         count: visitHistory.count + 1,
       }
     );
 
     const user = await this.usersRepository.findOne({
-      where: {user_id},
+      where: { user_id },
     });
 
-    await this.usersRepository.update(user_id, {coin: user.coin + 5});
+    await this.usersRepository.update(user_id, { coin: user.coin + 5 });
   }
 
   async updateVisitHistory(user_id, res) {
     const visitHistory = await this.visitHistoryRepository.findOne({
-      where: {user_id},
+      where: { user_id },
     });
     console.log(visitHistory);
     const updatedAt = visitHistory.updated_at;
@@ -44,7 +44,9 @@ export class VisitHistoryService {
     const updatedAtMonth = ("0" + (updatedAt.getMonth() + 1)).slice(-2);
     const updatedAtDay = ("0" + updatedAt.getDate()).slice(-2);
 
-    const updatedAtToNumber = Number(updatedAtYear + updatedAtMonth + updatedAtDay);
+    const updatedAtToNumber = Number(
+      updatedAtYear + updatedAtMonth + updatedAtDay
+    );
 
     const today = new Date();
     console.log("today: ", today);
@@ -59,24 +61,24 @@ export class VisitHistoryService {
       return;
     } else if (updatedAtToNumber < dateToNumber) {
       const user = await this.usersRepository.findOne({
-        where: {user_id},
+        where: { user_id },
       });
 
       await this.visitHistoryRepository.update(
-        {user_id},
+        { user_id },
         {
           count: visitHistory.count + 1,
         }
       );
 
-      await this.usersRepository.update(user_id, {coin: user.coin + 5});
+      await this.usersRepository.update(user_id, { coin: user.coin + 100 });
       res.cookie("reward", "T");
     }
   }
 
   async getOneVisitHistory(user_id) {
     return this.visitHistoryRepository.findOne({
-      where: {user_id},
+      where: { user_id },
     });
   }
 }

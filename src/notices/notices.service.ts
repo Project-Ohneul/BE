@@ -11,7 +11,7 @@ export class NoticesService {
   ) {}
 
   async postNotice(body) {
-    await this.noticesRepository.save(body);
+    await await this.noticesRepository.save(body);
   }
 
   async getAllNotice() {
