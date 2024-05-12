@@ -37,7 +37,6 @@ export class VisitHistoryService {
     const visitHistory = await this.visitHistoryRepository.findOne({
       where: { user_id },
     });
-    console.log(visitHistory);
     const updatedAt = visitHistory.updated_at;
 
     const updatedAtYear = updatedAt.getFullYear();

@@ -21,6 +21,8 @@ export class ReportsService {
   }
 
   async postReport(user_id, reason) {
+    console.log("userid: ", user_id);
+    console.log("reason: ", reason);
     await this.reportsRepository.save({
       user_id,
       reason,
