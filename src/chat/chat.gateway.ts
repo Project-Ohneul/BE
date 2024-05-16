@@ -17,9 +17,9 @@ import { CoinHistoryService } from "../coin-history/coin-history.service";
 @WebSocketGateway({
   cors: {
     origin: [
-      "http://44.217.141.204:3000",
+      "http://3.39.134.56:3000",
       "http://localhost:3000",
-      "http://44.217.141.204",
+      "http://3.39.134.56",
     ], // CORS 설정: 클라이언트 주소
     // methods: ['GET', 'POST'],
     // credentials: true,
