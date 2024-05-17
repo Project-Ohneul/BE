@@ -21,20 +21,17 @@ export class JwtNaverStrategy extends PassportStrategy(Strategy, "naver") {
     refreshToken: string,
     profile
   ) {
-    console.log(profile);
-    const result = await axios("https://openapi.naver.com/v1/nid/me", {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
-    const { id, gender, name, birthday, birthyear } = result.data.response;
-    console.log("서버로 정보 받아오기 성공!!", result.data.response);
+    console.log("profile: ", profile);
+    // const result = await axios("https://openapi.naver.com/v1/nid/me", {
+    //   headers: {
+    //     Authorization: `Bearer ${accessToken}`,
+    //   },
+    // });
+    // const { id, gender, name, birthday, birthyear } = result.data.response;
+    // console.log("서버로 정보 받아오기 성공!!", result.data.response);
     return {
       provider: "naver",
-      provider_id: id,
-      gender: gender,
-      username: name,
-      birth: `${birthyear}-${birthday}`,
+      provider_id: profile.id,
       accessToken,
       refreshToken,
     };

@@ -30,7 +30,7 @@ export class VisitHistoryService {
       where: { user_id },
     });
 
-    await this.usersRepository.update(user_id, { coin: user.coin + 5 });
+    await this.usersRepository.update(user_id, { coin: user.coin + 100 });
   }
 
   async updateVisitHistory(user_id, res) {
