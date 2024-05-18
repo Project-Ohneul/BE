@@ -22,6 +22,7 @@ jobs:
           username: ${{ secrets.USER }} # 내가 변수로 저장한 User
           script: |
             sudo su
+            cd
             cd BE # 내가 Clone한 폴더 안으로 들어간다.
             git remote update
             git pull origin develop
