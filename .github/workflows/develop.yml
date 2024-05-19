@@ -34,7 +34,10 @@ jobs:
           sudo npm install -g pm2
 
       - name: Change permissions
-        run: sudo su -
+        run: sudo su
+
+      - name: Go Home
+        run: cd
 
       - name: Change root
         run: cd BE
