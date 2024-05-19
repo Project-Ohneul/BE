@@ -55,14 +55,17 @@ jobs:
       - name: Set up environment variables
         run: echo "DOT_ENV=${{ secrets.DOT_ENV }}" >> .env
 
-      - name: Remote
-        run: git remote update
+      - name: Checking env file
+        run: ls -al
 
-      - name: Git pull
-        run: sudo git pull origin main
+      # - name: Remote
+      #   run: git remote update
 
-      - name: Install project dependencies
-        run: sudo npm ci
+      # - name: Git pull
+      #   run: sudo git pull origin main
 
-      - name: Restart server
-        run: sudo npm run start:dev && sudo pm2 restart ohneul-server
+      # - name: Install project dependencies
+      #   run: sudo npm ci
+
+      # - name: Restart server
+      #   run: sudo npm run start:dev && sudo pm2 restart ohneul-server
