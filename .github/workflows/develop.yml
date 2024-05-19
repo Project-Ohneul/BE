@@ -33,6 +33,12 @@ jobs:
           sudo apt install -y nodejs npm  
           sudo npm install -g pm2
 
+      - name: Change permissions
+        run: sudo su -
+
+      - name: Change root
+        run: cd BE
+
       - name: Git pull
         run: sudo git pull origin main
 
