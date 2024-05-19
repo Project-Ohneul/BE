@@ -16,19 +16,19 @@ jobs:
       - name: Setup Node.js environment
         uses: actions/setup-node@v3
         with:
-          node-version: "20" # Node.js 20 버전으로 업데이트
+          node-version: "20"
 
-      - name: SSH to EC2 instance and deploy
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script: |
-            sudo su -
-            cd BE  # 프로젝트 경로로 이동
-            git remote update
-            git pull origin develop
-            npm ci
-            npm run start:dev
-            pm2 restart ohneul-server
+      - name: Install dependencies
+        run: |
+          sudo yum update -y
+          sudo yum install -y nodejs npm  
+          sudo npm install -g pm2
+
+      - name: Git pull
+        run: sudo git pull origin develop
+
+      - name: Install project dependencies
+        run: sudo npm ci
+
+      - name: Restart server
+        run: sudo npm run start:dev && sudo pm2 restart ohneul-server
