@@ -2,7 +2,8 @@ name: deploy
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
 
 jobs:
   deploy:
@@ -11,11 +12,11 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-        
+
       - name: Setup Node.js environment
         uses: actions/setup-node@v3
         with:
-          node-version: '14'
+          node-version: "14"
 
       - name: SSH to EC2 instance and deploy
         uses: appleboy/ssh-action@master
@@ -25,7 +26,7 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             sudo su -
-            cd BE  # 프로젝트 경로로 이동
+            cd /path/to/your/project/BE  # 프로젝트 경로로 이동
             git remote update
             git pull origin develop
             npm ci
