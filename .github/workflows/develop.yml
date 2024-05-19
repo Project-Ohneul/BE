@@ -20,15 +20,15 @@ jobs:
 
       - name: Install dependencies
         run: |
-          sudo yum update -y
-          sudo yum install -y nodejs npm  
-          sudo npm install -g pm2
+          sudo apt update
+          sudo apt install -y nodejs npm  # nodejs와 npm 설치
+          sudo npm install -g pm2  # pm2 전역 설치
 
       - name: Git pull
-        run: sudo git pull origin develop
+        run: sudo git pull origin develop # git pull 실행
 
       - name: Install project dependencies
-        run: sudo npm ci
+        run: sudo npm ci # 프로젝트 의존성 설치
 
       - name: Restart server
-        run: sudo npm run start:dev && sudo pm2 restart ohneul-server
+        run: sudo npm run start:dev && sudo pm2 restart ohneul-server # 개발 서버 실행 및 pm2로 서버 재시작
