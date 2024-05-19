@@ -46,18 +46,21 @@ jobs:
       - name: Go Home
         run: cd
 
-      - name: Setup MySQL
-        uses: mirromutth/mysql-action@v1.1
-        with:
-          mysql database: "ohneul"
-          mysql user: ${{ secrets.DB_USERNAME }}
-          mysql password: ${{ secrets.DB_PASSWORD }}
+      # - name: Setup MySQL
+      #   uses: mirromutth/mysql-action@v1.1
+      #   with:
+      #     mysql database: "ohneul"
+      #     mysql user: ${{ secrets.DB_USERNAME }}
+      #     mysql password: ${{ secrets.DB_PASSWORD }}
 
       # - name: Change root
       #  run: cd BE
 
       # - name: Check directory
       #  run: ls -al
+
+      - name: Install Dotenv
+        run: sudo npm install dotenv
 
       - name: Set up environment variables
         run: echo "DOT_ENV=${{ secrets.DOT_ENV }}" >> .env
