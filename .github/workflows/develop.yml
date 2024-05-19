@@ -13,6 +13,13 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      - name: executing remote ssh commands
+        uses: appleboy/ssh-action@v0.1.6
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
@@ -42,17 +49,20 @@ jobs:
       # - name: Change root
       #  run: cd BE
 
-      - name: Check directory
-        run: ls -al
+      # - name: Check directory
+      #  run: ls -al
 
-      # - name: Remote
-      #  run: git remote update
+      - name: Set up environment variables
+        run: echo "DOT_ENV=${{ secrets.DOT_ENV }}" >> .env
 
-      # name: Git pull
-      # run: sudo git pull origin main
+      - name: Remote
+        run: git remote update
 
-      # name: Install project dependencies
-      # run: sudo npm ci
+      - name: Git pull
+        run: sudo git pull origin main
 
-      # name: Restart server
-      # run: sudo npm run start:dev && sudo pm2 restart ohneul-server
+      - name: Install project dependencies
+        run: sudo npm ci
+
+      - name: Restart server
+        run: sudo npm run start:dev && sudo pm2 restart ohneul-server
