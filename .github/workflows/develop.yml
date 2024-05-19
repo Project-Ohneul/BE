@@ -58,17 +58,17 @@ jobs:
       - name: Checking file
         run: ls -al
 
-      - name: Checking env file
-        run: sudo cat .env
+      # - name: Checking env file
+      #   run: sudo cat .env
 
-      # - name: Remote
-      #   run: git remote update
+      - name: Remote
+        run: git remote update
 
-      # - name: Git pull
-      #   run: sudo git pull origin main
+      - name: Git pull
+        run: sudo git pull origin main
 
-      # - name: Install project dependencies
-      #   run: sudo npm ci
+      - name: Install project dependencies
+        run: sudo npm ci
 
-      # - name: Restart server
-      #   run: sudo npm run start:dev && sudo pm2 restart ohneul-server
+      - name: Restart server
+        run: sudo npm run start:dev && sudo pm2 restart ohneul-server
