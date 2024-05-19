@@ -1,33 +1,38 @@
 name: dist
 
-# Controls when the workflow will run
 on:
-  # Triggers the workflow on push or pull request events but only for the main branch
   push:
     branches:
       - develop
-
 
 jobs:
   SSH:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
-      - name: ssh to ec2
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      - name: SSH to EC2 instance and deploy
         uses: appleboy/ssh-action@master
         with:
-          key: ${{ secrets.SSH_PRIVATE_KEY }} # 내가 변수로 저장한 pem key
-          host: ${{ secrets.HOST }} # 내가 변수로 저장한 ip
-          username: ${{ secrets.USER }} # 내가 변수로 저장한 User
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USER }}
           script: |
             sudo su -
-            cd BE # 내가 Clone한 폴더 안으로 들어간다.
+            cd BE
             git remote update
             git pull origin develop
             npm ci
             npm run start:dev
             pm2 restart ohneul-server
+
 
   # 깃허브 레파지토리가 프라이빗으로 만들어져 있을때. 
   # git pull https://${{ secrets.GIT_USER }}:${{ secrets.GIT_PASSWORD }}@github.com/blockenters/streamlit_kmeans.git
