@@ -16,7 +16,7 @@ jobs:
       - name: Setup Node.js environment
         uses: actions/setup-node@v3
         with:
-          node-version: "14"
+          node-version: "20" # Node.js 20 버전으로 업데이트
 
       - name: SSH to EC2 instance and deploy
         uses: appleboy/ssh-action@master
@@ -26,7 +26,7 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             sudo su -
-            cd /path/to/your/project/BE  # 프로젝트 경로로 이동
+            cd BE  # 프로젝트 경로로 이동
             git remote update
             git pull origin develop
             npm ci
