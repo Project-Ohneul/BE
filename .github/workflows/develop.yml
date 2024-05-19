@@ -2,8 +2,7 @@ name: dist
 
 on:
   push:
-    branches:
-      - develop
+    branches: [ develop ]
 
 jobs:
   SSH:
@@ -19,20 +18,18 @@ jobs:
           node-version: '14'
 
       - name: SSH to EC2 instance and deploy
-        uses: appleboy/ssh-action@master
+        uses: appleboy/ssh-action@v0.5.4
         with:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USER }}
           script: |
-            sudo su -
             cd BE
-            git remote update
-            git pull origin develop
-            npm ci
-            npm run start:dev
-            pm2 restart ohneul-server
-
+            sudo git remote update
+            sudo git pull origin develop
+            sudo npm ci
+            sudo npm run start:dev
+            sudo pm2 restart ohneul-server
 
   # 깃허브 레파지토리가 프라이빗으로 만들어져 있을때. 
   # git pull https://${{ secrets.GIT_USER }}:${{ secrets.GIT_PASSWORD }}@github.com/blockenters/streamlit_kmeans.git
