@@ -43,16 +43,16 @@ jobs:
       #  run: cd BE
 
       - name: Check directory
-        run: ls
+        run: ls -al
 
-      - name: Remote
-        run: git remote update
+      # - name: Remote
+      #  run: git remote update
 
-      - name: Git pull
-        run: sudo git pull origin main
+      # name: Git pull
+      # run: sudo git pull origin main
 
-      - name: Install project dependencies
-        run: sudo npm ci
+      # name: Install project dependencies
+      # run: sudo npm ci
 
-      - name: Restart server
-        run: sudo npm run start:dev && sudo pm2 restart ohneul-server
+      # name: Restart server
+      # run: sudo npm run start:dev && sudo pm2 restart ohneul-server
