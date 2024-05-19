@@ -55,8 +55,11 @@ jobs:
       - name: Set up environment variables
         run: echo "DOT_ENV=${{ secrets.DOT_ENV }}" >> .env
 
-      - name: Checking env file
+      - name: Checking file
         run: ls -al
+
+      - name: Checking env file
+        run: sudo cat .env
 
       # - name: Remote
       #   run: git remote update
