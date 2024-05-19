@@ -1,4 +1,4 @@
-name: dist
+name: deploy
 
 on:
   push:
@@ -10,7 +10,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
         
       - name: Setup Node.js environment
         uses: actions/setup-node@v2
@@ -18,11 +18,12 @@ jobs:
           node-version: '14'
 
       - name: SSH to EC2 instance and deploy
-        uses: appleboy/ssh-action@v0.5.4
+        uses: aws-actions/configure-aws-credentials@v1
         with:
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USER }}
+          aws-region: ap-northeast-2
+          aws-secret-access-key: ${{ secrets.SSH_PRIVATE_KEY }}
+          aws-host: ${{ secrets.HOST }}
+          aws-username: ${{ secrets.USER }}
           script: |
             cd BE
             sudo git remote update
