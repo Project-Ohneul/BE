@@ -46,6 +46,13 @@ jobs:
       - name: Go Home
         run: cd
 
+      - name: Setup MySQL
+        uses: mirromutth/mysql-action@v1.1
+        with:
+          mysql database: "ohneul"
+          mysql user: ${{ secrets.DB_USERNAME }}
+          mysql password: ${{ secrets.DB_PASSWORD }}
+
       # - name: Change root
       #  run: cd BE
 
