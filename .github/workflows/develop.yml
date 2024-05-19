@@ -2,36 +2,32 @@ name: deploy
 
 on:
   push:
-    branches: [ "develop" ]
+    branches: [ main ]
 
 jobs:
-  SSH:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         
       - name: Setup Node.js environment
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: '14'
 
       - name: SSH to EC2 instance and deploy
-        uses: aws-actions/configure-aws-credentials@v1
+        uses: appleboy/ssh-action@master
         with:
-          aws-region: ap-northeast-2
-          aws-secret-access-key: ${{ secrets.SSH_PRIVATE_KEY }}
-          aws-host: ${{ secrets.HOST }}
-          aws-username: ${{ secrets.USER }}
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            cd BE
-            sudo git remote update
-            sudo git pull origin develop
-            sudo npm ci
-            sudo npm run start:dev
-            sudo pm2 restart ohneul-server
-
-  # 깃허브 레파지토리가 프라이빗으로 만들어져 있을때. 
-  # git pull https://${{ secrets.GIT_USER }}:${{ secrets.GIT_PASSWORD }}@github.com/blockenters/streamlit_kmeans.git
- 
+            sudo su -
+            cd BE  # 프로젝트 경로로 이동
+            git remote update
+            git pull origin develop
+            npm ci
+            npm run start:dev
+            pm2 restart ohneul-server
