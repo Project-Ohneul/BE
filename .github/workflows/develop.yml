@@ -65,6 +65,9 @@ jobs:
       - name: Checking file
         run: ls -al
 
+      - name: Checking root
+        run: pwd
+
       - name: Remote
         run: git remote update
 
