@@ -24,7 +24,9 @@ jobs:
         run: sudo su
 
       - name: Checking root
-        run: ls -al
+        run: |
+          pwd
+          ls -al
 
       # - name: Setup Node.js
       #   uses: actions/setup-node@v3
