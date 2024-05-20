@@ -116,7 +116,7 @@ jobs:
           username: ${{ secrets.USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            sudo pm2 restart ohneul-server || sudo pm2 start npm --name ohneul-server -- start:dev
+           pm2 restart ohneul-server || pm2 start npm --name ohneul-server -- start:dev
 
       - name: Check PM2 list
         uses: appleboy/ssh-action@v0.1.6
