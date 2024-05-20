@@ -54,10 +54,15 @@ jobs:
       #     sudo npm install -g pm2
       #     sudo npm install -g dotenv
 
+      - name: Create a folder And Move
+        run: |
+            mkdir -p /home/ec2-user/BE
+            cd /home/ec2-user/BE
+
       - name: Go to project directory
         run: |
-          pwd        
-          cd /home/ec2-user/BE
+            pwd        
+            cd /home/ec2-user/BE
 
       # - name: Setting .env
       #   run: |
