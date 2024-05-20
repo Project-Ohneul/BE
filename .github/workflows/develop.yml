@@ -76,3 +76,8 @@ jobs:
 
       - name: Checking Pm2 List
         run: sudo pm2 list
+
+      - name: Checking server logs
+        run: |
+          sudo pm2 logs ohneul-server
+          sudo pm2 logs ***-server
