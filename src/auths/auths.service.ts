@@ -29,6 +29,7 @@ export class AuthsService {
 
     if (user.deleted_at && user.report < 15) {
       await this.usersService.updateUser(user.user_id, {
+        username: null,
         score: 0,
         score_amount: 0,
         coin: 0,
