@@ -51,7 +51,7 @@ export class UsersService {
   }
 
   async deleteUser(id) {
-    console.log("id", id);
+    console.log("id1", id);
     await this.usersRepository.softDelete({ user_id: id });
   }
 
