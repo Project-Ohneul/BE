@@ -53,8 +53,8 @@ jobs:
           username: ${{ secrets.USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            sudo apt update
-            sudo apt install -y nodejs npm
+            sudo yum update
+            sudo yum install -y nodejs npm
             sudo npm install -g pm2 dotenv
 
       - name: Set environment variables
