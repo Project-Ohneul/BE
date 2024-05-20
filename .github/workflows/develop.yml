@@ -94,6 +94,10 @@ jobs:
         run: sudo npm ci
 
       - name: Restart server
-        run: |
-          sudo npm run start:dev 
-          sudo pm2 restart ohneul-server
+        run: sudo npm run start:dev
+
+      - name: Checking Pm2 List
+        run: sudo pm2 list
+
+      - name: Start Server
+        run: sudo pm2 restart ohneul-server
