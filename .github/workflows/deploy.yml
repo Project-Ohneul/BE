@@ -68,7 +68,8 @@ jobs:
           script: |
             sudo yum update -y
             sudo yum install -y nodejs npm
-            sudo npm install -g pm2 dotenv
+            sudo npm install -g pm2
+            sudo npm install -g dotenv
 
       - name: Go to project directory
         uses: appleboy/ssh-action@v0.1.6
