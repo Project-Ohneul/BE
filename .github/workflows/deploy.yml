@@ -3,11 +3,11 @@ name: deploy
 on:
   push:
     branches:
-      - develop
+      - main
   pull_request:
     types: [closed]
     branches:
-      - develop   
+      - main     
 
 jobs:
   deploy:
@@ -17,71 +17,94 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: executing remote ssh commands
+      - name: Setup SSH
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Create directory
         uses: appleboy/ssh-action@v0.1.6
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            sudo mkdir -p /home/ec2-user/BE
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
+      - name: Change ownership
+        uses: appleboy/ssh-action@v0.1.6
         with:
-          node-version: "20"
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            sudo chown -R ec2-user:ec2-user /home/ec2-user/BE
 
-      - name: Cache dependencies
-        id: cache
-        uses: actions/cache@v2
+      - name: Go to project directory and pull latest code
+        uses: appleboy/ssh-action@v0.1.6
         with:
-          path: "**/node_modules"
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd /home/ec2-user/BE
+            git pull origin main
 
       - name: Install dependencies
-        run: |
-          sudo apt update
-          sudo apt install -y nodejs npm  
-          sudo npm install -g pm2
-          sudo npm install -g dotenv
+        uses: appleboy/ssh-action@v0.1.6
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            sudo yum update
+            sudo yum install -y nodejs npm
+            sudo npm install -g pm2 dotenv
 
-      - name: Go to project directory
-        run: cd /home/runner/work/BE
-
-      - name: Setting .env
-        run: |
-          echo "USERNAME=${{ secrets.USERNAME }}" >> .env
-          echo "PASSWORD=${{ secrets.PASSWORD }}" >> .env
-          echo "DATABASE=${{ secrets.DATABASE }}" >> .env
-          echo "NAVER_ID=${{ secrets.NAVER_ID }}" >> .env
-          echo "NAVER_SECRET=${{ secrets.NAVER_SECRET }}" >> .env
-          echo "NAVER_CALLBACK_URL=${{ secrets.NAVER_CALLBACK_URL }}" >> .env
-          echo "KAKAO_CLIENT_ID=${{ secrets.KAKAO_CLIENT_ID }}" >> .env
-          echo "KAKAO_CLIENT_SECRET=${{ secrets.KAKAO_CLIENT_SECRET }}" >> .env
-          echo "KAKAO_CALLBACK_URL=${{ secrets.KAKAO_CALLBACK_URL }}" >> .env
-          echo "NAVER_LOGIN_REDIRECT=${{ secrets.NAVER_LOGIN_REDIRECT }}" >> .env
-          echo "KAKAO_LOGIN_REDIRECT=${{ secrets.KAKAO_LOGIN_REDIRECT }}" >> .env
-          cat .env
-
-      - name: Checking file
-        run: ls -al /home/runner/work/BE
-
-      - name: Remote
-        run: git remote update
-
-      - name: Git pull
-        run: git pull origin develop
+      - name: Set environment variables
+        uses: appleboy/ssh-action@v0.1.6
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd /home/ec2-user/BE
+            echo "USERNAME=${{ secrets.USERNAME }}" >> .env
+            echo "PASSWORD=${{ secrets.PASSWORD }}" >> .env
+            echo "DATABASE=${{ secrets.DATABASE }}" >> .env
+            echo "NAVER_ID=${{ secrets.NAVER_ID }}" >> .env
+            echo "NAVER_SECRET=${{ secrets.NAVER_SECRET }}" >> .env
+            echo "NAVER_CALLBACK_URL=${{ secrets.NAVER_CALLBACK_URL }}" >> .env
+            echo "KAKAO_CLIENT_ID=${{ secrets.KAKAO_CLIENT_ID }}" >> .env
+            echo "KAKAO_CLIENT_SECRET=${{ secrets.KAKAO_CLIENT_SECRET }}" >> .env
+            echo "KAKAO_CALLBACK_URL=${{ secrets.KAKAO_CALLBACK_URL }}" >> .env
+            echo "NAVER_LOGIN_REDIRECT=${{ secrets.NAVER_LOGIN_REDIRECT }}" >> .env
+            echo "KAKAO_LOGIN_REDIRECT=${{ secrets.KAKAO_LOGIN_REDIRECT }}" >> .env
 
       - name: Install project dependencies
-        run: npm ci
+        uses: appleboy/ssh-action@v0.1.6
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd /home/ec2-user/BE
+            npm ci
 
       - name: Restart server
-        run: sudo pm2 restart ohneul-server || sudo pm2 start npm --name ohneul-server -- start:dev
+        uses: appleboy/ssh-action@v0.1.6
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            sudo pm2 restart ohneul-server || sudo pm2 start npm --name ohneul-server -- start:dev
 
-      - name: Checking Pm2 List
-        run: sudo pm2 list
-
-      # - name: Checking server logs
-      #   run: |
-      #     sudo pm2 logs ohneul-server
-      #     sudo pm2 logs ***-server
+      - name: Check PM2 list
+        uses: appleboy/ssh-action@v0.1.6
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            sudo pm2 list
