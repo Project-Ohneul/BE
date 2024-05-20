@@ -21,8 +21,10 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
 
       - name: Change permissions
-        run: |
-          sudo su -
+        run: sudo su -
+
+      - name: Checking root
+        run: ls -al
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
