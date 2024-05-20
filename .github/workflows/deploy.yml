@@ -4,10 +4,6 @@ on:
   push:
     branches:
       - main
-  pull_request:
-    types: [closed]
-    branches:
-      - main   
 
 jobs:
   deploy:
@@ -23,6 +19,10 @@ jobs:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Change permissions
+        run: |
+          sudo su -
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
@@ -46,7 +46,7 @@ jobs:
           sudo npm install -g dotenv
 
       - name: Go to project directory
-        run: cd /home/runner/work/BE
+        run: cd /BE
 
       - name: Setting .env
         run: |
@@ -64,24 +64,24 @@ jobs:
           cat .env
 
       - name: Checking file
-        run: ls -al /home/runner/work/BE
+        run: ls -al
 
-      - name: Remote
-        run: git remote update
+      # - name: Remote
+      #   run: git remote update
 
-      - name: Git pull
-        run: git pull origin main
+      # - name: Git pull
+      #   run: git pull origin main
 
-      - name: Install project dependencies
-        run: npm ci
+      # - name: Install project dependencies
+      #   run: npm ci
 
-      - name: Restart server
-        run: sudo pm2 restart ohneul-server || sudo pm2 start npm --name ohneul-server -- start:dev
+      # - name: Restart server
+      #   run: sudo pm2 restart ohneul-server || sudo pm2 start npm --name ohneul-server -- start:dev
 
-      - name: Checking Pm2 List
-        run: sudo pm2 list
+      # - name: Checking Pm2 List
+      #   run: sudo pm2 list
 
-      # - name: Checking server logs
-      #   run: |
-      #     sudo pm2 logs ohneul-server
-      #     sudo pm2 logs ***-server
+      # # - name: Checking server logs
+      # #   run: |
+      # #     sudo pm2 logs ohneul-server
+      # #     sudo pm2 logs ***-server
