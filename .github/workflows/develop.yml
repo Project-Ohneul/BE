@@ -72,12 +72,12 @@ jobs:
         run: npm ci
 
       - name: Restart server
-        run: sudo pm2 restart ohneul-server || sudo pm2 start --name ohneul-server -- start:dev
+        run: sudo pm2 restart ohneul-server || sudo pm2 start npm --name ohneul-server -- start:dev
 
       - name: Checking Pm2 List
         run: sudo pm2 list
 
-      - name: Checking server logs
-        run: |
-          sudo pm2 logs ohneul-server
-          sudo pm2 logs ***-server
+      # - name: Checking server logs
+      #   run: |
+      #     sudo pm2 logs ohneul-server
+      #     sudo pm2 logs ***-server
