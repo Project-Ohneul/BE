@@ -47,22 +47,6 @@ jobs:
       - name: Go Home
         run: cd
 
-      # - name: Setup MySQL
-      #   uses: mirromutth/mysql-action@v1.1
-      #   with:
-      #     mysql database: "ohneul"
-      #     mysql user: ${{ secrets.DB_USERNAME }}
-      #     mysql password: ${{ secrets.DB_PASSWORD }}
-
-      # - name: Change root
-      #  run: cd BE
-
-      # - name: Check directory
-      #  run: ls -al
-
-      # - name: Set up environment variables
-      #   run: echo "DOT_ENV=${{ secrets.DOT_ENV }}" >> .env
-
       - name: Setting .env
         run: |
           echo "USERNAME=${{ secrets.USERNAME }}" >> .env
@@ -81,9 +65,6 @@ jobs:
       - name: Checking file
         run: ls -al
 
-      # - name: Checking env file
-      #   run: sudo cat .env
-
       - name: Remote
         run: git remote update
 
@@ -94,7 +75,7 @@ jobs:
         run: sudo npm ci
 
       - name: Restart server
-        run: sudo npm run start:dev
+        run: nohup sudo npm run start:dev &
 
       - name: Checking Pm2 List
         run: sudo pm2 list
