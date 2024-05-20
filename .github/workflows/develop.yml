@@ -3,11 +3,11 @@ name: deploy
 on:
   push:
     branches:
-      - main
+      - develop
   pull_request:
     types: [closed]
     branches:
-      - main   
+      - develop   
 
 jobs:
   deploy:
@@ -70,7 +70,7 @@ jobs:
         run: git remote update
 
       - name: Git pull
-        run: git pull origin main
+        run: git pull origin develop
 
       - name: Install project dependencies
         run: npm ci
