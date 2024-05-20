@@ -38,7 +38,7 @@ jobs:
           username: ${{ secrets.USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            sudo mkdir -p /home/ec2-user/OHNEUL-front
+            sudo mkdir -p /home/ec2-user/BE
 
       - name: Change ownership
         uses: appleboy/ssh-action@v0.1.6
@@ -47,7 +47,7 @@ jobs:
           username: ${{ secrets.USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            sudo chown -R ec2-user:ec2-user /home/ec2-user/OHNEUL-front
+            sudo chown -R ec2-user:ec2-user /home/ec2-user/BE
 
       - name: Go to project directory and pull latest code
         uses: appleboy/ssh-action@v0.1.6
@@ -56,7 +56,7 @@ jobs:
           username: ${{ secrets.USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            cd /home/ec2-user/OHNEUL-front
+            cd /home/ec2-user/BE
             git pull origin main
 
       - name: Install dependencies
@@ -77,7 +77,7 @@ jobs:
           username: ${{ secrets.USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            cd /home/ec2-user/OHNEUL-front
+            cd /home/ec2-user/BE
 
       - name: Setting .env
         uses: appleboy/ssh-action@v0.1.6
@@ -105,7 +105,7 @@ jobs:
           username: ${{ secrets.USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            cd /home/ec2-user/OHNEUL-front
+            cd /home/ec2-user/BE
             npm install
 
       - name: Restart server
@@ -115,7 +115,7 @@ jobs:
           username: ${{ secrets.USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            sudo pm2 restart ohneul-client || sudo pm2 start npm --name ohneul-client -- start:dev
+            sudo pm2 restart ohneul-server || sudo pm2 start npm --name ohneul-server -- start:dev
 
       - name: Check PM2 list
         uses: appleboy/ssh-action@v0.1.6
