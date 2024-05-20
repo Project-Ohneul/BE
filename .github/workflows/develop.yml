@@ -41,11 +41,8 @@ jobs:
           sudo npm install -g pm2
           sudo npm install -g dotenv
 
-      - name: Change permissions
-        run: sudo su -
-
-      - name: Go Home
-        run: cd
+      - name: Go to project directory
+        run: cd /home/runner/work/BE/BE
 
       - name: Setting .env
         run: |
@@ -63,25 +60,19 @@ jobs:
           cat .env
 
       - name: Checking file
-        run: ls -al
-
-      - name: Checking root
-        run: pwd
+        run: ls -al /home/runner/work/BE/BE
 
       - name: Remote
         run: git remote update
 
       - name: Git pull
-        run: sudo git pull origin main
+        run: git pull origin main
 
       - name: Install project dependencies
-        run: sudo npm ci
+        run: npm ci
 
       - name: Restart server
-        run: nohup sudo npm run start:dev &
+        run: sudo pm2 restart ohneul-server || sudo pm2 start npm --name ohneul-server -- run start:pm2
 
       - name: Checking Pm2 List
         run: sudo pm2 list
-
-      - name: Start Server
-        run: sudo pm2 restart ohneul-server
