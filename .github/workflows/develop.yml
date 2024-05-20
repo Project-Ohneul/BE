@@ -42,7 +42,7 @@ jobs:
           sudo npm install -g dotenv
 
       - name: Go to project directory
-        run: cd /home/runner/work/BE/BE
+        run: cd /home/runner/work/BE
 
       - name: Setting .env
         run: |
@@ -60,7 +60,7 @@ jobs:
           cat .env
 
       - name: Checking file
-        run: ls -al /home/runner/work/BE/BE
+        run: ls -al /home/runner/work/BE
 
       - name: Remote
         run: git remote update
@@ -72,7 +72,7 @@ jobs:
         run: npm ci
 
       - name: Restart server
-        run: sudo pm2 restart ohneul-server || sudo pm2 start npm --name ohneul-server -- start:dev
+        run: sudo pm2 restart ohneul-server || sudo pm2 start --name ohneul-server -- start:dev
 
       - name: Checking Pm2 List
         run: sudo pm2 list
