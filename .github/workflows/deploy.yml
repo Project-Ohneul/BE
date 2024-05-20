@@ -13,6 +13,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      - name: Setup SSH
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
       - name: executing remote ssh commands
         uses: appleboy/ssh-action@v0.1.6
         with:
@@ -21,7 +26,7 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
 
       - name: Change permissions
-        run: sudo su
+        run: sudo su -
 
       - name: Checking root
         run: |
@@ -49,8 +54,10 @@ jobs:
       #     sudo npm install -g pm2
       #     sudo npm install -g dotenv
 
-      # - name: Go to project directory
-      #   run: cd /BE
+      - name: Go to project directory
+        run: |
+          pwd        
+          cd /home/ec2-user/BE
 
       # - name: Setting .env
       #   run: |
