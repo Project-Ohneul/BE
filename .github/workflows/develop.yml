@@ -60,8 +60,23 @@ jobs:
       # - name: Check directory
       #  run: ls -al
 
-      - name: Set up environment variables
-        run: echo "DOT_ENV=${{ secrets.DOT_ENV }}" >> .env
+      # - name: Set up environment variables
+      #   run: echo "DOT_ENV=${{ secrets.DOT_ENV }}" >> .env
+
+      - name: Setting .env
+        run: |
+          echo "USERNAME=${{ secrets.USERNAME }}" >> .env
+          echo "PASSWORD=${{ secrets.PASSWORD }}" >> .env
+          echo "DATABASE=${{ secrets.DATABASE }}" >> .env
+          echo "NAVER_ID=${{ secrets.NAVER_ID }}" >> .env
+          echo "NAVER_SECRET=${{ secrets.NAVER_SECRET }}" >> .env
+          echo "NAVER_CALLBACK_URL=${{ secrets.NAVER_CALLBACK_URL }}" >> .env
+          echo "KAKAO_CLIENT_ID=${{ secrets.KAKAO_CLIENT_ID }}" >> .env
+          echo "KAKAO_CLIENT_SECRET=${{ secrets.KAKAO_CLIENT_SECRET }}" >> .env
+          echo "KAKAO_CALLBACK_URL=${{ secrets.KAKAO_CALLBACK_URL }}" >> .env
+          echo "NAVER_LOGIN_REDIRECT=${{ secrets.NAVER_LOGIN_REDIRECT }}" >> .env
+          echo "KAKAO_LOGIN_REDIRECT=${{ secrets.KAKAO_LOGIN_REDIRECT }}" >> .env
+          cat .env
 
       - name: Checking file
         run: ls -al
