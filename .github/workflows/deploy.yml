@@ -108,6 +108,7 @@ jobs:
           script: |
             cd /home/ec2-user/BE
             npm install
+            # ㅎㅇㅎㅇ
 
       - name: Restart server
         uses: appleboy/ssh-action@v0.1.6
@@ -126,3 +127,4 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             sudo pm2 list
+            
