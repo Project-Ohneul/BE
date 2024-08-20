@@ -1,26 +1,21 @@
 # 노드 베이스 버전
-FROM node:18 
+FROM node:18
 
-# 리눅스에 폴더를 생성하고 실행해주는 명령어
-RUN mkdir -p /var/app
-
-# 실행 위치
+# 작업 디렉토리 설정
 WORKDIR /var/app
 
-# 현재 위치에 있는 파일을 WORKDIR로 카피, 첫번째 점은 코드가 있는 파일, 두번째 점은 WORKDIR을 뜻한다
-COPY . .
-
-# 
+# 패키지 파일 복사 및 의존성 설치
+COPY package*.json ./
 RUN npm install
 
+# 소스 코드 복사
+COPY . .
+
+# 애플리케이션 빌드
 RUN npm run build
 
-# 우리가 열 포트번호
+# 애플리케이션이 사용하는 포트 노출
 EXPOSE 4000
 
-# dist/main.js를 node로 실행시킨다.
+# 애플리케이션 시작
 CMD ["node", "dist/src/main.js"]
-
-# docker build . -t be ->이 폴더를 빌드해서 이미지를 만든다
-# docker images ->이미지가 잘 생성되었는지 확인
-# docker container run -d -p 4000:4000 be -> 이미지 실행
