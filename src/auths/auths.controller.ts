@@ -13,7 +13,7 @@ import { Request, Response } from "express";
 //   };
 // }
 
-@Controller()
+@Controller("api")
 export class AuthsController {
   constructor(private readonly authsService: AuthsService) {}
 

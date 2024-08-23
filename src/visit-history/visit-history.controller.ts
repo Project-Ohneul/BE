@@ -1,7 +1,7 @@
 import { Controller, Get, Param, Patch, Post, Res } from "@nestjs/common";
 import { VisitHistoryService } from "./visit-history.service";
 
-@Controller("visit-history")
+@Controller("api/visit-history")
 export class VisitHistoryController {
   constructor(private visitHistoryService: VisitHistoryService) {}
 

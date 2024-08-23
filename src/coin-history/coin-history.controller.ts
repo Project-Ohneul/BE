@@ -3,7 +3,7 @@ import { Controller, Get, Res } from "@nestjs/common";
 import { CoinHistoryService } from "./coin-history.service";
 import { Request, Response } from "express";
 
-@Controller("coin-history")
+@Controller("api/coin-history")
 export class CoinHistoryController {
   constructor(private coinHistoryService: CoinHistoryService) {}
 

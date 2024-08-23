@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Post, Res } from "@nestjs/common";
 import { NoticesService } from "./notices.service";
 
-@Controller("notices")
+@Controller("api/notices")
 export class NoticesController {
   constructor(private noticesService: NoticesService) {}
 
