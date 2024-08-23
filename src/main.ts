@@ -34,7 +34,7 @@ async function bootstrap() {
       "http://3.39.134.56",
       "http://localhost:3000",
       "http://3.39.134.56:3000",
-      "http://3.39.134.56:4000"
+      "http://3.39.134.56:4000",
     ],
     methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE", "OPTIONS"],
     credentials: true,

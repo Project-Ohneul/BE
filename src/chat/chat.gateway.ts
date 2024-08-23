@@ -21,8 +21,8 @@ import { CoinHistoryService } from "../coin-history/coin-history.service";
       "http://localhost:3000",
       "http://3.39.134.56",
     ], // CORS 설정: 클라이언트 주소
-    // methods: ['GET', 'POST'],
-    // credentials: true,
+    methods: ["GET", "POST"],
+    credentials: true,
   },
 })
 export class MyGateway implements OnModuleInit, OnGatewayDisconnect {

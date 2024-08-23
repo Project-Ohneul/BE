@@ -13,7 +13,7 @@ import {
 import { UserHobbyService } from "./user-hobbies.service";
 import { UserHobby } from "./user-hobbies.entity";
 
-@Controller("user-hobby")
+@Controller("api/user-hobby")
 export class UserHobbyController {
   constructor(private userHobbyService: UserHobbyService) {}
 
