@@ -10,7 +10,7 @@ export class AppController {
   @Get("*")
   renderApp(@Res() res: Response) {
     res.sendFile(
-      join(__dirname, "..", "..", "OHNEUL-front", "build", "index.html")
+      join(__dirname, "../../", "OHNEUL-front", "build", "index.html")
     );
   }
 
