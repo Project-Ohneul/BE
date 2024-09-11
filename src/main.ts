@@ -20,7 +20,7 @@ async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
     cors: true,
   });
-  app.useStaticAssets(path.join("/home", "ec2-user", "OHNEUL-front", "public"));
+  app.useStaticAssets(path.join("/home", "ec2-user", "OHNEUL-front", "build"));
   // app.enableCors({
   //   origin: ["http://localhost:3000", "http://18.204.230.142"],
   //   methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE", "OPTIONS"],
