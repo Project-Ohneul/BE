@@ -23,7 +23,10 @@ export class AuthsController {
 
   @Get("/login/naver/callback")
   @UseGuards(AuthGuard("naver"))
-  async loginNaverCallback(@Req() req: Request, @Res() res: Response) {
+  async loginNaverCallback(
+    @Req() req: Request,
+    @Res({ passthrough: true }) res: Response
+  ) {
     this.authsService.OAuthLogin({ req, res });
   }
 
@@ -33,17 +36,20 @@ export class AuthsController {
 
   @Get("/login/kakao/callback")
   @UseGuards(AuthGuard("kakao"))
-  async loginKakaoCallback(@Req() req: Request, @Res() res: Response) {
+  async loginKakaoCallback(
+    @Req() req: Request,
+    @Res({ passthrough: true }) res: Response
+  ) {
     this.authsService.OAuthLogin({ req, res });
   }
 
   @Post("/logout/naver")
-  async logoutNaver(@Res() res: Response) {
+  async logoutNaver(@Res({ passthrough: true }) res: Response) {
     this.authsService.logout(res);
   }
 
   @Post("logout/kakao")
-  async logoutKakao(@Res() res: Response) {
+  async logoutKakao(@Res({ passthrough: true }) res: Response) {
     this.authsService.logout(res);
   }
 }
