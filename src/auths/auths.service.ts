@@ -42,28 +42,28 @@ export class AuthsService {
 
     this.accessToken = req.user.accessToken;
     await this.visitHistoryService.updateVisitHistory(user.user_id, res);
-
-    if (user.report < 15) {
-      if (req.user.provider === "naver") {
-        res.cookie("user_id", user.user_id);
-        res.cookie("refreshToken", req.user.refreshToken);
-        res.cookie("provider", req.user.provider);
-        if (user.admin === true) {
-          res.cookie("admin", true);
-        }
-        res.redirect(process.env.NAVER_LOGIN_REDIRECT);
-      } else if (req.user.provider === "kakao") {
-        res.cookie("user_id", user.user_id);
-        res.cookie("refreshToken", req.user.refreshToken);
-        res.cookie("provider", req.user.provider);
-        if (user.admin === true) {
-          res.cookie("admin", true);
-        }
-        res.redirect(process.env.KAKAO_LOGIN_REDIRECT);
-      }
-    } else if (user.report >= 15) {
-      throw new Error("신고 횟수 누적으로 차단되었습니다.");
-    }
+    // if (user.report < 15) {
+    //   if (req.user.provider === "naver") {
+    //     res.cookie("user_id", user.user_id);
+    //     res.cookie("refreshToken", req.user.refreshToken);
+    //     res.cookie("provider", req.user.provider);
+    //     if (user.admin === true) {
+    //       res.cookie("admin", true);
+    //     }
+    //     res.redirect(process.env.NAVER_LOGIN_REDIRECT);
+    //   } else if (req.user.provider === "kakao") {
+    //     res.cookie("user_id", user.user_id);
+    //     res.cookie("refreshToken", req.user.refreshToken);
+    //     res.cookie("provider", req.user.provider);
+    //     if (user.admin === true) {
+    //       res.cookie("admin", true);
+    //     }
+    //     res.redirect(process.env.KAKAO_LOGIN_REDIRECT);
+    //   }
+    // } else if (user.report >= 15) {
+    //   throw new Error("신고 횟수 누적으로 차단되었습니다.");
+    // }
+    return user;
   }
 
   async logout(res): Promise<any> {
