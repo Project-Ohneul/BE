@@ -24,7 +24,7 @@ export class UsersController {
   }
 
   @Get()
-  async findAll(@Res() res: Response) {
+  async findAll(@Res({ passthrough: true }) res: Response) {
     const allUser = await this.usersService.findAll();
     res.json(allUser);
   }
