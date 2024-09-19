@@ -30,6 +30,7 @@ export class AuthsController {
     const user = await this.authsService.OAuthLogin({ req, res });
     console.log("req.user: ", req.user);
     console.log("user: ", user);
+    res.setHeader("Authorization", "Bearer " + req.user.refreshToken);
     if (user.report < 15) {
       if (req.user.provider === "naver") {
         res.cookie("user_id", user.user_id);
@@ -64,6 +65,7 @@ export class AuthsController {
     @Res({ passthrough: true }) res: Response
   ) {
     const user = await this.authsService.OAuthLogin({ req, res });
+    res.setHeader("Authorization", "Bearer " + req.user.refreshToken);
     if (user.report < 15) {
       if (req.user.provider === "naver") {
         res.cookie("user_id", user.user_id);
