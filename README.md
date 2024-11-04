@@ -63,7 +63,7 @@ Ohneul은 일상 생활에서 지치고 힘들지만 누군가에게 속마음�
 
 ## 개발 환경
 - Front-end : React, TypeScript, Styled-Components, React-Query, Redux Toolkit
-- Back-end : MySQL, nodeJS, nestJS, AWS, socket.io, nginx, naver login api, kakao login api
+- Back-end : MySQL, NodeJS, TypeScript, NestJS, AWS, socket.io, Nginx, Naver login api, Kakao login api
 - 협업 툴 : Discord, Notion, Github
 - 서비스 배포 환경 : Ec2
 
